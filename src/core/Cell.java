@@ -5,6 +5,10 @@ public class Cell {
     private static boolean defValueSet;
     private static char DEF_FIGURE_VALUE;
 
+    private int x;
+    private int y;
+    private char figure;
+
     public Cell(int x, int y, char defFigureValue) {
 
         if (!defValueSet) {
@@ -43,7 +47,9 @@ public class Cell {
         return false;
     }
 
-    private int x;
-    private int y;
-    private char figure;
+    @Override
+    public String toString() {
+
+        return "" + figure;
+    }
 }
