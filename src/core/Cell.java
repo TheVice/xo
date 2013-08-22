@@ -2,8 +2,8 @@ package core;
 
 public class Cell {
 
-    private static boolean defValueSet;
-    private static char DEF_FIGURE_VALUE;
+    private static boolean defValueSet = false;
+    private static char DEF_FIGURE_VALUE = ' ';
 
     private int x;
     private int y;

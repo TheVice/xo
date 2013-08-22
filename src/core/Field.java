@@ -2,6 +2,8 @@ package core;
 
 public class Field {
 
+    public static enum StartCellStyle {TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT}
+
     private static final int MIN_WIDTH = 2;
     private static final int MIN_HEIGHT = 2;
 
@@ -12,10 +14,37 @@ public class Field {
     private int height;
     private Cell cells[];
 
-    public Field(int width, int height) {
+    public static int getMinWidth() {
+
+        return MIN_WIDTH;
+    }
+
+    public static int getMinHeight() {
+
+        return MIN_HEIGHT;
+    }
+
+    public static int getMaxWidth() {
+
+        return MAX_WIDTH;
+    }
+
+    public static int getMaxHeight() {
+
+        return MAX_HEIGHT;
+    }
+
+    public static char getDefFigureValue() {
+
+        return Cell.getDefFigureValue();
+    }
+
+    public Field(int width, int height, char defFigureValue, StartCellStyle startCellStyle) {
 
         this.width = validateValue(width, MIN_WIDTH, MAX_WIDTH);
         this.height = validateValue(height, MIN_HEIGHT, MAX_HEIGHT);
+
+        setupCells(defFigureValue, startCellStyle);
     }
 
     public int getWidthCount() {
@@ -28,24 +57,6 @@ public class Field {
         return height;
     }
 
-    public char getDefFigureValue() {
-
-        return Cell.getDefFigureValue();
-    }
-
-    public void setupCells(char defFigureValue) {
-
-        cells = new Cell[width * height];
-
-        for (int i = 0; i < width; i++) {
-
-            for (int j = 0; j < height; j++) {
-
-                createCellAt(i, j, new Cell(i, j, defFigureValue));
-            }
-        }
-    }
-
     public boolean setCell(int x, int y, char figureType) {
 
         Cell cell = findCell(x, y);
@@ -53,28 +64,7 @@ public class Field {
 
             return cell.makeMove(figureType);
         }
-
         return false;
-    }
-
-    private Cell findCell(int x, int y) {
-
-        if (cells != null && isValidCellNumber(x, y)) {
-
-            for (int i = 0; i < width; i++) {
-
-                for (int j = 0; j < height; j++) {
-
-                    Cell cell = getCellAt(i, j);
-
-                    if (cell.getX() == x && cell.getY() == y) {
-
-                        return cell;
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     @Override
@@ -90,6 +80,70 @@ public class Field {
             str += "\n";
         }
         return str;
+    }
+
+    private void setupCells(char defFigureValue, StartCellStyle startCellStyle) {
+
+        cells = new Cell[width * height];
+
+        switch (startCellStyle) {
+            case TOP_LEFT:
+                for (int i = 0; i < width; i++) {
+
+                    for (int j = 0; j < height; j++) {
+
+                        createCellAt(i, j, new Cell(i + 1, j + 1, defFigureValue));
+                    }
+                }
+                break;
+            case TOP_RIGHT:
+                for (int i = 0; i < width; i++) {
+
+                    for (int j = 0; j < height; j++) {
+
+                        createCellAt(i, j, new Cell(i + 1, height - j, defFigureValue));
+                    }
+                }
+                break;
+            case BOTTOM_RIGHT:
+                for (int i = 0; i < width; i++) {
+
+                    for (int j = 0; j < height; j++) {
+
+                        createCellAt(i, j, new Cell(width - i, height - j, defFigureValue));
+                    }
+                }
+                break;
+            case BOTTOM_LEFT:
+                for (int i = 0; i < width; i++) {
+
+                    for (int j = 0; j < height; j++) {
+
+                        createCellAt(i, j, new Cell(width - i, j + 1, defFigureValue));
+                    }
+                }
+                break;
+        }
+    }
+
+    private Cell findCell(int x, int y) {
+
+        if (isValidCellNumber(x, y)) {
+
+            for (int i = 0; i < width; i++) {
+
+                for (int j = 0; j < height; j++) {
+
+                    Cell cell = getCellAt(i, j);
+
+                    if (cell.getX() == x && cell.getY() == y) {
+
+                        return cell;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     private Cell getCellAt(int x, int y) {
@@ -109,7 +163,7 @@ public class Field {
 
     private boolean isValidCellNumber(int x, int y) {
 
-        return 0 <= x && x < width && 0 <= y && y < height;
+        return 0 < x && x <= width && 0 < y && y <= height;
     }
 
     private int validateValue(int value, int min, int max) {
