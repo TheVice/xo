@@ -2,8 +2,8 @@ package core;
 
 public class Cell {
 
-    private static boolean defValueSet = false;
-    private static char DEF_FIGURE_VALUE = ' ';
+    private static boolean defValueSet;
+    private static char DEF_FIGURE_VALUE;
 
     private int x;
     private int y;
@@ -34,6 +34,11 @@ public class Cell {
     public int getY() {
 
         return y;
+    }
+
+    public char getFigure() {
+
+        return figure;
     }
 
     public boolean makeMove(char figureType) {

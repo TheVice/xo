@@ -39,11 +39,26 @@ public class Field {
         return Cell.getDefFigureValue();
     }
 
+    public static StartCellStyle int2style(int styleNumber) {
+
+        int count = 1;
+        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+
+            if (count++ == styleNumber) {
+
+                return scs;
+            }
+        }
+
+        return StartCellStyle.BOTTOM_LEFT;
+    }
+
     public Field(int width, int height, char defFigureValue, StartCellStyle startCellStyle) {
 
         this.width = validateValue(width, MIN_WIDTH, MAX_WIDTH);
         this.height = validateValue(height, MIN_HEIGHT, MAX_HEIGHT);
 
+        cells = new Cell[this.width * this.height];
         setupCells(defFigureValue, startCellStyle);
     }
 
@@ -67,13 +82,33 @@ public class Field {
         return false;
     }
 
+    public boolean isFull() {
+
+        for (int j = 0; j < height; j++) {
+
+            for (int i = 0; i < width; i++) {
+
+                if (getCellAt(i, j).getFigure() == Cell.getDefFigureValue()) {
+
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isValidCellNumber(int x, int y) {
+
+        return 0 < x && x <= width && 0 < y && y <= height;
+    }
+
     @Override
     public String toString() {
 
         String str = "";
-        for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
 
-            for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
 
                 str += "[" + getCellAt(i, j) + "]";
             }
@@ -84,55 +119,56 @@ public class Field {
 
     private void setupCells(char defFigureValue, StartCellStyle startCellStyle) {
 
-        cells = new Cell[width * height];
+        for (int j = 0; j < height; j++) {
+
+            for (int i = 0; i < width; i++) {
+
+                createCellAt(i, j, new Cell(getValue4Style(i, startCellStyle, true),
+                        getValue4Style(j, startCellStyle, false), defFigureValue));
+            }
+        }
+    }
+
+    private int getValue4Style(int value, StartCellStyle startCellStyle, boolean isWidth) {
+
+        int retValue = value;
 
         switch (startCellStyle) {
             case TOP_LEFT:
-                for (int i = 0; i < width; i++) {
-
-                    for (int j = 0; j < height; j++) {
-
-                        createCellAt(i, j, new Cell(i + 1, j + 1, defFigureValue));
-                    }
-                }
+                retValue += 1;
                 break;
             case TOP_RIGHT:
-                for (int i = 0; i < width; i++) {
-
-                    for (int j = 0; j < height; j++) {
-
-                        createCellAt(i, j, new Cell(i + 1, height - j, defFigureValue));
-                    }
+                if (isWidth) {
+                    retValue = width - retValue;
+                } else {
+                    retValue += 1;
                 }
                 break;
             case BOTTOM_RIGHT:
-                for (int i = 0; i < width; i++) {
-
-                    for (int j = 0; j < height; j++) {
-
-                        createCellAt(i, j, new Cell(width - i, height - j, defFigureValue));
-                    }
+                if (isWidth) {
+                    retValue = width - retValue;
+                } else {
+                    retValue = height - retValue;
                 }
                 break;
             case BOTTOM_LEFT:
-                for (int i = 0; i < width; i++) {
-
-                    for (int j = 0; j < height; j++) {
-
-                        createCellAt(i, j, new Cell(width - i, j + 1, defFigureValue));
-                    }
+                if (isWidth) {
+                    retValue += 1;
+                } else {
+                    retValue = height - retValue;
                 }
-                break;
         }
+
+        return retValue;
     }
 
     private Cell findCell(int x, int y) {
 
         if (isValidCellNumber(x, y)) {
 
-            for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
 
-                for (int j = 0; j < height; j++) {
+                for (int i = 0; i < width; i++) {
 
                     Cell cell = getCellAt(i, j);
 
@@ -161,16 +197,12 @@ public class Field {
         return x * height + y;
     }
 
-    private boolean isValidCellNumber(int x, int y) {
-
-        return 0 < x && x <= width && 0 < y && y <= height;
-    }
-
     private int validateValue(int value, int min, int max) {
 
         if (value < min) {
 
             return min;
+
         } else if (value > max) {
 
             return max;
