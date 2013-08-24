@@ -92,6 +92,28 @@ public class FieldTest extends Assert {
             }
         }
 
+        String checkString[] = {"[1][2]\n[3][4]\n[5][6]\n",
+                                "[2][1]\n[4][3]\n[6][5]\n",
+                                "[6][5]\n[4][3]\n[2][1]\n",
+                                "[5][6]\n[3][4]\n[1][2]\n"};
+
+        int stringNum = 0;
+        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+
+            field = new Field(3, 2, ' ', scs);
+
+            Integer numToCell = 1;
+            for (int i = 1; i <= field.getWidthCount(); i++) {
+
+                for (int j = 1; j <= field.getHeightCount(); j++) {
+
+                    field.setCell(i, j, (numToCell++).toString().charAt(0));
+                }
+            }
+
+            assertEquals(checkString[stringNum++], field.toString());
+        }
+
         assertFalse(field.setCell(field.getWidthCount() + 1, field.getHeightCount() + 1, Field.getDefFigureValue()));
         assertFalse(field.setCell(field.getWidthCount(), field.getHeightCount() + 1, Field.getDefFigureValue()));
         assertFalse(field.setCell(field.getWidthCount() + 1, field.getHeightCount(), Field.getDefFigureValue()));
