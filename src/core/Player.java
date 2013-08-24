@@ -36,15 +36,20 @@ public class Player {
 
         if (playGround != null && playerFigure != null) {
 
-            return playGround.setCell(x, y, getCharFromFigure(playerFigure));
+            return playGround.setCell(x, y, getFigure());
         }
         return false;
+    }
+
+    public char getFigure() {
+
+        return getCharFromFigure(playerFigure);
     }
 
     @Override
     public String toString() {
 
-        return "" + getCharFromFigure(playerFigure);
+        return "" + getFigure();
     }
 
     private static char getCharFromFigure(PlayerFigure playerFigure) {

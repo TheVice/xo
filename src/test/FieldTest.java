@@ -116,7 +116,7 @@ public class FieldTest extends Assert {
     }
 
     @Test
-    public void fieldCheckSetStartStyle() throws Exception {
+    public void fieldStartCellStyle() throws Exception {
 
         String checkString[] = {"[1][2][3]\n[4][5][6]\n",
                 "[3][2][1]\n[6][5][4]\n",
@@ -138,5 +138,65 @@ public class FieldTest extends Assert {
 
             assertEquals(checkString[stringNum++], field.toString());
         }
+    }
+
+    @Test
+    public void isFigureFillDiagonal() throws Exception {
+
+        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+
+            Field field = new Field(3, 4, ' ', scs);
+            assertFalse(field.isFigureFillDiagonal(Field.getDefFigureValue()));
+
+            fillDiagonale(field, 'X', true);
+            assertFalse(field.isFigureFillDiagonal('X'));
+
+            fillDiagonale(field, 'O', false);
+            assertFalse(field.isFigureFillDiagonal('O'));
+
+            field = new Field(6, 6, ' ', scs);
+            assertTrue(field.isFigureFillDiagonal(Field.getDefFigureValue()));
+
+            fillDiagonale(field, 'X', true);
+            assertTrue(field.isFigureFillDiagonal('X'));
+
+            fillDiagonale(field, 'O', false);
+            assertTrue(field.isFigureFillDiagonal('O'));
+
+            field.setCell(3, 3, Field.getDefFigureValue());
+            field.setCell(3, 4, Field.getDefFigureValue());
+
+            assertFalse(field.isFigureFillDiagonal('X'));
+            assertFalse(field.isFigureFillDiagonal('O'));
+        }
+    }
+
+    private static void fillDiagonale(Field field, char figure, boolean main) {
+
+        final int count = min(field.getWidthCount(), field.getHeightCount());
+        if (main) {
+
+            for (int i = 1; i <= count; i++) {
+
+                field.setCell(i, i, Field.getDefFigureValue());
+                field.setCell(i, i, figure);
+            }
+        } else {
+
+            for (int i = count; i > 0; i--) {
+
+                field.setCell(i, count - i + 1, Field.getDefFigureValue());
+                field.setCell(i, count - i + 1, figure);
+            }
+        }
+    }
+
+    private static int min(int x, int y) {
+
+        if (x < y) {
+
+            return x;
+        }
+        return y;
     }
 }

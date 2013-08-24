@@ -15,11 +15,12 @@ public class PlayerTest extends Assert {
         assertFalse(player.makeMove(1, 1));
         player = new Player(null);
         assertFalse(player.makeMove(1, 1));
+        player = new Player(new Field(3, 4, Field.getDefFigureValue(), Field.int2style(4)), null);
+        assertFalse(player.makeMove(1, 1));
         player = new Player(null, Player.PlayerFigure.X);
         assertEquals("X", player.toString());
         player = new Player(Player.PlayerFigure.O);
         assertEquals("O", player.toString());
-        assertFalse(player.makeMove(1, 1));
         new Player(new Field(3, 4, Field.getDefFigureValue(), Field.int2style(4)), Player.PlayerFigure.X);
         assertTrue(player.makeMove(1, 1));
     }

@@ -82,6 +82,49 @@ public class Field {
         return false;
     }
 
+    public boolean isFigureFillDiagonal(char figure) {
+
+        if (height != width) {
+
+            return false;
+        }
+
+        final int count = height;
+        boolean match = false;
+
+        if(getCellAt(0, 0).getFigure() == figure) {
+
+            match = true;
+            for(int i = 1; i < count; i++) {
+
+                if(getCellAt(i, i).getFigure() != figure) {
+
+                    match = false;
+                    break;
+                }
+            }
+        }
+
+        if(match) {
+
+            return true;
+        }
+        else if (getCellAt(count - 1, 0).getFigure() == figure) {
+
+            match = true;
+            for(int i = count - 2; i >= 0; i--) {
+
+                if(getCellAt(i, count - i - 1).getFigure() != figure) {
+
+                    match = false;
+                    break;
+                }
+            }
+        }
+
+        return match;
+    }
+
     public boolean isFull() {
 
         for (int j = 0; j < height; j++) {

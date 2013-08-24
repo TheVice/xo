@@ -6,6 +6,7 @@ public class Referee {
 
     private static Scanner scanner = new Scanner(System.in);
     private static Field field;
+    private static Player winner;
 
     private static void prepareField4Game(int width, int height, int styleNumber) {
 
@@ -88,6 +89,13 @@ public class Referee {
                 playerNumber = 0;
             }
             letsPlayerMakeADesign(players[playerNumber]);
+
+            if(field.isFigureFillDiagonal(players[playerNumber].getFigure())) {
+
+                winner = players[playerNumber];
+                break;
+            }
+
             playerNumber++;
         } while (!field.isFull());
     }
@@ -97,5 +105,19 @@ public class Referee {
         System.out.println("Welcome in Xs and Os (a.k.a. Tic-tac-toe)!");
         prepareField4Game(3, 3, 4);
         gameStart();
+        gameOver();
+    }
+
+    private static void gameOver() {
+
+        System.out.println("The game is over");
+        if(winner != null) {
+
+            System.out.println("The winner is player " + winner);
+        }
+        else {
+
+            System.out.println("The friendship is win");
+        }
     }
 }
