@@ -6,6 +6,7 @@ public class Referee {
 
     private static Scanner scanner = new Scanner(System.in);
     private static Field field;
+    private static Chronicler chronicler;
     private static Player winner;
 
     private static void prepareField4Game(int width, int height, int styleNumber) {
@@ -73,6 +74,8 @@ public class Referee {
 
             System.out.println("\n---------\n" + field + "---------");
         }
+
+        chronicler.addWalk(new Cell(x, y, player.getFigure()));
     }
 
     private static void gameStart() {
@@ -81,6 +84,7 @@ public class Referee {
         Player players[] = new Player[playerCount];
         players[0] = new Player(field, Player.PlayerFigure.X);
         players[1] = new Player(Player.PlayerFigure.O);
+        chronicler = new Chronicler(field.getWidthCount() * field.getHeightCount());
 
         int playerNumber = 0;
         do {
@@ -97,7 +101,16 @@ public class Referee {
                 break;
             }
 
-            playerNumber++;
+            System.out.println("If you want you can undo your last step (press 1 - to undo and not 1 to no.");
+            int i = scanner.nextInt();
+            if (i == 1) {
+
+                Cell cell = chronicler.undoLastWalk();
+                field.setCell(cell.getX(), cell.getY(), Field.getDefFigureValue());
+            } else {
+
+                playerNumber++;
+            }
         } while (!field.isFull());
     }
 
