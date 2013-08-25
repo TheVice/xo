@@ -141,6 +141,31 @@ public class FieldTest extends Assert {
     }
 
     @Test
+    public void isFigureFillLine() throws Exception {
+
+        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+
+            Field field = new Field(3, 4, ' ', scs);
+            assertTrue(field.isFigureFillLine(Field.getDefFigureValue()));
+            assertFalse(field.isFigureFillLine('X'));
+            assertFalse(field.isFigureFillLine('O'));
+
+            fillLine(field, 1, 'X', true);
+            assertTrue(field.isFigureFillLine('X'));
+            assertFalse(field.isFigureFillLine('O'));
+            fillLine(field, field.getHeightCount(), 'O', false);
+
+            assertTrue(field.isFigureFillLine('X'));
+            assertFalse(field.isFigureFillLine('O'));
+
+            fillLine(field, 1, Field.getDefFigureValue(), true);
+            fillLine(field, field.getHeightCount(), 'O', false);
+            assertTrue(field.isFigureFillLine('O'));
+            assertFalse(field.isFigureFillLine('X'));
+        }
+    }
+
+    @Test
     public void isFigureFillDiagonal() throws Exception {
 
         for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
@@ -148,19 +173,19 @@ public class FieldTest extends Assert {
             Field field = new Field(3, 4, ' ', scs);
             assertFalse(field.isFigureFillDiagonal(Field.getDefFigureValue()));
 
-            fillDiagonale(field, 'X', true);
+            fillDiagonal(field, 'X', true);
             assertFalse(field.isFigureFillDiagonal('X'));
 
-            fillDiagonale(field, 'O', false);
+            fillDiagonal(field, 'O', false);
             assertFalse(field.isFigureFillDiagonal('O'));
 
             field = new Field(6, 6, ' ', scs);
             assertTrue(field.isFigureFillDiagonal(Field.getDefFigureValue()));
 
-            fillDiagonale(field, 'X', true);
+            fillDiagonal(field, 'X', true);
             assertTrue(field.isFigureFillDiagonal('X'));
 
-            fillDiagonale(field, 'O', false);
+            fillDiagonal(field, 'O', false);
             assertTrue(field.isFigureFillDiagonal('O'));
 
             field.setCell(3, 3, Field.getDefFigureValue());
@@ -171,7 +196,40 @@ public class FieldTest extends Assert {
         }
     }
 
-    private static void fillDiagonale(Field field, char figure, boolean main) {
+    private static void fillLine(Field field, int lineNum, char figure, boolean vertical) {
+
+        if (vertical) {
+
+            if (lineNum > field.getWidthCount()) {
+
+                lineNum = field.getWidthCount();
+            } else if (lineNum < 1) {
+
+                lineNum = 1;
+            }
+
+            for (int i = 1; i <= field.getHeightCount(); i++) {
+
+                field.setCell(lineNum, i, figure);
+            }
+        } else {
+
+            if (lineNum > field.getHeightCount()) {
+
+                lineNum = field.getHeightCount();
+            } else if (lineNum < 1) {
+
+                lineNum = 1;
+            }
+
+            for (int i = 1; i <= field.getWidthCount(); i++) {
+
+                field.setCell(i, lineNum, figure);
+            }
+        }
+    }
+
+    private static void fillDiagonal(Field field, char figure, boolean main) {
 
         final int count = min(field.getWidthCount(), field.getHeightCount());
         if (main) {

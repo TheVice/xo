@@ -62,7 +62,7 @@ public class Referee {
 
             if (field.isValidCellNumber(x, y)) {
 
-                System.out.println("Probably position busy by figure of other player.");
+                System.out.println("Probably position busy by non default figure.");
             } else {
 
                 System.out.println("Position is out side of the field.");
@@ -90,7 +90,8 @@ public class Referee {
             }
             letsPlayerMakeADesign(players[playerNumber]);
 
-            if(field.isFigureFillDiagonal(players[playerNumber].getFigure())) {
+            if (field.isFigureFillDiagonal(players[playerNumber].getFigure()) ||
+                    field.isFigureFillLine(players[playerNumber].getFigure())) {
 
                 winner = players[playerNumber];
                 break;
@@ -111,11 +112,10 @@ public class Referee {
     private static void gameOver() {
 
         System.out.println("The game is over");
-        if(winner != null) {
+        if (winner != null) {
 
             System.out.println("The winner is player " + winner);
-        }
-        else {
+        } else {
 
             System.out.println("The friendship is win");
         }

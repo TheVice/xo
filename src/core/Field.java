@@ -92,12 +92,12 @@ public class Field {
         final int count = height;
         boolean match = false;
 
-        if(getCellAt(0, 0).getFigure() == figure) {
+        if (getCellAt(0, 0).getFigure() == figure) {
 
             match = true;
-            for(int i = 1; i < count; i++) {
+            for (int i = 1; i < count; i++) {
 
-                if(getCellAt(i, i).getFigure() != figure) {
+                if (getCellAt(i, i).getFigure() != figure) {
 
                     match = false;
                     break;
@@ -105,20 +105,65 @@ public class Field {
             }
         }
 
-        if(match) {
+        if (match) {
 
             return true;
-        }
-        else if (getCellAt(count - 1, 0).getFigure() == figure) {
+        } else if (getCellAt(count - 1, 0).getFigure() == figure) {
 
             match = true;
-            for(int i = count - 2; i >= 0; i--) {
+            for (int i = count - 2; i >= 0; i--) {
 
-                if(getCellAt(i, count - i - 1).getFigure() != figure) {
+                if (getCellAt(i, count - i - 1).getFigure() != figure) {
 
                     match = false;
                     break;
                 }
+            }
+        }
+
+        return match;
+    }
+
+    public boolean isFigureFillLine(char figure) {
+
+        boolean match = false;
+
+        for (int j = 0; j < height; j++) {
+
+            match = true;
+            for (int i = 0; i < width; i++) {
+
+                if (getCellAt(i, j).getFigure() != figure) {
+
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+
+                break;
+            }
+        }
+        if (match) {
+
+            return true;
+        }
+
+
+        for (int i = 0; i < width; i++) {
+
+            match = true;
+            for (int j = 0; j < height; j++) {
+
+                if (getCellAt(i, j).getFigure() != figure) {
+
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+
+                break;
             }
         }
 
