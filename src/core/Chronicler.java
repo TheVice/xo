@@ -46,14 +46,14 @@ public class Chronicler {
     public String toString() {
 
         String str = "";
-        int i = 1;
+        int stepNum = 1;
         for (Cell cell : cells) {
 
             if (cell.getFigure() == Cell.getDefFigureValue()) {
 
                 break;
             }
-            str += "Step - " + (i++) + ". Figure " + cell.getFigure() + " on x = " +
+            str += "Step - " + (stepNum++) + ". Figure " + cell.getFigure() + " on x = " +
                     cell.getX() + " y = " + cell.getY() + "\n";
         }
         return str;

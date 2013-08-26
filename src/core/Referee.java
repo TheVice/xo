@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Referee {
 
-    private static Scanner scanner = new Scanner(System.in);
     private static Field field;
     private static Chronicler chronicler;
     private static Player winner;
@@ -15,8 +14,8 @@ public class Referee {
 
             System.out.println("What the size of field do you want (width x height)?");
 
-            width = scanner.nextInt();
-            height = scanner.nextInt();
+            width = getIntFromInput();
+            height = getIntFromInput();
         }
         System.out.println("Field size: " + width + " x " + height);
 
@@ -30,7 +29,8 @@ public class Referee {
                     "\n3 - " + fieldStyles[2] + ";" +
                     "4 - " + fieldStyles[3] + ")\n" +
                     "from what calculate the cells: ");
-            styleNumber = scanner.nextInt();
+
+            styleNumber = getIntFromInput();
         }
 
         if (styleNumber > 4) {
@@ -56,8 +56,8 @@ public class Referee {
 
         System.out.print("Player of " + player + " please make your move (position x, y):");
 
-        int x = scanner.nextInt();
-        int y = scanner.nextInt();
+        int x = getIntFromInput();
+        int y = getIntFromInput();
 
         if (!player.makeMove(x, y)) {
 
@@ -75,7 +75,9 @@ public class Referee {
             System.out.println("\n---------\n" + field + "---------");
         }
 
-        chronicler.addWalk(new Cell(x, y, player.getFigure()));
+        Cell cell = new Cell(x, y, Cell.getDefFigureValue());
+        cell.makeMove(player.getFigure());
+        chronicler.addWalk(cell);
     }
 
     private static void gameStart() {
@@ -101,9 +103,9 @@ public class Referee {
                 break;
             }
 
-            System.out.println("If you want you can undo your last step (press 1 - to undo and not 1 to no.");
-            int i = scanner.nextInt();
-            if (i == 1) {
+            System.out.println("If you want you can undo your last step (press 1 - to undo and not 1 to no).");
+
+            if (getIntFromInput() == 1) {
 
                 Cell cell = chronicler.undoLastWalk();
                 field.setCell(cell.getX(), cell.getY(), Field.getDefFigureValue());
@@ -111,6 +113,7 @@ public class Referee {
 
                 playerNumber++;
             }
+
         } while (!field.isFull());
     }
 
@@ -132,5 +135,25 @@ public class Referee {
 
             System.out.println("The friendship is win");
         }
+        System.out.println(chronicler);
+    }
+
+    private static int getIntFromInput() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        int iValue = 0;
+
+        if (scanner.hasNextInt()) {
+
+            iValue = scanner.nextInt();
+        }
+        else {
+
+            System.out.print("\nPlease enter integer value ");
+            iValue = getIntFromInput();
+        }
+
+        return iValue;
     }
 }
