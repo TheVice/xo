@@ -23,23 +23,64 @@ public class Chronicler {
 
     public boolean addWalk(Cell cell) {
 
-        if (cells.size() == cellCount || cell == null || findCellWithPosition(cell)) {
+        if (cells.size() == cellCount || cell == null ||
+                cell.getFigure() == Cell.getDefFigureValue() || findCellWithPosition(cell)) {
 
             return false;
         }
         return cells.add(cell);
     }
 
-    public Cell undoLastWalk() {
+    public void undoLastWalk(Field field) {
 
-        Cell cell = null;
-        if (cells.size() > 0) {
+        int index = cells.size();
+        revertTo(index - 1, field);
+    }
 
-            int index = cells.size() - 1;
-            cell = cells.elementAt(index);
-            cells.remove(index);
+    public int getStepCount() {
+
+        return cells.size();
+    }
+
+    public char revertTo(int stepNum, Field field) {
+
+        if (stepNum == 0) {
+
+            if(field != null) {
+
+                for (Cell cell : cells) {
+
+                    field.setCell(cell.getX(), cell.getY(), Cell.getDefFigureValue());
+                }
+            }
+            cells.removeAllElements();
         }
-        return cell;
+
+        int index = cells.size();
+        if (index == 0) {
+
+            return Cell.getDefFigureValue();
+        }
+
+        if (stepNum >= index || stepNum < 0) {
+
+            return cells.elementAt(index - 1).getFigure();
+        }
+
+
+        int count = index - stepNum;
+        for(int i = 0; i < count; i++) {
+
+            if(field != null) {
+
+                Cell cell = cells.elementAt(stepNum + i);
+                field.setCell(cell.getX(), cell.getY(), Cell.getDefFigureValue());
+            }
+
+            cells.removeElementAt(stepNum + i);
+        }
+
+        return cells.elementAt(stepNum - 1).getFigure();
     }
 
     @Override
@@ -49,10 +90,6 @@ public class Chronicler {
         int stepNum = 1;
         for (Cell cell : cells) {
 
-            if (cell.getFigure() == Cell.getDefFigureValue()) {
-
-                break;
-            }
             str += "Step - " + (stepNum++) + ". Figure " + cell.getFigure() + " on x = " +
                     cell.getX() + " y = " + cell.getY() + "\n";
         }

@@ -107,8 +107,7 @@ public class Referee {
 
             if (getIntFromInput() == 1) {
 
-                Cell cell = chronicler.undoLastWalk();
-                field.setCell(cell.getX(), cell.getY(), Field.getDefFigureValue());
+                chronicler.undoLastWalk(field);
             } else {
 
                 playerNumber++;
