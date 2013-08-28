@@ -103,14 +103,15 @@ public class Referee {
                 break;
             }
 
-            System.out.println("If you want you can undo your last step (press 1 - to undo and not 1 to no).");
+            char figure = askForUndo(players[playerNumber].getFigure());
 
-            if (getIntFromInput() == 1) {
-
-                chronicler.undoLastWalk(field);
-            } else {
+            if (figure != Cell.getDefFigureValue() && figure == players[playerNumber].getFigure()) {
 
                 playerNumber++;
+            }
+            else if(figure == Cell.getDefFigureValue())
+            {
+                playerNumber = 0;
             }
 
         } while (!field.isFull());
@@ -154,5 +155,32 @@ public class Referee {
         }
 
         return iValue;
+    }
+
+    private static char askForUndo(char current) {
+
+        System.out.print("If you want you can undo to some step in this game.\n" +
+                "Please type 'step' word ");
+        Scanner scanner = new Scanner(System.in);
+
+        String step;
+        if (scanner.hasNextLine()) {
+
+            step = scanner.nextLine();
+            if(!step.equals("step")) {
+                return current;
+            }
+
+            System.out.println("There few next steps made at this point.");
+            System.out.println(chronicler);
+            System.out.print("Which one do you what to revert?\n" +
+                    "Type step num (0 (clean field) - " +
+                    chronicler.getStepCount() + ") ");
+
+            int stepNum = getIntFromInput();
+            return chronicler.revertTo(stepNum, field);
+        }
+
+        return current;
     }
 }
