@@ -7,17 +7,11 @@ public class Referee {
     private static Field field;
     private static Chronicler chronicler;
     private static Player winner;
+    private static int x;
+    private static int y;
+    private static Boolean exitNow = false;
 
-    private static void prepareField4Game(int width, int height, int styleNumber) {
-
-        if (width == 0 || height == 0) {
-
-            System.out.println("What the size of field do you want (width x height)?");
-
-            width = getIntFromInput();
-            height = getIntFromInput();
-        }
-        System.out.println("Field size: " + width + " x " + height);
+    private static int determineStartPositionAtField(int styleNumber) {
 
         String fieldStyles[] = {"Top Left", "Top Right", "Bottom Right", "Bottom Left"};
 
@@ -40,44 +34,89 @@ public class Referee {
 
             styleNumber = 1;
         }
+
         System.out.println("Field type: " + fieldStyles[styleNumber - 1]);
 
+        return styleNumber;
+    }
+
+    private static void prepareField4Game(int width, int height, int styleNumber) {
+
+        if (width == 0 || height == 0) {
+
+            System.out.println("What the size of field do you want (width x height)?");
+
+            width = getIntFromInput();
+            height = getIntFromInput();
+        }
+
+        styleNumber = determineStartPositionAtField(styleNumber);
+
         field = new Field(width, height, ' ', Field.int2style(styleNumber));
+
+        System.out.println("Field size: " + field.getWidthCount() + " x " + field.getHeightCount());
 
         field.setCell(1, 1, 'S');
         System.out.println("Start position marked as S\n" +
                 "From this point (that is 1 1) to width and height" +
-                " (that is " + width + " " + height + ")");
+                " (that is " + field.getWidthCount() + " " + field.getHeightCount() + ")");
         System.out.println("The complex field is\n---------\n" + field + "---------");
         field.setCell(1, 1, Cell.getDefFigureValue());
     }
 
-    private static void letsPlayerMakeADesign(Player player) {
+    private static char letsPlayerMakeADesign(Player player) {
 
+        System.out.println("To undo type 'step'.\n");//To exit from game type 'exit'.");
         System.out.print("Player of " + player + " please make your move (position x, y):");
 
-        int x = getIntFromInput();
-        int y = getIntFromInput();
+        x = -1;
+        y = -1;
+
+        if(checkForUndo(true)) {
+
+            return makeUndo();
+        }
+        else {
+
+            if(x == -1) {
+
+                x = getIntFromInput();
+            }
+        }
+
+        if(checkForUndo(false)) {
+
+            return makeUndo();
+        }
+        else {
+
+            if(y == -1) {
+
+                y = getIntFromInput();
+            }
+        }
 
         if (!player.makeMove(x, y)) {
 
+            System.out.println("x = " + x + " y = " + y);
             if (field.isValidCellNumber(x, y)) {
 
-                System.out.println("Probably position busy by non default figure.");
+                System.out.println("Position is busy by non default figure.");
             } else {
 
                 System.out.println("Position is out side of the field.");
             }
 
-            letsPlayerMakeADesign(player);
-        } else {
-
-            System.out.println("\n---------\n" + field + "---------");
+            return letsPlayerMakeADesign(player);
         }
+
+        System.out.println("\n---------\n" + field + "---------");
 
         Cell cell = new Cell(x, y, Cell.getDefFigureValue());
         cell.makeMove(player.getFigure());
         chronicler.addWalk(cell);
+
+        return player.getFigure();
     }
 
     private static void gameStart() {
@@ -94,7 +133,8 @@ public class Referee {
 
                 playerNumber = 0;
             }
-            letsPlayerMakeADesign(players[playerNumber]);
+
+            char figure = letsPlayerMakeADesign(players[playerNumber]);
 
             if (field.isFigureFillDiagonal(players[playerNumber].getFigure()) ||
                     field.isFigureFillLine(players[playerNumber].getFigure())) {
@@ -102,8 +142,6 @@ public class Referee {
                 winner = players[playerNumber];
                 break;
             }
-
-            char figure = askForUndo(players[playerNumber].getFigure());
 
             if (figure != Cell.getDefFigureValue() && figure == players[playerNumber].getFigure()) {
 
@@ -114,7 +152,7 @@ public class Referee {
                 playerNumber = 0;
             }
 
-        } while (!field.isFull());
+        } while (!field.isFull() || !exitNow);
     }
 
     public static void gameLoop() {
@@ -135,14 +173,14 @@ public class Referee {
 
             System.out.println("The friendship is win");
         }
+        System.out.println("Game chronics");
         System.out.println(chronicler);
     }
 
     private static int getIntFromInput() {
 
-        Scanner scanner = new Scanner(System.in);
-
         int iValue = 0;
+        Scanner scanner = new Scanner(System.in);
 
         if (scanner.hasNextInt()) {
 
@@ -157,30 +195,48 @@ public class Referee {
         return iValue;
     }
 
-    private static char askForUndo(char current) {
+    private static boolean checkForUndo(boolean isForX) {
 
-        System.out.print("If you want you can undo to some step in this game.\n" +
-                "Please type 'step' word ");
         Scanner scanner = new Scanner(System.in);
 
-        String step;
         if (scanner.hasNextLine()) {
 
-            step = scanner.nextLine();
+            String step = scanner.nextLine();
+
             if(!step.equals("step")) {
-                return current;
+
+                try {
+                    int i = Integer.valueOf(step);
+                    if(isForX) {
+
+                        x = i;
+                    }
+                    else {
+
+                        y = i;
+                    }
+                }
+                catch (NumberFormatException exc)
+                {
+                    System.out.println("Please enter integer value ");
+                }
+
+                return false;
             }
-
-            System.out.println("There few next steps made at this point.");
-            System.out.println(chronicler);
-            System.out.print("Which one do you what to revert?\n" +
-                    "Type step num (0 (clean field) - " +
-                    chronicler.getStepCount() + ") ");
-
-            int stepNum = getIntFromInput();
-            return chronicler.revertTo(stepNum, field);
         }
+        return true;
+    }
 
-        return current;
+    private static char makeUndo() {
+
+        System.out.println("There few next steps made at this point.");
+        System.out.println(chronicler);
+        System.out.print("Which one do you what to revert?\n" +
+                         "Type step num (0 (clean field)" +
+        (chronicler.getStepCount() > 0 ?  "- " + chronicler.getStepCount() : "") + ") ");
+
+        int stepNum = getIntFromInput();
+
+        return chronicler.revertTo(stepNum, field);
     }
 }
