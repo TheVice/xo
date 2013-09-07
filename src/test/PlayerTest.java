@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.Assert;
 
 import core.Player;
+import core.Cell;
 import core.Field;
 
 public class PlayerTest extends Assert {
@@ -11,17 +12,52 @@ public class PlayerTest extends Assert {
     @Test
     public void playerCreate() {
 
-        Player player = new Player(null, null);
+        Player player = new Player(null);
+        assertEquals(Player.PlayerType.Human, player.getPlayerType());
+        assertEquals(null, player.getPlayerFigure());
+        assertEquals("" + Cell.getDefFigureValue(), player.toString());
         assertFalse(player.makeMove(1, 1));
-        player = new Player(null);
+
+        player = new Player(null, null);
+        assertEquals(Player.PlayerType.Human, player.getPlayerType());
+        assertEquals(null, player.getPlayerFigure());
+        assertEquals("" + Cell.getDefFigureValue(), player.toString());
         assertFalse(player.makeMove(1, 1));
-        player = new Player(new Field(3, 4, Field.getDefFigureValue(), Field.int2style(4)), null);
+
+        for (Player.PlayerFigure pf : Player.PlayerFigure.values()) {
+
+            player = new Player(null, pf);
+            assertEquals(Player.PlayerType.Human, player.getPlayerType());
+            assertEquals(pf, player.getPlayerFigure());
+
+            assertFalse(player.makeMove(1, 1));
+        }
+
+        Field field = new Field(3, 4, Cell.getDefFigureValue(), Field.int2style(4));
+
+        player = new Player(field, null);
+        assertEquals(Player.PlayerType.Human, player.getPlayerType());
+        assertEquals(null, player.getPlayerFigure());
+        assertEquals("" + Cell.getDefFigureValue(), player.toString());
         assertFalse(player.makeMove(1, 1));
-        player = new Player(null, Player.PlayerFigure.X);
-        assertEquals("X", player.toString());
-        player = new Player(Player.PlayerFigure.O);
-        assertEquals("O", player.toString());
-        new Player(new Field(3, 4, Field.getDefFigureValue(), Field.int2style(4)), Player.PlayerFigure.X);
-        assertTrue(player.makeMove(1, 1));
+
+        int i = 1;
+        int j = 1;
+        for (Player.PlayerFigure pf : Player.PlayerFigure.values()) {
+
+            player = new Player(pf);
+            assertEquals(Player.PlayerType.Human, player.getPlayerType());
+            assertEquals(pf, player.getPlayerFigure());
+            assertTrue(player.makeMove(i++, j));
+        }
+
+        for (Player.PlayerFigure pf : Player.PlayerFigure.values()) {
+
+            player = new Player(field, pf);
+            assertEquals(Player.PlayerType.Human, player.getPlayerType());
+            assertEquals(pf, player.getPlayerFigure());
+            assertTrue(player.makeMove(i, j++));
+        }
+
     }
 }

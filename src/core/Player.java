@@ -2,29 +2,30 @@ package core;
 
 public class Player {
 
-    public static Field playGround;
 
+    public static enum PlayerType {Human, PC}
     public static enum PlayerFigure {X, O}
 
-    private static PlayerFigure figure;
+    private static Field playGround;
 
+    private PlayerType playerType;
     private PlayerFigure playerFigure;
 
-    public Player(Field field, PlayerFigure playerFigure) {
+    private Player(PlayerType playerType, Field playGround, PlayerFigure playerFigure) {
 
-        if (playGround == null && field != null) {
+        this.playerType = playerType;
 
-            playGround = field;
+        if (Player.playGround == null) {
+
+            Player.playGround = playGround;
         }
 
-        if (Player.figure == null && playerFigure != null) {
+        this.playerFigure = playerFigure;
+    }
 
-            Player.figure = playerFigure;
-            this.playerFigure = playerFigure;
-        } else if (Player.figure != playerFigure) {
+    public Player(Field playGround, PlayerFigure playerFigure) {
 
-            this.playerFigure = playerFigure;
-        }
+        this(PlayerType.Human, playGround, playerFigure);
     }
 
     public Player(PlayerFigure playerFigure) {
@@ -32,11 +33,21 @@ public class Player {
         this(null, playerFigure);
     }
 
+    public PlayerFigure getPlayerFigure() {
+
+        return playerFigure;
+    }
+
+    public PlayerType getPlayerType() {
+
+        return playerType;
+    }
+
     public boolean makeMove(int x, int y) {
 
-        if (playGround != null && playerFigure != null) {
+        if (Player.playGround != null && playerFigure != null) {
 
-            return playGround.setCell(x, y, getFigure());
+            return Player.playGround.setCell(x, y, getFigure());
         }
         return false;
     }
@@ -54,18 +65,17 @@ public class Player {
 
     private static char getCharFromFigure(PlayerFigure playerFigure) {
 
-        char retVal = '\0';
+        if (playerFigure != null) {
 
-        switch (playerFigure) {
+            switch (playerFigure) {
 
-            case X:
-                retVal = 'X';
-                break;
-            case O:
-                retVal = 'O';
-                break;
+                case X:
+                    return 'X';
+                case O:
+                    return 'O';
+            }
         }
 
-        return retVal;
+        return Cell.getDefFigureValue();
     }
 }

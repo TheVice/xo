@@ -9,11 +9,10 @@ Console making and running
 mkdir out
 javac -sourcepath ./src ./src/Main.java -d ./out
 cd out
-java Main 
-
-For jar making at out folder
-jar cfev xo.jar Main .
-java -jar xo.jar
+     java Main 
+or (for making jar and run it)
+     jar cfev xo.jar Main .
+     java -jar xo.jar
 
 Known issue
 =============

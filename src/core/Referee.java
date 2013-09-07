@@ -162,12 +162,11 @@ public class Referee {
 
         System.out.println("Welcome in Xs and Os (a.k.a. Tic-tac-toe)!");
         System.out.println("Would you play classic Tic-tac-toe (field 3 x 3, start cell left bottom)?\n" +
-                           "(type 1 for yes and other integer value for customize your game): ");
-        if(1 == getIntFromInput()) {
+                "(type 1 for yes and other integer value for customize your game): ");
+        if (1 == getIntFromInput()) {
 
             prepareField4Game(3, 3, 4);
-        }
-        else {
+        } else {
 
             prepareField4Game(0, 0, 0);
         }

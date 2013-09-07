@@ -105,31 +105,44 @@ public class ChroniclerTest extends Assert {
     @Test
     public void chroniclerRevertTo() {
 
-        Chronicler chronicler = new Chronicler(0);
-        assertEquals(0, chronicler.getStepCount());
+        final int fieldCount = 5;
+        Field fields[] = new Field[fieldCount];
 
-        Cell cell = new Cell(1, 1, ' ');
-        cell.makeMove('X');
-        chronicler.addWalk(cell);
+        int i = 1;
+        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-        cell = new Cell(1, 2, ' ');
-        cell.makeMove('O');
-        chronicler.addWalk(cell);
+            fields[i++] = new Field(2, 2, ' ', scs);
+        }
 
-        cell = new Cell(2, 2, ' ');
-        cell.makeMove('X');
-        chronicler.addWalk(cell);
 
-        cell = new Cell(2, 1, ' ');
-        cell.makeMove('O');
-        chronicler.addWalk(cell);
+        for (i = 0; i < fieldCount; i++) {
+            Chronicler chronicler = new Chronicler(0);
+            assertEquals(0, chronicler.getStepCount());
 
-        assertEquals(4, chronicler.getStepCount());
-        assertEquals('O', chronicler.revertTo(4, null));
-        assertEquals('O', chronicler.revertTo(5, null));
-        assertEquals('O', chronicler.revertTo(-1, null));
+            Cell cell = new Cell(1, 1, ' ');
+            cell.makeMove('X');
+            chronicler.addWalk(cell);
 
-        assertEquals(' ', chronicler.revertTo(0, null));
+            cell = new Cell(1, 2, ' ');
+            cell.makeMove('O');
+            chronicler.addWalk(cell);
+
+            cell = new Cell(2, 2, ' ');
+            cell.makeMove('X');
+            chronicler.addWalk(cell);
+
+            cell = new Cell(2, 1, ' ');
+            cell.makeMove('O');
+            chronicler.addWalk(cell);
+
+            assertEquals(4, chronicler.getStepCount());
+            assertEquals('O', chronicler.revertTo(4, fields[i]));
+            assertEquals('O', chronicler.revertTo(5, fields[i]));
+            assertEquals('O', chronicler.revertTo(-1, fields[i]));
+
+            assertEquals('O', chronicler.revertTo(2, fields[i]));
+            assertEquals(' ', chronicler.revertTo(0, fields[i]));
+        }
     }
 
     @Test
