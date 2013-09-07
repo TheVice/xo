@@ -168,8 +168,8 @@ public class ChroniclerTest extends Assert {
         checkStrings[0] = checkString;
         checkStrings[1] = checkString;
         checkStrings[2] = "Step - 1. Figure X on x = 1 y = 1\n" +
-                        "Step - 2. Figure O on x = 1 y = 2\n" +
-                        "Step - 3. Figure X on x = 2 y = 1\n";
+                "Step - 2. Figure O on x = 1 y = 2\n" +
+                "Step - 3. Figure X on x = 2 y = 1\n";
         checkStrings[3] = "Step - 1. Figure X on x = 1 y = 1\n" +
                 "Step - 2. Figure O on x = 1 y = 2\n";
         checkStrings[4] = "Step - 1. Figure X on x = 1 y = 1\n";
@@ -178,7 +178,7 @@ public class ChroniclerTest extends Assert {
         checkStrings[7] = "";
 
         int i = 0;
-        for(int stepNum = chronicler.getStepCount() + 1; stepNum > -2; stepNum--) {
+        for (int stepNum = chronicler.getStepCount() + 1; stepNum > -2; stepNum--) {
 
             chronicler.revertTo(stepNum, null);
             assertEquals(checkStrings[i++], chronicler.toString());

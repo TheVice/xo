@@ -74,9 +74,9 @@ public class Referee {
 
         do {
 
-            if(checkForCommandInput(true)) {
+            if (checkForCommandInput(true)) {
 
-                if(exitNow) {
+                if (exitNow) {
 
                     return player.getFigure();
                 }
@@ -86,9 +86,9 @@ public class Referee {
 
         do {
 
-            if(checkForCommandInput(false)) {
+            if (checkForCommandInput(false)) {
 
-                if(exitNow) {
+                if (exitNow) {
 
                     return player.getFigure();
                 }
@@ -136,7 +136,7 @@ public class Referee {
 
             char figure = letsPlayerMakeADesign(players[playerNumber]);
 
-            if(exitNow) {
+            if (exitNow) {
 
                 break;
             }
@@ -151,9 +151,7 @@ public class Referee {
             if (figure != Cell.getDefFigureValue() && figure == players[playerNumber].getFigure()) {
 
                 playerNumber++;
-            }
-            else if(figure == Cell.getDefFigureValue())
-            {
+            } else if (figure == Cell.getDefFigureValue()) {
                 playerNumber = 0;
             }
 
@@ -163,32 +161,39 @@ public class Referee {
     public static void gameLoop() {
 
         System.out.println("Welcome in Xs and Os (a.k.a. Tic-tac-toe)!");
-        prepareField4Game(3, 3, 4);
-        gameStart();
-        if(!exitNow) {
+        System.out.println("Would you play classic Tic-tac-toe (field 3 x 3, start cell left bottom)?\n" +
+                           "(type 1 for yes and other integer value for customize your game): ");
+        if(1 == getIntFromInput()) {
 
-            gameOver();
+            prepareField4Game(3, 3, 4);
         }
         else {
 
-            System.out.println("Game interrupted ");
+            prepareField4Game(0, 0, 0);
         }
-        if(chronicler.getStepCount() > 0) {
-
-            System.out.println("Game chronics");
-            System.out.println(chronicler);
-        }
+        gameStart();
+        gameOver();
     }
 
     private static void gameOver() {
 
-        System.out.println("The game is over");
-        if (winner != null) {
+        if (!exitNow) {
+            System.out.println("The game is over");
+            if (winner != null) {
 
-            System.out.println("The winner is player " + winner);
+                System.out.println("The winner is player " + winner);
+            } else {
+
+                System.out.println("The friendship is win");
+            }
         } else {
 
-            System.out.println("The friendship is win");
+            System.out.println("Game interrupted ");
+        }
+        if (chronicler.getStepCount() > 0) {
+
+            System.out.println("Game chronics");
+            System.out.println(chronicler);
         }
     }
 
@@ -200,8 +205,7 @@ public class Referee {
         if (scanner.hasNextInt()) {
 
             iValue = scanner.nextInt();
-        }
-        else {
+        } else {
 
             System.out.print("\nPlease enter integer value ");
             iValue = getIntFromInput();
@@ -218,29 +222,26 @@ public class Referee {
 
             String command = scanner.nextLine();
 
-            if(!command.equals("step") && !command.equals("exit")) {
+            if (!command.equals("step") && !command.equals("exit")) {
 
                 try {
 
                     int i = Integer.valueOf(command);
-                    if(isForX) {
+                    if (isForX) {
 
                         x = i;
-                    }
-                    else {
+                    } else {
 
                         y = i;
                     }
-                }
-                catch (NumberFormatException exc)
-                {
+                } catch (NumberFormatException exc) {
                     System.out.println("Please enter integer value ");
                 }
 
                 return false;
             }
 
-            if(command.equals("exit")) {
+            if (command.equals("exit")) {
 
                 exitNow = true;
             }
@@ -253,8 +254,8 @@ public class Referee {
         System.out.println("There few next steps made at this point.");
         System.out.println(chronicler);
         System.out.print("Which one do you what to revert?\n" +
-                         "Type step num (0 (clean field)" +
-        (chronicler.getStepCount() > 0 ?  "- " + chronicler.getStepCount() : "") + ") ");
+                "Type step num (0 (clean field)" +
+                (chronicler.getStepCount() > 0 ? "- " + chronicler.getStepCount() : "") + ") ");
 
         int stepNum = getIntFromInput();
 

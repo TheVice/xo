@@ -46,7 +46,7 @@ public class Chronicler {
 
         if (stepNum == 0) {
 
-            if(field != null) {
+            if (field != null) {
 
                 for (Cell cell : cells) {
 
@@ -69,9 +69,9 @@ public class Chronicler {
 
 
         int count = index - stepNum;
-        for(int i = 1; i <= count; i++) {
+        for (int i = 1; i <= count; i++) {
 
-            if(field != null) {
+            if (field != null) {
 
                 Cell cell = cells.elementAt(index - i);
                 field.setCell(cell.getX(), cell.getY(), Cell.getDefFigureValue());
