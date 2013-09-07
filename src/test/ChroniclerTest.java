@@ -129,14 +129,6 @@ public class ChroniclerTest extends Assert {
         assertEquals('O', chronicler.revertTo(5, null));
         assertEquals('O', chronicler.revertTo(-1, null));
 
-        assertEquals('X', chronicler.revertTo(3, null));
-        assertEquals('X', chronicler.revertTo(3, null));
-        assertEquals('O', chronicler.revertTo(2, null));
-        assertEquals('O', chronicler.revertTo(2, null));
-
-        assertEquals('X', chronicler.revertTo(1, null));
-
-        assertEquals(' ', chronicler.revertTo(0, null));
         assertEquals(' ', chronicler.revertTo(0, null));
     }
 

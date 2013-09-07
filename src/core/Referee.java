@@ -66,35 +66,35 @@ public class Referee {
 
     private static char letsPlayerMakeADesign(Player player) {
 
-        System.out.println("To undo type 'step'.\n");//To exit from game type 'exit'.");
+        System.out.println("To undo type 'step'.\nTo exit from game type 'exit'.");
         System.out.print("Player of " + player + " please make your move (position x, y):");
 
         x = -1;
         y = -1;
 
-        if(checkForUndo(true)) {
+        do {
 
-            return makeUndo();
-        }
-        else {
+            if(checkForCommandInput(true)) {
 
-            if(x == -1) {
+                if(exitNow) {
 
-                x = getIntFromInput();
+                    return player.getFigure();
+                }
+                return makeUndo();
             }
-        }
+        } while (x == -1);
 
-        if(checkForUndo(false)) {
+        do {
 
-            return makeUndo();
-        }
-        else {
+            if(checkForCommandInput(false)) {
 
-            if(y == -1) {
+                if(exitNow) {
 
-                y = getIntFromInput();
+                    return player.getFigure();
+                }
+                return makeUndo();
             }
-        }
+        } while (y == -1);
 
         if (!player.makeMove(x, y)) {
 
@@ -136,6 +136,11 @@ public class Referee {
 
             char figure = letsPlayerMakeADesign(players[playerNumber]);
 
+            if(exitNow) {
+
+                break;
+            }
+
             if (field.isFigureFillDiagonal(players[playerNumber].getFigure()) ||
                     field.isFigureFillLine(players[playerNumber].getFigure())) {
 
@@ -152,7 +157,7 @@ public class Referee {
                 playerNumber = 0;
             }
 
-        } while (!field.isFull() || !exitNow);
+        } while (!field.isFull());
     }
 
     public static void gameLoop() {
@@ -160,7 +165,19 @@ public class Referee {
         System.out.println("Welcome in Xs and Os (a.k.a. Tic-tac-toe)!");
         prepareField4Game(3, 3, 4);
         gameStart();
-        gameOver();
+        if(!exitNow) {
+
+            gameOver();
+        }
+        else {
+
+            System.out.println("Game interrupted ");
+        }
+        if(chronicler.getStepCount() > 0) {
+
+            System.out.println("Game chronics");
+            System.out.println(chronicler);
+        }
     }
 
     private static void gameOver() {
@@ -173,13 +190,11 @@ public class Referee {
 
             System.out.println("The friendship is win");
         }
-        System.out.println("Game chronics");
-        System.out.println(chronicler);
     }
 
     private static int getIntFromInput() {
 
-        int iValue = 0;
+        int iValue;
         Scanner scanner = new Scanner(System.in);
 
         if (scanner.hasNextInt()) {
@@ -195,18 +210,19 @@ public class Referee {
         return iValue;
     }
 
-    private static boolean checkForUndo(boolean isForX) {
+    private static boolean checkForCommandInput(boolean isForX) {
 
         Scanner scanner = new Scanner(System.in);
 
         if (scanner.hasNextLine()) {
 
-            String step = scanner.nextLine();
+            String command = scanner.nextLine();
 
-            if(!step.equals("step")) {
+            if(!command.equals("step") && !command.equals("exit")) {
 
                 try {
-                    int i = Integer.valueOf(step);
+
+                    int i = Integer.valueOf(command);
                     if(isForX) {
 
                         x = i;
@@ -222,6 +238,11 @@ public class Referee {
                 }
 
                 return false;
+            }
+
+            if(command.equals("exit")) {
+
+                exitNow = true;
             }
         }
         return true;
