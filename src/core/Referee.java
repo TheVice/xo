@@ -113,7 +113,7 @@ public class Referee {
         System.out.println("\n---------\n" + field + "---------");
 
         Cell cell = new Cell(x, y, Cell.getDefFigureValue());
-        cell.makeMove(player.getFigure());
+        cell.setFigure(player.getFigure());
         chronicler.addWalk(cell);
 
         return player.getFigure();

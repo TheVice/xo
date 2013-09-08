@@ -13,6 +13,7 @@ public class Field {
     private int width;
     private int height;
     private Cell cells[];
+    private Cell freeCells[];
 
     public static int getMinWidth() {
 
@@ -59,6 +60,7 @@ public class Field {
         this.height = validateValue(height, MIN_HEIGHT, MAX_HEIGHT);
 
         cells = new Cell[this.width * this.height];
+        freeCells = new Cell[this.width * this.height];
         setupCells(defFigureValue, startCellStyle);
     }
 
@@ -77,7 +79,7 @@ public class Field {
         Cell cell = findCell(x, y);
         if (cell != null) {
 
-            return cell.makeMove(figureType);
+            return cell.setFigure(figureType);
         }
         return false;
     }
@@ -103,12 +105,13 @@ public class Field {
                     break;
                 }
             }
+            if (match) {
+
+                return true;
+            }
         }
 
-        if (match) {
-
-            return true;
-        } else if (getCellAt(count - 1, 0).getFigure() == figure) {
+        if (getCellAt(count - 1, 0).getFigure() == figure) {
 
             match = true;
             for (int i = count - 2; i >= 0; i--) {
@@ -141,14 +144,9 @@ public class Field {
             }
             if (match) {
 
-                break;
+                return true;
             }
         }
-        if (match) {
-
-            return true;
-        }
-
 
         for (int i = 0; i < width; i++) {
 
@@ -188,6 +186,30 @@ public class Field {
     public boolean isValidCellNumber(int x, int y) {
 
         return 0 < x && x <= width && 0 < y && y <= height;
+    }
+
+    public Cell[] getFreeCellNumbers() {
+
+        int cellNum = 0;
+        for (int j = 0; j < height; j++) {
+
+            for (int i = 0; i < width; i++) {
+
+                Cell cell = getCellAt(i, j);
+
+                if(cell.getFigure() == Cell.getDefFigureValue()) {
+
+                    freeCells[cellNum++] = cell;
+                }
+            }
+        }
+
+        for( ; cellNum < freeCells.length; cellNum++) {
+
+            freeCells[cellNum] = null;
+        }
+
+        return freeCells;
     }
 
     @Override

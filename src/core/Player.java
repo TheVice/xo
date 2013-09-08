@@ -6,12 +6,12 @@ public class Player {
     public static enum PlayerType {Human, PC}
     public static enum PlayerFigure {X, O}
 
-    private static Field playGround;
+    protected static Field playGround;
 
     private PlayerType playerType;
     private PlayerFigure playerFigure;
 
-    private Player(PlayerType playerType, Field playGround, PlayerFigure playerFigure) {
+    protected Player(PlayerType playerType, Field playGround, PlayerFigure playerFigure) {
 
         this.playerType = playerType;
 
@@ -45,11 +45,11 @@ public class Player {
 
     public boolean makeMove(int x, int y) {
 
-        if (Player.playGround != null && playerFigure != null) {
+        if (Player.playGround == null || playerFigure == null) {
 
-            return Player.playGround.setCell(x, y, getFigure());
+            return false;
         }
-        return false;
+        return Player.playGround.setCell(x, y, getFigure());
     }
 
     public char getFigure() {

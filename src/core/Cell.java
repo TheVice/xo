@@ -41,7 +41,7 @@ public class Cell {
         return figure;
     }
 
-    public boolean makeMove(char figureType) {
+    public boolean setFigure(char figureType) {
 
         if (figureType == DEF_FIGURE_VALUE || figure == DEF_FIGURE_VALUE) {
 

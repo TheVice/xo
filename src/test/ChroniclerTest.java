@@ -19,27 +19,27 @@ public class ChroniclerTest extends Assert {
             assertFalse(chronicler.addWalk(null));
 
             Cell cell = new Cell(1, 1, ' ');
-            cell.makeMove('X');
+            cell.setFigure('X');
             assertTrue(chronicler.addWalk(cell));
 
             cell = new Cell(1, 1, ' ');
-            cell.makeMove('X');
+            cell.setFigure('X');
             assertFalse(chronicler.addWalk(cell));
 
             cell = new Cell(1, 2, ' ');
-            cell.makeMove('X');
+            cell.setFigure('X');
             assertTrue(chronicler.addWalk(cell));
 
             cell = new Cell(2, 1, ' ');
-            cell.makeMove('X');
+            cell.setFigure('X');
             assertTrue(chronicler.addWalk(cell));
 
             cell = new Cell(2, 2, ' ');
-            cell.makeMove('X');
+            cell.setFigure('X');
             assertTrue(chronicler.addWalk(cell));
 
             cell = new Cell(3, 3, ' ');
-            cell.makeMove('X');
+            cell.setFigure('X');
             assertFalse(chronicler.addWalk(cell));
         }
 
@@ -50,17 +50,17 @@ public class ChroniclerTest extends Assert {
             for (int i = 1; i <= 64; i++) {
 
                 Cell cell = new Cell(i, j, ' ');
-                cell.makeMove('X');
+                cell.setFigure('X');
                 assertTrue(chronicler.addWalk(cell));
             }
         }
 
         Cell cell = new Cell(0, 0, ' ');
-        cell.makeMove('X');
+        cell.setFigure('X');
         assertFalse(chronicler.addWalk(cell));
 
         cell = new Cell(65, 65, ' ');
-        cell.makeMove('X');
+        cell.setFigure('X');
         assertFalse(chronicler.addWalk(cell));
     }
 
@@ -70,7 +70,7 @@ public class ChroniclerTest extends Assert {
         Chronicler chronicler = new Chronicler(0);
 
         Cell cell = new Cell(1, 2, ' ');
-        cell.makeMove('X');
+        cell.setFigure('X');
         assertTrue(chronicler.addWalk(cell));
 
         assertNotEquals("", chronicler.toString());
@@ -83,13 +83,13 @@ public class ChroniclerTest extends Assert {
             Field field = new Field(2, 2, ' ', scs);
 
             cell = new Cell(1, 1, ' ');
-            cell.makeMove('X');
+            cell.setFigure('X');
 
             assertTrue(field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
             assertTrue(chronicler.addWalk(cell));
 
             cell = new Cell(1, 2, ' ');
-            cell.makeMove('O');
+            cell.setFigure('O');
 
             assertTrue(field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
             assertTrue(chronicler.addWalk(cell));
@@ -114,25 +114,24 @@ public class ChroniclerTest extends Assert {
             fields[i++] = new Field(2, 2, ' ', scs);
         }
 
-
         for (i = 0; i < fieldCount; i++) {
             Chronicler chronicler = new Chronicler(0);
             assertEquals(0, chronicler.getStepCount());
 
             Cell cell = new Cell(1, 1, ' ');
-            cell.makeMove('X');
+            cell.setFigure('X');
             chronicler.addWalk(cell);
 
             cell = new Cell(1, 2, ' ');
-            cell.makeMove('O');
+            cell.setFigure('O');
             chronicler.addWalk(cell);
 
             cell = new Cell(2, 2, ' ');
-            cell.makeMove('X');
+            cell.setFigure('X');
             chronicler.addWalk(cell);
 
             cell = new Cell(2, 1, ' ');
-            cell.makeMove('O');
+            cell.setFigure('O');
             chronicler.addWalk(cell);
 
             assertEquals(4, chronicler.getStepCount());
@@ -155,19 +154,19 @@ public class ChroniclerTest extends Assert {
         assertEquals(0, chronicler.getStepCount());
 
         Cell cell = new Cell(1, 1, ' ');
-        cell.makeMove('X');
+        cell.setFigure('X');
         chronicler.addWalk(cell);
 
         cell = new Cell(1, 2, ' ');
-        cell.makeMove('O');
+        cell.setFigure('O');
         chronicler.addWalk(cell);
 
         cell = new Cell(2, 1, ' ');
-        cell.makeMove('X');
+        cell.setFigure('X');
         chronicler.addWalk(cell);
 
         cell = new Cell(2, 2, ' ');
-        cell.makeMove('O');
+        cell.setFigure('O');
         chronicler.addWalk(cell);
 
         String checkString = "Step - 1. Figure X on x = 1 y = 1\n" +
