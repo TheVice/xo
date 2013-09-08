@@ -2,7 +2,7 @@ package core;
 
 public class Cell {
 
-    private static boolean defValueSet;
+    private static boolean defValueSet = false;
     private static char defFigureValue = ' ';
 
     private int x;
@@ -11,9 +11,10 @@ public class Cell {
 
     public Cell(int x, int y, char defFigureValue) {
 
-        if (!defValueSet) {
+        if (!Cell.defValueSet) {
+
             Cell.defFigureValue = defFigureValue;
-            defValueSet = true;
+            Cell.defValueSet = true;
         }
 
         this.x = x;
@@ -21,9 +22,14 @@ public class Cell {
         this.figure = Cell.defFigureValue;
     }
 
+    public Cell(int x, int y) {
+
+        this(x, y, Cell.getDefFigureValue());
+    }
+
     public static char getDefFigureValue() {
 
-        return defFigureValue;
+        return Cell.defFigureValue;
     }
 
     public int getX() {
@@ -43,7 +49,7 @@ public class Cell {
 
     public boolean setFigure(char figureType) {
 
-        if (figureType == defFigureValue || figure == defFigureValue) {
+        if (figureType == Cell.defFigureValue || figure == Cell.defFigureValue) {
 
             figure = figureType;
             return true;

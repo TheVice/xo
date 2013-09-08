@@ -19,7 +19,7 @@ public class CellTest extends Assert {
         assertFalse(cell.setFigure('X'));
         assertTrue(cell.setFigure(Cell.getDefFigureValue()));
 
-        cell = new Cell(4, 6, '*');
+        cell = new Cell(4, 6);
         assertEquals(4, cell.getX());
         assertEquals(6, cell.getY());
         assertEquals("" + Cell.getDefFigureValue(), cell.toString());
