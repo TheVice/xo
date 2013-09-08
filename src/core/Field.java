@@ -10,11 +10,6 @@ public class Field {
     private static final int MAX_WIDTH = 64;
     private static final int MAX_HEIGHT = 64;
 
-    private int width;
-    private int height;
-    private Cell cells[];
-    private Cell freeCells[];
-
     public static int getMinWidth() {
 
         return MIN_WIDTH;
@@ -53,6 +48,11 @@ public class Field {
 
         return StartCellStyle.BOTTOM_LEFT;
     }
+
+    private final int width;
+    private final int height;
+    private Cell cells[];
+    private Cell freeCells[];
 
     public Field(int width, int height, char defFigureValue, StartCellStyle startCellStyle) {
 
@@ -170,14 +170,11 @@ public class Field {
 
     public boolean isFull() {
 
-        for (int j = 0; j < height; j++) {
+        for (Cell cell : cells) {
 
-            for (int i = 0; i < width; i++) {
+            if (cell.getFigure() == Cell.getDefFigureValue()) {
 
-                if (getCellAt(i, j).getFigure() == Cell.getDefFigureValue()) {
-
-                    return false;
-                }
+                return false;
             }
         }
         return true;
@@ -191,16 +188,11 @@ public class Field {
     public Cell[] getFreeCellNumbers() {
 
         int cellNum = 0;
-        for (int j = 0; j < height; j++) {
+        for (Cell cell : cells) {
 
-            for (int i = 0; i < width; i++) {
+            if (cell.getFigure() == Cell.getDefFigureValue()) {
 
-                Cell cell = getCellAt(i, j);
-
-                if (cell.getFigure() == Cell.getDefFigureValue()) {
-
-                    freeCells[cellNum++] = cell;
-                }
+                freeCells[cellNum++] = cell;
             }
         }
 
@@ -244,27 +236,34 @@ public class Field {
         int retValue = value;
 
         switch (startCellStyle) {
+
             case TOP_LEFT:
                 retValue += 1;
                 break;
             case TOP_RIGHT:
                 if (isWidth) {
+
                     retValue = width - retValue;
                 } else {
+
                     retValue += 1;
                 }
                 break;
             case BOTTOM_RIGHT:
                 if (isWidth) {
+
                     retValue = width - retValue;
                 } else {
+
                     retValue = height - retValue;
                 }
                 break;
             case BOTTOM_LEFT:
                 if (isWidth) {
+
                     retValue += 1;
                 } else {
+
                     retValue = height - retValue;
                 }
         }
@@ -276,16 +275,11 @@ public class Field {
 
         if (isValidCellNumber(x, y)) {
 
-            for (int j = 0; j < height; j++) {
+            for (Cell cell : cells) {
 
-                for (int i = 0; i < width; i++) {
+                if (cell.getX() == x && cell.getY() == y) {
 
-                    Cell cell = getCellAt(i, j);
-
-                    if (cell.getX() == x && cell.getY() == y) {
-
-                        return cell;
-                    }
+                    return cell;
                 }
             }
         }

@@ -5,8 +5,8 @@ public class Cell {
     private static boolean defValueSet = false;
     private static char defFigureValue = ' ';
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     private char figure;
 
     public Cell(int x, int y, char defFigureValue) {
@@ -47,11 +47,11 @@ public class Cell {
         return figure;
     }
 
-    public boolean setFigure(char figureType) {
+    public boolean setFigure(char figure) {
 
-        if (figureType == Cell.defFigureValue || figure == Cell.defFigureValue) {
+        if (figure == Cell.defFigureValue || this.figure == Cell.defFigureValue) {
 
-            figure = figureType;
+            this.figure = figure;
             return true;
         }
 
