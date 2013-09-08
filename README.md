@@ -2,7 +2,10 @@ xo
 =========================
 
 Simple game known as 'tic-tac-toe' written during learning Java.
-Only human vs. human mode and only on local PC, no network support yet.
+For human vs. human mode see tag or branch named like this mode,
+also you can view one of previouse commit where this file do not changed.
+Ai vs. Ai mode, no output (even console).
+No network support yet.
 
 Console making and running
 ==========================

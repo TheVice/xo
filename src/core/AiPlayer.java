@@ -8,8 +8,8 @@ public class AiPlayer extends Player {
 
     public AiPlayer(Field playGround, PlayerFigure playerFigure) {
 
-        super(PlayerType.PC, playGround, playerFigure);
-        if(random == null) {
+        super(PlayerType.AI, playGround, playerFigure);
+        if (random == null) {
 
             random = new Random();
         }
@@ -32,7 +32,7 @@ public class AiPlayer extends Player {
         int cellNum = 0;
         while (cellNum < cells.length) {
 
-            if(cells[cellNum++] == null) {
+            if (cells[cellNum++] == null) {
 
                 break;
             }

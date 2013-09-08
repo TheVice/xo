@@ -197,14 +197,14 @@ public class Field {
 
                 Cell cell = getCellAt(i, j);
 
-                if(cell.getFigure() == Cell.getDefFigureValue()) {
+                if (cell.getFigure() == Cell.getDefFigureValue()) {
 
                     freeCells[cellNum++] = cell;
                 }
             }
         }
 
-        for( ; cellNum < freeCells.length; cellNum++) {
+        for (; cellNum < freeCells.length; cellNum++) {
 
             freeCells[cellNum] = null;
         }

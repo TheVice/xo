@@ -14,13 +14,13 @@ public class PlayerTest extends Assert {
     public void playerCreate() {
 
         Player player = new Player(null);
-        assertEquals(Player.PlayerType.Human, player.getPlayerType());
+        assertEquals(Player.PlayerType.HUMAN, player.getPlayerType());
         assertEquals(null, player.getPlayerFigure());
         assertEquals("" + Cell.getDefFigureValue(), player.toString());
         assertFalse(player.makeMove(1, 1));
 
         player = new Player(null, null);
-        assertEquals(Player.PlayerType.Human, player.getPlayerType());
+        assertEquals(Player.PlayerType.HUMAN, player.getPlayerType());
         assertEquals(null, player.getPlayerFigure());
         assertEquals("" + Cell.getDefFigureValue(), player.toString());
         assertFalse(player.makeMove(1, 1));
@@ -28,7 +28,7 @@ public class PlayerTest extends Assert {
         for (Player.PlayerFigure pf : Player.PlayerFigure.values()) {
 
             player = new Player(null, pf);
-            assertEquals(Player.PlayerType.Human, player.getPlayerType());
+            assertEquals(Player.PlayerType.HUMAN, player.getPlayerType());
             assertEquals(pf, player.getPlayerFigure());
 
             assertFalse(player.makeMove(1, 1));
@@ -37,7 +37,7 @@ public class PlayerTest extends Assert {
         Field field = new Field(3, 4, Cell.getDefFigureValue(), Field.int2style(4));
 
         player = new Player(field, null);
-        assertEquals(Player.PlayerType.Human, player.getPlayerType());
+        assertEquals(Player.PlayerType.HUMAN, player.getPlayerType());
         assertEquals(null, player.getPlayerFigure());
         assertEquals("" + Cell.getDefFigureValue(), player.toString());
         assertFalse(player.makeMove(1, 1));
@@ -47,7 +47,7 @@ public class PlayerTest extends Assert {
         for (Player.PlayerFigure pf : Player.PlayerFigure.values()) {
 
             player = new Player(pf);
-            assertEquals(Player.PlayerType.Human, player.getPlayerType());
+            assertEquals(Player.PlayerType.HUMAN, player.getPlayerType());
             assertEquals(pf, player.getPlayerFigure());
             assertTrue(player.makeMove(i++, j));
         }
@@ -55,7 +55,7 @@ public class PlayerTest extends Assert {
         for (Player.PlayerFigure pf : Player.PlayerFigure.values()) {
 
             player = new Player(field, pf);
-            assertEquals(Player.PlayerType.Human, player.getPlayerType());
+            assertEquals(Player.PlayerType.HUMAN, player.getPlayerType());
             assertEquals(pf, player.getPlayerFigure());
             assertTrue(player.makeMove(i, j++));
         }
@@ -66,30 +66,21 @@ public class PlayerTest extends Assert {
     public void aiPlayerCreate() {
 
         Player player = new AiPlayer(null);
-        assertEquals(Player.PlayerType.PC, player.getPlayerType());
+        assertEquals(Player.PlayerType.AI, player.getPlayerType());
         assertEquals(null, player.getPlayerFigure());
         assertEquals("" + Cell.getDefFigureValue(), player.toString());
         assertFalse(player.makeMove(1, 1));
 
         player = new AiPlayer(null, null);
-        assertEquals(Player.PlayerType.PC, player.getPlayerType());
+        assertEquals(Player.PlayerType.AI, player.getPlayerType());
         assertEquals(null, player.getPlayerFigure());
         assertEquals("" + Cell.getDefFigureValue(), player.toString());
         assertFalse(player.makeMove(1, 1));
 
-//        for (Player.PlayerFigure pf : Player.PlayerFigure.values()) {
-//
-//            player = new AiPlayer(null, pf);
-//            assertEquals(Player.PlayerType.PC, player.getPlayerType());
-//            assertEquals(pf, player.getPlayerFigure());
-//
-//            assertFalse(player.makeMove(1, 1));
-//        }
-
         Field field = new Field(3, 4, Cell.getDefFigureValue(), Field.int2style(4));
 
         player = new AiPlayer(field, null);
-        assertEquals(Player.PlayerType.PC, player.getPlayerType());
+        assertEquals(Player.PlayerType.AI, player.getPlayerType());
         assertEquals(null, player.getPlayerFigure());
         assertEquals("" + Cell.getDefFigureValue(), player.toString());
         assertFalse(player.makeMove(1, 1));
@@ -99,7 +90,7 @@ public class PlayerTest extends Assert {
         for (Player.PlayerFigure pf : Player.PlayerFigure.values()) {
 
             player = new AiPlayer(pf);
-            assertEquals(Player.PlayerType.PC, player.getPlayerType());
+            assertEquals(Player.PlayerType.AI, player.getPlayerType());
             assertEquals(pf, player.getPlayerFigure());
             assertTrue(player.makeMove(i++, j));
         }
@@ -107,7 +98,7 @@ public class PlayerTest extends Assert {
         for (Player.PlayerFigure pf : Player.PlayerFigure.values()) {
 
             player = new AiPlayer(field, pf);
-            assertEquals(Player.PlayerType.PC, player.getPlayerType());
+            assertEquals(Player.PlayerType.AI, player.getPlayerType());
             assertEquals(pf, player.getPlayerFigure());
             assertTrue(player.makeMove(i, j++));
         }

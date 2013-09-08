@@ -3,7 +3,8 @@ package core;
 public class Player {
 
 
-    public static enum PlayerType {Human, PC}
+    public static enum PlayerType {HUMAN, AI}
+
     public static enum PlayerFigure {X, O}
 
     protected static Field playGround;
@@ -25,7 +26,7 @@ public class Player {
 
     public Player(Field playGround, PlayerFigure playerFigure) {
 
-        this(PlayerType.Human, playGround, playerFigure);
+        this(PlayerType.HUMAN, playGround, playerFigure);
     }
 
     public Player(PlayerFigure playerFigure) {
