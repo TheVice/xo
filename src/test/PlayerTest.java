@@ -7,7 +7,7 @@ import core.*;
 
 public class PlayerTest extends Assert {
 
-    private char figures[] = {Cell.getDefFigureValue(), 'X', 'O'};
+    private char figures[] = {Cell.getDefaultFigure(), 'X', 'O'};
     private Player player;
     private Field field;
 
@@ -29,7 +29,7 @@ public class PlayerTest extends Assert {
             assertEquals(null, player.makeDesign(1, 1));
         }
 
-        field = new Field(4, 5, Cell.getDefFigureValue(), Field.int2style(4));
+        field = new Field(4, 5, Cell.getDefaultFigure(), Field.int2style(4));
 
         int i = 1;
         int j = 1;

@@ -35,7 +35,7 @@ public class AiPlayer extends Player {
             return null;
         } else if (cells.length == 1) {
 
-            return (cells[0].setFigure(getFigure()) ? cells[0] : null);
+            return makeMove(cells, 0);
         }
 
         int cellNum = 0;
@@ -49,6 +49,12 @@ public class AiPlayer extends Player {
 
         cellNum = AiPlayer.random.nextInt(cellNum - 1);
 
+        return makeMove(cells, cellNum);
+    }
+
+    private Cell makeMove(Cell cells[], int cellNum) {
+
         return (cells[cellNum].setFigure(getFigure()) ? cells[cellNum] : null);
     }
+
 }

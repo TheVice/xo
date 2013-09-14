@@ -32,7 +32,7 @@ public class Field {
 
     public static char getDefFigureValue() {
 
-        return Cell.getDefFigureValue();
+        return Cell.getDefaultFigure();
     }
 
     public static StartCellStyle int2style(int styleNumber) {
@@ -175,7 +175,7 @@ public class Field {
 
         for (Cell cell : cells) {
 
-            if (cell.getFigure() == Cell.getDefFigureValue()) {
+            if (cell.getFigure() == Cell.getDefaultFigure()) {
 
                 return false;
             }
@@ -193,7 +193,7 @@ public class Field {
         int cellNum = 0;
         for (Cell cell : cells) {
 
-            if (cell.getFigure() == Cell.getDefFigureValue()) {
+            if (cell.getFigure() == Cell.getDefaultFigure()) {
 
                 freeCells[cellNum++] = cell;
             }

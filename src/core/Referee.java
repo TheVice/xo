@@ -4,7 +4,7 @@ public class Referee {
 
     public static Referee createInstance() {
 
-        Field field = new Field(3, 3, Cell.getDefFigureValue(), Field.StartCellStyle.BOTTOM_LEFT);
+        Field field = new Field(3, 3, Cell.getDefaultFigure(), Field.StartCellStyle.BOTTOM_LEFT);
         Player players[] = new Player[2];
         players[0] = new AiPlayer('X', field);
         players[1] = new AiPlayer('O');
@@ -36,7 +36,7 @@ public class Referee {
                 playerNumber = 0;
             }
 
-            char figure = Cell.getDefFigureValue();
+            char figure = Cell.getDefaultFigure();
 
             if (players[playerNumber].getType() == Player.Type.AI) {
 
@@ -58,10 +58,10 @@ public class Referee {
                 break;
             }
 
-            if (figure != Cell.getDefFigureValue() && figure == players[playerNumber].getFigure()) {
+            if (figure != Cell.getDefaultFigure() && figure == players[playerNumber].getFigure()) {
 
                 playerNumber++;
-            } else if (figure == Cell.getDefFigureValue()) {
+            } else if (figure == Cell.getDefaultFigure()) {
 
                 playerNumber = 0;
             }

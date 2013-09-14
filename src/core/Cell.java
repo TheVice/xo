@@ -2,34 +2,34 @@ package core;
 
 public class Cell {
 
-    private static boolean defValueSet = false;
-    private static char defFigureValue = ' ';
+    private static boolean defaultFigureSet = false;
+    private static char defaultFigure = ' ';
 
     private final int x;
     private final int y;
     private char figure;
 
-    public Cell(int x, int y, char defFigureValue) {
+    public Cell(int x, int y, char defaultFigure) {
 
-        if (!Cell.defValueSet) {
+        if (!Cell.defaultFigureSet) {
 
-            Cell.defFigureValue = defFigureValue;
-            Cell.defValueSet = true;
+            Cell.defaultFigure = defaultFigure;
+            Cell.defaultFigureSet = true;
         }
 
         this.x = x;
         this.y = y;
-        this.figure = Cell.defFigureValue;
+        this.figure = Cell.defaultFigure;
     }
 
     public Cell(int x, int y) {
 
-        this(x, y, Cell.getDefFigureValue());
+        this(x, y, Cell.defaultFigure);
     }
 
-    public static char getDefFigureValue() {
+    public static char getDefaultFigure() {
 
-        return Cell.defFigureValue;
+        return Cell.defaultFigure;
     }
 
     public int getX() {
@@ -49,7 +49,7 @@ public class Cell {
 
     public boolean setFigure(char figure) {
 
-        if (figure == Cell.defFigureValue || this.figure == Cell.defFigureValue) {
+        if (figure == Cell.defaultFigure || this.figure == Cell.defaultFigure) {
 
             this.figure = figure;
             return true;

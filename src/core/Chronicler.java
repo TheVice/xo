@@ -24,7 +24,7 @@ public class Chronicler {
     public boolean addWalk(Cell cell) {
 
         if (cell == null || cells.size() == cellCount ||
-                cell.getFigure() == Cell.getDefFigureValue() || findCellWithPosition(cell)) {
+                cell.getFigure() == Cell.getDefaultFigure() || findCellWithPosition(cell)) {
 
             return false;
         }
@@ -50,7 +50,7 @@ public class Chronicler {
 
                 for (Cell cell : cells) {
 
-                    field.setCell(cell.getX(), cell.getY(), Cell.getDefFigureValue());
+                    field.setCell(cell.getX(), cell.getY(), Cell.getDefaultFigure());
                 }
             }
             cells.removeAllElements();
@@ -59,7 +59,7 @@ public class Chronicler {
         int index = cells.size();
         if (index == 0) {
 
-            return Cell.getDefFigureValue();
+            return Cell.getDefaultFigure();
         }
 
         if (stepNum >= index || stepNum < 0) {
@@ -74,7 +74,7 @@ public class Chronicler {
             if (field != null) {
 
                 Cell cell = cells.elementAt(index - i);
-                field.setCell(cell.getX(), cell.getY(), Cell.getDefFigureValue());
+                field.setCell(cell.getX(), cell.getY(), Cell.getDefaultFigure());
             }
 
             cells.removeElementAt(index - i);
