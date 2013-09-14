@@ -74,14 +74,17 @@ public class Field {
         return height;
     }
 
-    public boolean setCell(int x, int y, char figureType) {
+    public Cell setCell(int x, int y, char figureType) {
 
         Cell cell = findCell(x, y);
         if (cell != null) {
 
-            return cell.setFigure(figureType);
+            if (!cell.setFigure(figureType)) {
+
+                cell = null;
+            }
         }
-        return false;
+        return cell;
     }
 
     public boolean isFigureFillDiagonal(char figure) {
@@ -185,7 +188,7 @@ public class Field {
         return 0 < x && x <= width && 0 < y && y <= height;
     }
 
-    public Cell[] getFreeCellNumbers() {
+    public Cell[] getFreeCells() {
 
         int cellNum = 0;
         for (Cell cell : cells) {

@@ -6,28 +6,37 @@ public class AiPlayer extends Player {
 
     private static Random random;
 
-    public AiPlayer(Field playGround, PlayerFigure playerFigure) {
+    public AiPlayer(char figure, Field playGround) {
 
-        super(PlayerType.AI, playGround, playerFigure);
+        super(figure, playGround, Type.AI);
         if (random == null) {
 
             random = new Random();
         }
     }
 
-    public AiPlayer(PlayerFigure playerFigure) {
+    public AiPlayer(char figure) {
 
-        this(null, playerFigure);
+        this(figure, null);
     }
 
     @Override
-    public boolean makeMove(int x, int y) {
+    public Cell makeDesign() {
 
         if (Player.playGround == null) {
-            return false;
+
+            return null;
         }
 
-        Cell cells[] = Player.playGround.getFreeCellNumbers();
+        Cell cells[] = Player.playGround.getFreeCells();
+
+        if (cells.length == 0) {
+
+            return null;
+        } else if (cells.length == 1) {
+
+            return (cells[0].setFigure(getFigure()) ? cells[0] : null);
+        }
 
         int cellNum = 0;
         while (cellNum < cells.length) {
@@ -37,8 +46,9 @@ public class AiPlayer extends Player {
                 break;
             }
         }
+
         cellNum = AiPlayer.random.nextInt(cellNum - 1);
 
-        return super.makeMove(cells[cellNum].getX(), cells[cellNum].getY());
+        return (cells[cellNum].setFigure(getFigure()) ? cells[cellNum] : null);
     }
 }

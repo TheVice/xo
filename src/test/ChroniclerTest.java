@@ -85,20 +85,20 @@ public class ChroniclerTest extends Assert {
             cell = new Cell(1, 1, ' ');
             cell.setFigure('X');
 
-            assertTrue(field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
+            assertNotEquals(null, field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
             assertTrue(chronicler.addWalk(cell));
 
             cell = new Cell(1, 2, ' ');
             cell.setFigure('O');
 
-            assertTrue(field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
+            assertNotEquals(null, field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
             assertTrue(chronicler.addWalk(cell));
-            assertFalse(field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
+            assertEquals(null, field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
             assertFalse(chronicler.addWalk(cell));
 
             chronicler.undoLastWalk(field);
             assertEquals("Step - 1. Figure X on x = 1 y = 1\n", chronicler.toString());
-            assertTrue(field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
+            assertNotEquals(null, field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
         }
     }
 

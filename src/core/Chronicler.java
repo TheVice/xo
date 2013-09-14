@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public class Chronicler {
 
-    private int cellCount;
+    private final int cellCount;
     private Vector<Cell> cells;
 
     public Chronicler(int cellCount) {
@@ -23,7 +23,7 @@ public class Chronicler {
 
     public boolean addWalk(Cell cell) {
 
-        if (cells.size() == cellCount || cell == null ||
+        if (cell == null || cells.size() == cellCount ||
                 cell.getFigure() == Cell.getDefFigureValue() || findCellWithPosition(cell)) {
 
             return false;

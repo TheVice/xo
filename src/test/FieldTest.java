@@ -50,15 +50,15 @@ public class FieldTest extends Assert {
         assertEquals(3, field.getWidthCount());
         assertEquals(4, field.getHeightCount());
 
-        assertFalse(field.setCell(0, 0, 'X'));
-        assertFalse(field.setCell(0, 0, Field.getDefFigureValue()));
-        assertFalse(field.setCell(1, 0, Field.getDefFigureValue()));
-        assertFalse(field.setCell(0, 1, Field.getDefFigureValue()));
+        assertEquals(null, field.setCell(0, 0, 'X'));
+        assertEquals(null, field.setCell(0, 0, Field.getDefFigureValue()));
+        assertEquals(null, field.setCell(1, 0, Field.getDefFigureValue()));
+        assertEquals(null, field.setCell(0, 1, Field.getDefFigureValue()));
 
-        assertFalse(field.setCell(field.getWidthCount() + 1, field.getHeightCount() + 1, 'O'));
-        assertFalse(field.setCell(field.getWidthCount() + 1, field.getHeightCount() + 1, Field.getDefFigureValue()));
-        assertFalse(field.setCell(field.getWidthCount(), field.getHeightCount() + 1, Field.getDefFigureValue()));
-        assertFalse(field.setCell(field.getWidthCount() + 1, field.getHeightCount(), Field.getDefFigureValue()));
+        assertEquals(null, field.setCell(field.getWidthCount() + 1, field.getHeightCount() + 1, 'O'));
+        assertEquals(null, field.setCell(field.getWidthCount() + 1, field.getHeightCount() + 1, Field.getDefFigureValue()));
+        assertEquals(null, field.setCell(field.getWidthCount(), field.getHeightCount() + 1, Field.getDefFigureValue()));
+        assertEquals(null, field.setCell(field.getWidthCount() + 1, field.getHeightCount(), Field.getDefFigureValue()));
 
         for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
@@ -70,12 +70,12 @@ public class FieldTest extends Assert {
 
                 for (int i = 1; i <= field.getWidthCount(); i++) {
 
-                    assertTrue(field.setCell(i, j, 'X'));
-                    assertFalse(field.setCell(i, j, 'O'));
-                    assertTrue(field.setCell(i, j, Field.getDefFigureValue()));
-                    assertTrue(field.setCell(i, j, 'O'));
-                    assertTrue(field.setCell(i, j, Field.getDefFigureValue()));
-                    assertTrue(field.setCell(i, j, 'X'));
+                    assertNotEquals(null, field.setCell(i, j, 'X'));
+                    assertEquals(null, field.setCell(i, j, 'O'));
+                    assertNotEquals(null, field.setCell(i, j, Field.getDefFigureValue()));
+                    assertNotEquals(null, field.setCell(i, j, 'O'));
+                    assertNotEquals(null, field.setCell(i, j, Field.getDefFigureValue()));
+                    assertNotEquals(null, field.setCell(i, j, 'X'));
 
                     if (j != field.getHeightCount() && i != field.getWidthCount()) {
 
@@ -96,12 +96,12 @@ public class FieldTest extends Assert {
 
                 for (int i = field.getWidthCount(); i > 0; i--) {
 
-                    assertTrue(field.setCell(i, j, 'X'));
-                    assertFalse(field.setCell(i, j, 'O'));
-                    assertTrue(field.setCell(i, j, Field.getDefFigureValue()));
-                    assertTrue(field.setCell(i, j, 'O'));
-                    assertTrue(field.setCell(i, j, Field.getDefFigureValue()));
-                    assertTrue(field.setCell(i, j, 'X'));
+                    assertNotEquals(null, field.setCell(i, j, 'X'));
+                    assertEquals(null, field.setCell(i, j, 'O'));
+                    assertNotEquals(null, field.setCell(i, j, Field.getDefFigureValue()));
+                    assertNotEquals(null, field.setCell(i, j, 'O'));
+                    assertNotEquals(null, field.setCell(i, j, Field.getDefFigureValue()));
+                    assertNotEquals(null, field.setCell(i, j, 'X'));
 
                     if (j != 1 && i != 1) {
 

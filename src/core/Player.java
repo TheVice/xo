@@ -2,81 +2,47 @@ package core;
 
 public class Player {
 
-
-    public static enum PlayerType {HUMAN, AI}
-
-    public static enum PlayerFigure {X, O}
+    public static enum Type {HUMAN, AI}
 
     protected static Field playGround;
 
-    private PlayerType playerType;
-    private PlayerFigure playerFigure;
+    private final Type type;
+    private char figure = ' ';
 
-    protected Player(PlayerType playerType, Field playGround, PlayerFigure playerFigure) {
+    protected Player(char figure, Field playGround, Type type) {
 
-        this.playerType = playerType;
-
+        this.figure = figure;
         if (Player.playGround == null) {
 
             Player.playGround = playGround;
         }
-
-        this.playerFigure = playerFigure;
+        this.type = type;
     }
 
-    public Player(Field playGround, PlayerFigure playerFigure) {
+    public Type getType() {
 
-        this(PlayerType.HUMAN, playGround, playerFigure);
-    }
-
-    public Player(PlayerFigure playerFigure) {
-
-        this(null, playerFigure);
-    }
-
-    public PlayerFigure getPlayerFigure() {
-
-        return playerFigure;
-    }
-
-    public PlayerType getPlayerType() {
-
-        return playerType;
-    }
-
-    public boolean makeMove(int x, int y) {
-
-        if (Player.playGround == null || playerFigure == null) {
-
-            return false;
-        }
-        return Player.playGround.setCell(x, y, getFigure());
+        return type;
     }
 
     public char getFigure() {
 
-        return getCharFromFigure(playerFigure);
+        return figure;
+    }
+
+    public Cell makeDesign() {
+
+        return null;
+    }
+
+    public Cell makeDesign(int x, int y) {
+
+        return null;
     }
 
     @Override
     public String toString() {
 
-        return "" + getFigure();
+        return "" + figure;
     }
 
-    private static char getCharFromFigure(PlayerFigure playerFigure) {
-
-        if (playerFigure != null) {
-
-            switch (playerFigure) {
-
-                case X:
-                    return 'X';
-                case O:
-                    return 'O';
-            }
-        }
-
-        return Cell.getDefFigureValue();
-    }
 }

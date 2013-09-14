@@ -6,8 +6,8 @@ public class Referee {
 
         Field field = new Field(3, 3, Cell.getDefFigureValue(), Field.StartCellStyle.BOTTOM_LEFT);
         Player players[] = new Player[2];
-        players[0] = new AiPlayer(field, Player.PlayerFigure.X);
-        players[1] = new AiPlayer(Player.PlayerFigure.O);
+        players[0] = new AiPlayer('X', field);
+        players[1] = new AiPlayer('O');
 
         return new Referee(field, players);
     }
@@ -38,9 +38,9 @@ public class Referee {
 
             char figure = Cell.getDefFigureValue();
 
-            if (players[playerNumber].getPlayerType() == Player.PlayerType.AI) {
+            if (players[playerNumber].getType() == Player.Type.AI) {
 
-                players[playerNumber].makeMove(0, 0);
+                players[playerNumber].makeDesign();
                 figure = players[playerNumber].getFigure();
             } else {
 
