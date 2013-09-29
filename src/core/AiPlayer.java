@@ -4,57 +4,52 @@ import java.util.Random;
 
 public class AiPlayer extends Player {
 
-    private static Random random;
+	private static Random random;
 
-    public AiPlayer(char figure, Field playGround) {
+	public AiPlayer(char figure) {
 
-        super(figure, playGround, Type.AI);
-        if (random == null) {
+		super(figure, Type.AI);
+		if (random == null) {
 
-            random = new Random();
-        }
-    }
+			random = new Random();
+		}
+	}
 
-    public AiPlayer(char figure) {
+	@Override
+	public Cell makeDesign() {
 
-        this(figure, null);
-    }
+		if (Player.playGround == null) {
 
-    @Override
-    public Cell makeDesign() {
+			return null;
+		}
 
-        if (Player.playGround == null) {
+		Cell cells[] = Player.playGround.getFreeCells();
 
-            return null;
-        }
+		if (cells.length == 0) {
 
-        Cell cells[] = Player.playGround.getFreeCells();
+			return null;
+		} else if (cells.length == 1) {
 
-        if (cells.length == 0) {
+			return makeMove(cells, 0);
+		}
 
-            return null;
-        } else if (cells.length == 1) {
+		int cellNum = 0;
+		while (cellNum < cells.length) {
 
-            return makeMove(cells, 0);
-        }
+			if (cells[cellNum++] == null) {
 
-        int cellNum = 0;
-        while (cellNum < cells.length) {
+				break;
+			}
+		}
 
-            if (cells[cellNum++] == null) {
+		cellNum = AiPlayer.random.nextInt(cellNum - 1);
 
-                break;
-            }
-        }
+		return makeMove(cells, cellNum);
+	}
 
-        cellNum = AiPlayer.random.nextInt(cellNum - 1);
+	private Cell makeMove(Cell cells[], int cellNum) {
 
-        return makeMove(cells, cellNum);
-    }
-
-    private Cell makeMove(Cell cells[], int cellNum) {
-
-        return (cells[cellNum].setFigure(getFigure()) ? cells[cellNum] : null);
-    }
+		return (cells[cellNum].setFigure(getFigure()) ? cells[cellNum] : null);
+	}
 
 }

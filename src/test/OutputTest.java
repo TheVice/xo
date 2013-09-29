@@ -18,12 +18,18 @@ public class OutputTest extends Assert {
 		bao.close();
 		bao.writeLine("Hi");
 		assertEquals("Hello" + lineSeparator, bao.toString());
-		bao = getByteArrayOutputInstance(1024);
+		bao = getByteArrayOutputInstance(32);
 		bao.writeLine("Line1");
 		bao.writeLine("Line2");
-		assertEquals("Line1" + lineSeparator + "Line2" + lineSeparator, bao.toString());
+		assertEquals("Line1" + lineSeparator + "Line2" + lineSeparator,
+				bao.toString());
 		bao.close();
-		assertEquals("Line1" + lineSeparator + "Line2" + lineSeparator, bao.toString());
+		assertEquals("Line1" + lineSeparator + "Line2" + lineSeparator,
+				bao.toString());
+		bao = getByteArrayOutputInstance(32);
+		bao.write("Line");
+		assertEquals("Line", bao.toString());
+		bao.close();
 	}
 
 	public ByteArrayOutput getByteArrayOutputInstance(int n) {
@@ -31,11 +37,10 @@ public class OutputTest extends Assert {
 		ByteArrayOutputStream stringBufferOutputStream = null;
 		try {
 
-			if(n > 0) {
+			if (n > 0) {
 
 				stringBufferOutputStream = new ByteArrayOutputStream(n);
-			}
-			else {
+			} else {
 
 				stringBufferOutputStream = new ByteArrayOutputStream();
 			}

@@ -2,47 +2,53 @@ package core;
 
 public class Player {
 
-    public static enum Type {HUMAN, AI}
+	public static enum Type {
+		HUMAN, AI
+	}
 
-    protected static Field playGround;
+	protected static Field playGround;
 
-    private final Type type;
-    private char figure = ' ';
+	private final Type type;
+	private char figure = ' ';
 
-    protected Player(char figure, Field playGround, Type type) {
+	public static void setPlayGround(Field playGround) {
 
-        this.figure = figure;
-        if (Player.playGround == null) {
+		if (Player.playGround == null) {
 
-            Player.playGround = playGround;
-        }
-        this.type = type;
-    }
+			Player.playGround = playGround;
+		}
+	}
 
-    public Type getType() {
+	protected Player(char figure, Type type) {
 
-        return type;
-    }
+		this.figure = figure;
+		this.type = type;
+	}
 
-    public char getFigure() {
+	public Type getType() {
 
-        return figure;
-    }
+		return type;
+	}
 
-    public Cell makeDesign() {
+	public char getFigure() {
 
-        return null;
-    }
+		return figure;
+	}
 
-    public Cell makeDesign(int x, int y) {
+	public Cell makeDesign() {
 
-        return null;
-    }
+		return null;
+	}
 
-    @Override
-    public String toString() {
+	public Cell makeDesign(int x, int y) {
 
-        return "" + figure;
-    }
+		return null;
+	}
+
+	@Override
+	public String toString() {
+
+		return "" + figure;
+	}
 
 }

@@ -7,254 +7,270 @@ import core.Field;
 
 public class FieldTest extends Assert {
 
-    @Test
-    public void fieldConstructor() throws Exception {
+	@Test
+	public void fieldConstructor() throws Exception {
 
-        assertEquals(Field.StartCellStyle.BOTTOM_LEFT, Field.int2style(0));
-        assertEquals(Field.StartCellStyle.BOTTOM_LEFT, Field.int2style(5));
+		assertEquals(Field.StartCellStyle.BOTTOM_LEFT, Field.int2style(0));
 
-        Field field;
+		assertEquals(Field.StartCellStyle.TOP_LEFT, Field.int2style(1));
+		assertEquals(Field.StartCellStyle.TOP_RIGHT, Field.int2style(2));
+		assertEquals(Field.StartCellStyle.BOTTOM_RIGHT, Field.int2style(3));
+		assertEquals(Field.StartCellStyle.BOTTOM_LEFT, Field.int2style(4));
 
-        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+		assertEquals(Field.StartCellStyle.BOTTOM_LEFT, Field.int2style(5));
 
-            field = new Field(0, 0, '*', scs);
-            assertEquals(Field.getMinWidth(), field.getWidthCount());
-            assertEquals(Field.getMinHeight(), field.getHeightCount());
+		Field field;
 
-            field = new Field(0, Field.getMinHeight(), '?', scs);
-            assertEquals(Field.getMinWidth(), field.getWidthCount());
-            assertEquals(Field.getMinHeight(), field.getHeightCount());
+		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-            field = new Field(Field.getMinWidth(), 0, '@', scs);
-            assertEquals(Field.getMinWidth(), field.getWidthCount());
-            assertEquals(Field.getMinHeight(), field.getHeightCount());
+			field = new Field(0, 0, '*', scs);
+			assertEquals(Field.getMinWidth(), field.getWidthCount());
+			assertEquals(Field.getMinHeight(), field.getHeightCount());
 
-            field = new Field(128, 128, '!', scs);
-            assertEquals(Field.getMaxWidth(), field.getWidthCount());
-            assertEquals(Field.getMaxHeight(), field.getHeightCount());
+			field = new Field(0, Field.getMinHeight(), '?', scs);
+			assertEquals(Field.getMinWidth(), field.getWidthCount());
+			assertEquals(Field.getMinHeight(), field.getHeightCount());
 
-            field = new Field(128, Field.getMaxHeight(), '#', scs);
-            assertEquals(Field.getMaxWidth(), field.getWidthCount());
-            assertEquals(Field.getMaxHeight(), field.getHeightCount());
+			field = new Field(Field.getMinWidth(), 0, '@', scs);
+			assertEquals(Field.getMinWidth(), field.getWidthCount());
+			assertEquals(Field.getMinHeight(), field.getHeightCount());
 
-            field = new Field(Field.getMaxWidth(), 128, '$', scs);
-            assertEquals(Field.getMaxWidth(), field.getWidthCount());
-            assertEquals(Field.getMaxHeight(), field.getHeightCount());
-        }
-    }
+			field = new Field(128, 128, '!', scs);
+			assertEquals(Field.getMaxWidth(), field.getWidthCount());
+			assertEquals(Field.getMaxHeight(), field.getHeightCount());
 
-    @Test
-    public void fieldSetCell() throws Exception {
+			field = new Field(128, Field.getMaxHeight(), '#', scs);
+			assertEquals(Field.getMaxWidth(), field.getWidthCount());
+			assertEquals(Field.getMaxHeight(), field.getHeightCount());
 
-        Field field = new Field(3, 4, '%', Field.StartCellStyle.BOTTOM_LEFT);
-        assertEquals(3, field.getWidthCount());
-        assertEquals(4, field.getHeightCount());
+			field = new Field(Field.getMaxWidth(), 128, '$', scs);
+			assertEquals(Field.getMaxWidth(), field.getWidthCount());
+			assertEquals(Field.getMaxHeight(), field.getHeightCount());
+		}
+	}
 
-        assertEquals(null, field.setCell(0, 0, 'X'));
-        assertEquals(null, field.setCell(0, 0, Field.getDefFigureValue()));
-        assertEquals(null, field.setCell(1, 0, Field.getDefFigureValue()));
-        assertEquals(null, field.setCell(0, 1, Field.getDefFigureValue()));
+	@Test
+	public void fieldSetCell() throws Exception {
 
-        assertEquals(null, field.setCell(field.getWidthCount() + 1, field.getHeightCount() + 1, 'O'));
-        assertEquals(null, field.setCell(field.getWidthCount() + 1, field.getHeightCount() + 1, Field.getDefFigureValue()));
-        assertEquals(null, field.setCell(field.getWidthCount(), field.getHeightCount() + 1, Field.getDefFigureValue()));
-        assertEquals(null, field.setCell(field.getWidthCount() + 1, field.getHeightCount(), Field.getDefFigureValue()));
+		Field field = new Field(3, 4, '%', Field.StartCellStyle.BOTTOM_LEFT);
+		assertEquals(3, field.getWidthCount());
+		assertEquals(4, field.getHeightCount());
 
-        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+		assertEquals(null, field.setCell(0, 0, 'X'));
+		assertEquals(null, field.setCell(0, 0, Field.getDefFigureValue()));
+		assertEquals(null, field.setCell(1, 0, Field.getDefFigureValue()));
+		assertEquals(null, field.setCell(0, 1, Field.getDefFigureValue()));
 
-            field = new Field(5, 16, ' ', scs);
+		assertEquals(null, field.setCell(field.getWidthCount() + 1,
+				field.getHeightCount() + 1, 'O'));
+		assertEquals(null, field.setCell(field.getWidthCount() + 1,
+				field.getHeightCount() + 1, Field.getDefFigureValue()));
+		assertEquals(null, field.setCell(field.getWidthCount(),
+				field.getHeightCount() + 1, Field.getDefFigureValue()));
+		assertEquals(null, field.setCell(field.getWidthCount() + 1,
+				field.getHeightCount(), Field.getDefFigureValue()));
 
-            assertFalse(field.isFull());
+		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-            for (int j = 1; j <= field.getHeightCount(); j++) {
+			field = new Field(5, 16, ' ', scs);
 
-                for (int i = 1; i <= field.getWidthCount(); i++) {
+			assertFalse(field.isFull());
 
-                    assertNotEquals(null, field.setCell(i, j, 'X'));
-                    assertEquals(null, field.setCell(i, j, 'O'));
-                    assertNotEquals(null, field.setCell(i, j, Field.getDefFigureValue()));
-                    assertNotEquals(null, field.setCell(i, j, 'O'));
-                    assertNotEquals(null, field.setCell(i, j, Field.getDefFigureValue()));
-                    assertNotEquals(null, field.setCell(i, j, 'X'));
+			for (int j = 1; j <= field.getHeightCount(); j++) {
 
-                    if (j != field.getHeightCount() && i != field.getWidthCount()) {
+				for (int i = 1; i <= field.getWidthCount(); i++) {
 
-                        assertFalse(field.isFull());
-                    } else if (j == field.getHeightCount() && i == field.getWidthCount()) {
+					assertNotEquals(null, field.setCell(i, j, 'X'));
+					assertEquals(null, field.setCell(i, j, 'O'));
+					assertNotEquals(null,
+							field.setCell(i, j, Field.getDefFigureValue()));
+					assertNotEquals(null, field.setCell(i, j, 'O'));
+					assertNotEquals(null,
+							field.setCell(i, j, Field.getDefFigureValue()));
+					assertNotEquals(null, field.setCell(i, j, 'X'));
 
-                        assertTrue(field.isFull());
-                    }
-                }
-            }
-        }
+					if (j != field.getHeightCount()
+							&& i != field.getWidthCount()) {
 
-        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+						assertFalse(field.isFull());
+					} else if (j == field.getHeightCount()
+							&& i == field.getWidthCount()) {
 
-            field = new Field(12, 4, ' ', scs);
+						assertTrue(field.isFull());
+					}
+				}
+			}
+		}
 
-            for (int j = field.getHeightCount(); j > 0; j--) {
+		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-                for (int i = field.getWidthCount(); i > 0; i--) {
+			field = new Field(12, 4, ' ', scs);
 
-                    assertNotEquals(null, field.setCell(i, j, 'X'));
-                    assertEquals(null, field.setCell(i, j, 'O'));
-                    assertNotEquals(null, field.setCell(i, j, Field.getDefFigureValue()));
-                    assertNotEquals(null, field.setCell(i, j, 'O'));
-                    assertNotEquals(null, field.setCell(i, j, Field.getDefFigureValue()));
-                    assertNotEquals(null, field.setCell(i, j, 'X'));
+			for (int j = field.getHeightCount(); j > 0; j--) {
 
-                    if (j != 1 && i != 1) {
+				for (int i = field.getWidthCount(); i > 0; i--) {
 
-                        assertFalse(field.isFull());
-                    } else if (j == 1 && i == 1) {
+					assertNotEquals(null, field.setCell(i, j, 'X'));
+					assertEquals(null, field.setCell(i, j, 'O'));
+					assertNotEquals(null,
+							field.setCell(i, j, Field.getDefFigureValue()));
+					assertNotEquals(null, field.setCell(i, j, 'O'));
+					assertNotEquals(null,
+							field.setCell(i, j, Field.getDefFigureValue()));
+					assertNotEquals(null, field.setCell(i, j, 'X'));
 
-                        assertTrue(field.isFull());
-                    }
-                }
-            }
-        }
-    }
+					if (j != 1 && i != 1) {
 
-    @Test
-    public void fieldStartCellStyle() throws Exception {
+						assertFalse(field.isFull());
+					} else if (j == 1 && i == 1) {
 
-        String checkString[] = {"[1][2][3]\n[4][5][6]\n",
-                "[3][2][1]\n[6][5][4]\n",
-                "[6][5][4]\n[3][2][1]\n",
-                "[4][5][6]\n[1][2][3]\n"};
+						assertTrue(field.isFull());
+					}
+				}
+			}
+		}
+	}
 
-        int stringNum = 0;
-        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+	@Test
+	public void fieldStartCellStyle() throws Exception {
 
-            Field field = new Field(3, 2, ' ', scs);
+		String checkString[] = { "[1][2][3]\n[4][5][6]\n",
+				"[3][2][1]\n[6][5][4]\n", "[6][5][4]\n[3][2][1]\n",
+				"[4][5][6]\n[1][2][3]\n" };
 
-            Integer numToCell = 1;
-            for (int j = 1; j <= field.getHeightCount(); j++) {
-                for (int i = 1; i <= field.getWidthCount(); i++) {
+		int stringNum = 0;
+		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-                    field.setCell(i, j, (numToCell++).toString().charAt(0));
-                }
-            }
+			Field field = new Field(3, 2, ' ', scs);
 
-            assertEquals(checkString[stringNum++], field.toString());
-        }
-    }
+			Integer numToCell = 1;
+			for (int j = 1; j <= field.getHeightCount(); j++) {
+				for (int i = 1; i <= field.getWidthCount(); i++) {
 
-    @Test
-    public void isFigureFillLine() throws Exception {
+					field.setCell(i, j, (numToCell++).toString().charAt(0));
+				}
+			}
 
-        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+			assertEquals(checkString[stringNum++], field.toString());
+		}
+	}
 
-            Field field = new Field(3, 4, ' ', scs);
-            assertTrue(field.isFigureFillLine(Field.getDefFigureValue()));
-            assertFalse(field.isFigureFillLine('X'));
-            assertFalse(field.isFigureFillLine('O'));
+	@Test
+	public void isFigureFillLine() throws Exception {
 
-            fillLine(field, 1, 'X', true);
-            assertTrue(field.isFigureFillLine('X'));
-            assertFalse(field.isFigureFillLine('O'));
-            fillLine(field, field.getHeightCount(), 'O', false);
+		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-            assertTrue(field.isFigureFillLine('X'));
-            assertFalse(field.isFigureFillLine('O'));
+			Field field = new Field(3, 4, ' ', scs);
+			assertTrue(field.isFigureFillLine(Field.getDefFigureValue()));
+			assertFalse(field.isFigureFillLine('X'));
+			assertFalse(field.isFigureFillLine('O'));
 
-            fillLine(field, 1, Field.getDefFigureValue(), true);
-            fillLine(field, field.getHeightCount(), 'O', false);
-            assertTrue(field.isFigureFillLine('O'));
-            assertFalse(field.isFigureFillLine('X'));
-        }
-    }
+			fillLine(field, 1, 'X', true);
+			assertTrue(field.isFigureFillLine('X'));
+			assertFalse(field.isFigureFillLine('O'));
+			fillLine(field, field.getHeightCount(), 'O', false);
 
-    @Test
-    public void isFigureFillDiagonal() throws Exception {
+			assertTrue(field.isFigureFillLine('X'));
+			assertFalse(field.isFigureFillLine('O'));
 
-        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+			fillLine(field, 1, Field.getDefFigureValue(), true);
+			fillLine(field, field.getHeightCount(), 'O', false);
+			assertTrue(field.isFigureFillLine('O'));
+			assertFalse(field.isFigureFillLine('X'));
+		}
+	}
 
-            Field field = new Field(3, 4, ' ', scs);
-            assertFalse(field.isFigureFillDiagonal(Field.getDefFigureValue()));
+	@Test
+	public void isFigureFillDiagonal() throws Exception {
 
-            fillDiagonal(field, 'X', true);
-            assertFalse(field.isFigureFillDiagonal('X'));
+		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-            fillDiagonal(field, 'O', false);
-            assertFalse(field.isFigureFillDiagonal('O'));
+			Field field = new Field(3, 4, ' ', scs);
+			assertFalse(field.isFigureFillDiagonal(Field.getDefFigureValue()));
 
-            field = new Field(6, 6, ' ', scs);
-            assertTrue(field.isFigureFillDiagonal(Field.getDefFigureValue()));
+			fillDiagonal(field, 'X', true);
+			assertFalse(field.isFigureFillDiagonal('X'));
 
-            fillDiagonal(field, 'X', true);
-            assertTrue(field.isFigureFillDiagonal('X'));
+			fillDiagonal(field, 'O', false);
+			assertFalse(field.isFigureFillDiagonal('O'));
 
-            fillDiagonal(field, 'O', false);
-            assertTrue(field.isFigureFillDiagonal('O'));
+			field = new Field(6, 6, ' ', scs);
+			assertTrue(field.isFigureFillDiagonal(Field.getDefFigureValue()));
 
-            field.setCell(3, 3, Field.getDefFigureValue());
-            field.setCell(3, 4, Field.getDefFigureValue());
+			fillDiagonal(field, 'X', true);
+			assertTrue(field.isFigureFillDiagonal('X'));
 
-            assertFalse(field.isFigureFillDiagonal('X'));
-            assertFalse(field.isFigureFillDiagonal('O'));
-        }
-    }
+			fillDiagonal(field, 'O', false);
+			assertTrue(field.isFigureFillDiagonal('O'));
 
-    private static void fillLine(Field field, int lineNum, char figure, boolean vertical) {
+			field.setCell(3, 3, Field.getDefFigureValue());
+			field.setCell(3, 4, Field.getDefFigureValue());
 
-        if (vertical) {
+			assertFalse(field.isFigureFillDiagonal('X'));
+			assertFalse(field.isFigureFillDiagonal('O'));
+		}
+	}
 
-            if (lineNum > field.getWidthCount()) {
+	private static void fillLine(Field field, int lineNum, char figure,
+			boolean vertical) {
 
-                lineNum = field.getWidthCount();
-            } else if (lineNum < 1) {
+		if (vertical) {
 
-                lineNum = 1;
-            }
+			if (lineNum > field.getWidthCount()) {
 
-            for (int i = 1; i <= field.getHeightCount(); i++) {
+				lineNum = field.getWidthCount();
+			} else if (lineNum < 1) {
 
-                field.setCell(lineNum, i, figure);
-            }
-        } else {
+				lineNum = 1;
+			}
 
-            if (lineNum > field.getHeightCount()) {
+			for (int i = 1; i <= field.getHeightCount(); i++) {
 
-                lineNum = field.getHeightCount();
-            } else if (lineNum < 1) {
+				field.setCell(lineNum, i, figure);
+			}
+		} else {
 
-                lineNum = 1;
-            }
+			if (lineNum > field.getHeightCount()) {
 
-            for (int i = 1; i <= field.getWidthCount(); i++) {
+				lineNum = field.getHeightCount();
+			} else if (lineNum < 1) {
 
-                field.setCell(i, lineNum, figure);
-            }
-        }
-    }
+				lineNum = 1;
+			}
 
-    private static void fillDiagonal(Field field, char figure, boolean main) {
+			for (int i = 1; i <= field.getWidthCount(); i++) {
 
-        final int count = min(field.getWidthCount(), field.getHeightCount());
-        if (main) {
+				field.setCell(i, lineNum, figure);
+			}
+		}
+	}
 
-            for (int i = 1; i <= count; i++) {
+	private static void fillDiagonal(Field field, char figure, boolean main) {
 
-                field.setCell(i, i, Field.getDefFigureValue());
-                field.setCell(i, i, figure);
-            }
-        } else {
+		final int count = min(field.getWidthCount(), field.getHeightCount());
+		if (main) {
 
-            for (int i = count; i > 0; i--) {
+			for (int i = 1; i <= count; i++) {
 
-                field.setCell(i, count - i + 1, Field.getDefFigureValue());
-                field.setCell(i, count - i + 1, figure);
-            }
-        }
-    }
+				field.setCell(i, i, Field.getDefFigureValue());
+				field.setCell(i, i, figure);
+			}
+		} else {
 
-    private static int min(int x, int y) {
+			for (int i = count; i > 0; i--) {
 
-        if (x < y) {
+				field.setCell(i, count - i + 1, Field.getDefFigureValue());
+				field.setCell(i, count - i + 1, figure);
+			}
+		}
+	}
 
-            return x;
-        }
-        return y;
-    }
+	private static int min(int x, int y) {
+
+		if (x < y) {
+
+			return x;
+		}
+		return y;
+	}
 }

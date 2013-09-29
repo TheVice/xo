@@ -12,6 +12,12 @@ public class Output {
 		printWriter = new PrintWriter(out, true);
 	}
 
+	public void write(String string) {
+
+		printWriter.print(string);
+		printWriter.flush();
+	}
+
 	public void writeLine(String string) {
 
 		printWriter.println(string);
