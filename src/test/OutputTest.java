@@ -11,18 +11,19 @@ public class OutputTest extends Assert {
 	@Test
 	public void output() {
 
-		ByteArrayOutput bao = getByteArrayOutputInstance(1024);
+		String lineSeparator = System.getProperty("line.separator");
+		ByteArrayOutput bao = getByteArrayOutputInstance(0);
 		bao.writeLine("Hello");
-		assertEquals("Hello\r\n", bao.toString());
+		assertEquals("Hello" + lineSeparator, bao.toString());
 		bao.close();
 		bao.writeLine("Hi");
-		assertEquals("Hello\r\n", bao.toString());
+		assertEquals("Hello" + lineSeparator, bao.toString());
 		bao = getByteArrayOutputInstance(1024);
 		bao.writeLine("Line1");
 		bao.writeLine("Line2");
-		assertEquals("Line1\r\nLine2\r\n", bao.toString());
+		assertEquals("Line1" + lineSeparator + "Line2" + lineSeparator, bao.toString());
 		bao.close();
-		assertEquals("Line1\r\nLine2\r\n", bao.toString());
+		assertEquals("Line1" + lineSeparator + "Line2" + lineSeparator, bao.toString());
 	}
 
 	public ByteArrayOutput getByteArrayOutputInstance(int n) {
@@ -30,7 +31,14 @@ public class OutputTest extends Assert {
 		ByteArrayOutputStream stringBufferOutputStream = null;
 		try {
 
-			stringBufferOutputStream = new ByteArrayOutputStream(n);
+			if(n > 0) {
+
+				stringBufferOutputStream = new ByteArrayOutputStream(n);
+			}
+			else {
+
+				stringBufferOutputStream = new ByteArrayOutputStream();
+			}
 		} catch (Exception exc) {
 
 		}
