@@ -2,81 +2,87 @@ package core;
 
 public class Player {
 
+	public static enum PlayerType {
 
-    public static enum PlayerType {HUMAN, AI}
+		HUMAN, AI
+	}
 
-    public static enum PlayerFigure {X, O}
+	public static enum PlayerFigure {
 
-    protected static Field playGround;
+		X, O
+	}
 
-    private PlayerType playerType;
-    private PlayerFigure playerFigure;
+	protected static Field playGround;
 
-    protected Player(PlayerType playerType, Field playGround, PlayerFigure playerFigure) {
+	private PlayerType playerType;
+	private PlayerFigure playerFigure;
 
-        this.playerType = playerType;
+	protected Player(PlayerType playerType, Field playGround,
+			PlayerFigure playerFigure) {
 
-        if (Player.playGround == null) {
+		this.playerType = playerType;
 
-            Player.playGround = playGround;
-        }
+		if (Player.playGround == null) {
 
-        this.playerFigure = playerFigure;
-    }
+			Player.playGround = playGround;
+		}
 
-    public Player(Field playGround, PlayerFigure playerFigure) {
+		this.playerFigure = playerFigure;
+	}
 
-        this(PlayerType.HUMAN, playGround, playerFigure);
-    }
+	public Player(Field playGround, PlayerFigure playerFigure) {
 
-    public Player(PlayerFigure playerFigure) {
+		this(PlayerType.HUMAN, playGround, playerFigure);
+	}
 
-        this(null, playerFigure);
-    }
+	public Player(PlayerFigure playerFigure) {
 
-    public PlayerFigure getPlayerFigure() {
+		this(null, playerFigure);
+	}
 
-        return playerFigure;
-    }
+	public PlayerFigure getPlayerFigure() {
 
-    public PlayerType getPlayerType() {
+		return playerFigure;
+	}
 
-        return playerType;
-    }
+	public PlayerType getPlayerType() {
 
-    public boolean makeMove(int x, int y) {
+		return playerType;
+	}
 
-        if (Player.playGround == null || playerFigure == null) {
+	public boolean makeMove(int x, int y) {
 
-            return false;
-        }
-        return Player.playGround.setCell(x, y, getFigure());
-    }
+		if (Player.playGround == null || playerFigure == null) {
 
-    public char getFigure() {
+			return false;
+		}
+		return Player.playGround.setCell(x, y, getFigure());
+	}
 
-        return getCharFromFigure(playerFigure);
-    }
+	public char getFigure() {
 
-    @Override
-    public String toString() {
+		return getCharFromFigure(playerFigure);
+	}
 
-        return "" + getFigure();
-    }
+	@Override
+	public String toString() {
 
-    private static char getCharFromFigure(PlayerFigure playerFigure) {
+		return "" + getFigure();
+	}
 
-        if (playerFigure != null) {
+	private static char getCharFromFigure(PlayerFigure playerFigure) {
 
-            switch (playerFigure) {
+		if (playerFigure != null) {
 
-                case X:
-                    return 'X';
-                case O:
-                    return 'O';
-            }
-        }
+			switch (playerFigure) {
 
-        return Cell.getDefFigureValue();
-    }
+			case X:
+				return 'X';
+			case O:
+				return 'O';
+			}
+		}
+
+		return Cell.getDefFigureValue();
+	}
 }

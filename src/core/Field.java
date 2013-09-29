@@ -2,316 +2,323 @@ package core;
 
 public class Field {
 
-    public static enum StartCellStyle {TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT}
+	public static enum StartCellStyle {
 
-    private static final int MIN_WIDTH = 2;
-    private static final int MIN_HEIGHT = 2;
+		TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT
+	}
 
-    private static final int MAX_WIDTH = 64;
-    private static final int MAX_HEIGHT = 64;
+	private static final int MIN_WIDTH = 2;
+	private static final int MIN_HEIGHT = 2;
 
-    public static int getMinWidth() {
+	private static final int MAX_WIDTH = 64;
+	private static final int MAX_HEIGHT = 64;
 
-        return MIN_WIDTH;
-    }
+	public static int getMinWidth() {
 
-    public static int getMinHeight() {
+		return MIN_WIDTH;
+	}
 
-        return MIN_HEIGHT;
-    }
+	public static int getMinHeight() {
 
-    public static int getMaxWidth() {
+		return MIN_HEIGHT;
+	}
 
-        return MAX_WIDTH;
-    }
+	public static int getMaxWidth() {
 
-    public static int getMaxHeight() {
+		return MAX_WIDTH;
+	}
 
-        return MAX_HEIGHT;
-    }
+	public static int getMaxHeight() {
 
-    public static char getDefFigureValue() {
+		return MAX_HEIGHT;
+	}
 
-        return Cell.getDefFigureValue();
-    }
+	public static char getDefFigureValue() {
 
-    public static StartCellStyle int2style(int styleNumber) {
+		return Cell.getDefFigureValue();
+	}
 
-        int count = 1;
-        for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+	public static StartCellStyle int2style(int styleNumber) {
 
-            if (count++ == styleNumber) {
+		int count = 1;
+		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-                return scs;
-            }
-        }
+			if (count++ == styleNumber) {
 
-        return StartCellStyle.BOTTOM_LEFT;
-    }
+				return scs;
+			}
+		}
 
-    private final int width;
-    private final int height;
-    private Cell cells[];
-    private Cell freeCells[];
+		return StartCellStyle.BOTTOM_LEFT;
+	}
 
-    public Field(int width, int height, char defFigureValue, StartCellStyle startCellStyle) {
+	private final int width;
+	private final int height;
+	private Cell cells[];
+	private Cell freeCells[];
 
-        this.width = validateValue(width, MIN_WIDTH, MAX_WIDTH);
-        this.height = validateValue(height, MIN_HEIGHT, MAX_HEIGHT);
+	public Field(int width, int height, char defFigureValue,
+			StartCellStyle startCellStyle) {
 
-        cells = new Cell[this.width * this.height];
-        freeCells = new Cell[this.width * this.height];
-        setupCells(defFigureValue, startCellStyle);
-    }
+		this.width = validateValue(width, MIN_WIDTH, MAX_WIDTH);
+		this.height = validateValue(height, MIN_HEIGHT, MAX_HEIGHT);
 
-    public int getWidthCount() {
+		cells = new Cell[this.width * this.height];
+		freeCells = new Cell[this.width * this.height];
+		setupCells(defFigureValue, startCellStyle);
+	}
 
-        return width;
-    }
+	public int getWidthCount() {
 
-    public int getHeightCount() {
+		return width;
+	}
 
-        return height;
-    }
+	public int getHeightCount() {
 
-    public boolean setCell(int x, int y, char figureType) {
+		return height;
+	}
 
-        Cell cell = findCell(x, y);
-        if (cell != null) {
+	public boolean setCell(int x, int y, char figureType) {
 
-            return cell.setFigure(figureType);
-        }
-        return false;
-    }
+		Cell cell = findCell(x, y);
+		if (cell != null) {
 
-    public boolean isFigureFillDiagonal(char figure) {
+			return cell.setFigure(figureType);
+		}
+		return false;
+	}
 
-        if (height != width) {
+	public boolean isFigureFillDiagonal(char figure) {
 
-            return false;
-        }
+		if (height != width) {
 
-        final int count = height;
-        boolean match = false;
+			return false;
+		}
 
-        if (getCellAt(0, 0).getFigure() == figure) {
+		final int count = height;
+		boolean match = false;
 
-            match = true;
-            for (int i = 1; i < count; i++) {
+		if (getCellAt(0, 0).getFigure() == figure) {
 
-                if (getCellAt(i, i).getFigure() != figure) {
+			match = true;
+			for (int i = 1; i < count; i++) {
 
-                    match = false;
-                    break;
-                }
-            }
-            if (match) {
+				if (getCellAt(i, i).getFigure() != figure) {
 
-                return true;
-            }
-        }
+					match = false;
+					break;
+				}
+			}
+			if (match) {
 
-        if (getCellAt(count - 1, 0).getFigure() == figure) {
+				return true;
+			}
+		}
 
-            match = true;
-            for (int i = count - 2; i >= 0; i--) {
+		if (getCellAt(count - 1, 0).getFigure() == figure) {
 
-                if (getCellAt(i, count - i - 1).getFigure() != figure) {
+			match = true;
+			for (int i = count - 2; i >= 0; i--) {
 
-                    match = false;
-                    break;
-                }
-            }
-        }
+				if (getCellAt(i, count - i - 1).getFigure() != figure) {
 
-        return match;
-    }
+					match = false;
+					break;
+				}
+			}
+		}
 
-    public boolean isFigureFillLine(char figure) {
+		return match;
+	}
 
-        boolean match = false;
+	public boolean isFigureFillLine(char figure) {
 
-        for (int j = 0; j < height; j++) {
+		boolean match = false;
 
-            match = true;
-            for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
 
-                if (getCellAt(i, j).getFigure() != figure) {
+			match = true;
+			for (int i = 0; i < width; i++) {
 
-                    match = false;
-                    break;
-                }
-            }
-            if (match) {
+				if (getCellAt(i, j).getFigure() != figure) {
 
-                return true;
-            }
-        }
+					match = false;
+					break;
+				}
+			}
+			if (match) {
 
-        for (int i = 0; i < width; i++) {
+				return true;
+			}
+		}
 
-            match = true;
-            for (int j = 0; j < height; j++) {
+		for (int i = 0; i < width; i++) {
 
-                if (getCellAt(i, j).getFigure() != figure) {
+			match = true;
+			for (int j = 0; j < height; j++) {
 
-                    match = false;
-                    break;
-                }
-            }
-            if (match) {
+				if (getCellAt(i, j).getFigure() != figure) {
 
-                break;
-            }
-        }
+					match = false;
+					break;
+				}
+			}
+			if (match) {
 
-        return match;
-    }
+				break;
+			}
+		}
 
-    public boolean isFull() {
+		return match;
+	}
 
-        for (Cell cell : cells) {
+	public boolean isFull() {
 
-            if (cell.getFigure() == Cell.getDefFigureValue()) {
+		for (Cell cell : cells) {
 
-                return false;
-            }
-        }
-        return true;
-    }
+			if (cell.getFigure() == Cell.getDefFigureValue()) {
 
-    public boolean isValidCellNumber(int x, int y) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-        return 0 < x && x <= width && 0 < y && y <= height;
-    }
+	public boolean isValidCellNumber(int x, int y) {
 
-    public Cell[] getFreeCellNumbers() {
+		return 0 < x && x <= width && 0 < y && y <= height;
+	}
 
-        int cellNum = 0;
-        for (Cell cell : cells) {
+	public Cell[] getFreeCellNumbers() {
 
-            if (cell.getFigure() == Cell.getDefFigureValue()) {
+		int cellNum = 0;
+		for (Cell cell : cells) {
 
-                freeCells[cellNum++] = cell;
-            }
-        }
+			if (cell.getFigure() == Cell.getDefFigureValue()) {
 
-        for (; cellNum < freeCells.length; cellNum++) {
+				freeCells[cellNum++] = cell;
+			}
+		}
 
-            freeCells[cellNum] = null;
-        }
+		for (; cellNum < freeCells.length; cellNum++) {
 
-        return freeCells;
-    }
+			freeCells[cellNum] = null;
+		}
 
-    @Override
-    public String toString() {
+		return freeCells;
+	}
 
-        String str = "";
-        for (int j = 0; j < height; j++) {
+	@Override
+	public String toString() {
 
-            for (int i = 0; i < width; i++) {
+		String str = "";
+		for (int j = 0; j < height; j++) {
 
-                str += "[" + getCellAt(i, j) + "]";
-            }
-            str += "\n";
-        }
-        return str;
-    }
+			for (int i = 0; i < width; i++) {
 
-    private void setupCells(char defFigureValue, StartCellStyle startCellStyle) {
+				str += "[" + getCellAt(i, j) + "]";
+			}
+			str += "\n";
+		}
+		return str;
+	}
 
-        for (int j = 0; j < height; j++) {
+	private void setupCells(char defFigureValue, StartCellStyle startCellStyle) {
 
-            for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
 
-                createCellAt(i, j, new Cell(getValue4Style(i, startCellStyle, true),
-                        getValue4Style(j, startCellStyle, false), defFigureValue));
-            }
-        }
-    }
+			for (int i = 0; i < width; i++) {
 
-    private int getValue4Style(int value, StartCellStyle startCellStyle, boolean isWidth) {
+				createCellAt(i, j,
+						new Cell(getValue4Style(i, startCellStyle, true),
+								getValue4Style(j, startCellStyle, false),
+								defFigureValue));
+			}
+		}
+	}
 
-        int retValue = value;
+	private int getValue4Style(int value, StartCellStyle startCellStyle,
+			boolean isWidth) {
 
-        switch (startCellStyle) {
+		int retValue = value;
 
-            case TOP_LEFT:
-                retValue += 1;
-                break;
-            case TOP_RIGHT:
-                if (isWidth) {
+		switch (startCellStyle) {
 
-                    retValue = width - retValue;
-                } else {
+		case TOP_LEFT:
+			retValue += 1;
+			break;
+		case TOP_RIGHT:
+			if (isWidth) {
 
-                    retValue += 1;
-                }
-                break;
-            case BOTTOM_RIGHT:
-                if (isWidth) {
+				retValue = width - retValue;
+			} else {
 
-                    retValue = width - retValue;
-                } else {
+				retValue += 1;
+			}
+			break;
+		case BOTTOM_RIGHT:
+			if (isWidth) {
 
-                    retValue = height - retValue;
-                }
-                break;
-            case BOTTOM_LEFT:
-                if (isWidth) {
+				retValue = width - retValue;
+			} else {
 
-                    retValue += 1;
-                } else {
+				retValue = height - retValue;
+			}
+			break;
+		case BOTTOM_LEFT:
+			if (isWidth) {
 
-                    retValue = height - retValue;
-                }
-        }
+				retValue += 1;
+			} else {
 
-        return retValue;
-    }
+				retValue = height - retValue;
+			}
+		}
 
-    private Cell findCell(int x, int y) {
+		return retValue;
+	}
 
-        if (isValidCellNumber(x, y)) {
+	private Cell findCell(int x, int y) {
 
-            for (Cell cell : cells) {
+		if (isValidCellNumber(x, y)) {
 
-                if (cell.getX() == x && cell.getY() == y) {
+			for (Cell cell : cells) {
 
-                    return cell;
-                }
-            }
-        }
-        return null;
-    }
+				if (cell.getX() == x && cell.getY() == y) {
 
-    private Cell getCellAt(int x, int y) {
+					return cell;
+				}
+			}
+		}
+		return null;
+	}
 
-        return cells[twoDimension2OneIndex(x, y)];
-    }
+	private Cell getCellAt(int x, int y) {
 
-    private void createCellAt(int x, int y, Cell cell) {
+		return cells[twoDimension2OneIndex(x, y)];
+	}
 
-        cells[twoDimension2OneIndex(x, y)] = cell;
-    }
+	private void createCellAt(int x, int y, Cell cell) {
 
-    private int twoDimension2OneIndex(int x, int y) {
+		cells[twoDimension2OneIndex(x, y)] = cell;
+	}
 
-        return x * height + y;
-    }
+	private int twoDimension2OneIndex(int x, int y) {
 
-    private int validateValue(int value, int min, int max) {
+		return x * height + y;
+	}
 
-        if (value < min) {
+	private int validateValue(int value, int min, int max) {
 
-            return min;
+		if (value < min) {
 
-        } else if (value > max) {
+			return min;
 
-            return max;
-        }
+		} else if (value > max) {
 
-        return value;
-    }
+			return max;
+		}
+
+		return value;
+	}
 }

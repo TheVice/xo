@@ -2,65 +2,65 @@ package core;
 
 public class Cell {
 
-    private static boolean defValueSet = false;
-    private static char defFigureValue = ' ';
+	private static boolean defValueSet = false;
+	private static char defFigureValue = ' ';
 
-    private final int x;
-    private final int y;
-    private char figure;
+	private final int x;
+	private final int y;
+	private char figure;
 
-    public Cell(int x, int y, char defFigureValue) {
+	public Cell(int x, int y, char defFigureValue) {
 
-        if (!Cell.defValueSet) {
+		if (!Cell.defValueSet) {
 
-            Cell.defFigureValue = defFigureValue;
-            Cell.defValueSet = true;
-        }
+			Cell.defFigureValue = defFigureValue;
+			Cell.defValueSet = true;
+		}
 
-        this.x = x;
-        this.y = y;
-        this.figure = Cell.defFigureValue;
-    }
+		this.x = x;
+		this.y = y;
+		this.figure = Cell.defFigureValue;
+	}
 
-    public Cell(int x, int y) {
+	public Cell(int x, int y) {
 
-        this(x, y, Cell.getDefFigureValue());
-    }
+		this(x, y, Cell.getDefFigureValue());
+	}
 
-    public static char getDefFigureValue() {
+	public static char getDefFigureValue() {
 
-        return Cell.defFigureValue;
-    }
+		return Cell.defFigureValue;
+	}
 
-    public int getX() {
+	public int getX() {
 
-        return x;
-    }
+		return x;
+	}
 
-    public int getY() {
+	public int getY() {
 
-        return y;
-    }
+		return y;
+	}
 
-    public char getFigure() {
+	public char getFigure() {
 
-        return figure;
-    }
+		return figure;
+	}
 
-    public boolean setFigure(char figure) {
+	public boolean setFigure(char figure) {
 
-        if (figure == Cell.defFigureValue || this.figure == Cell.defFigureValue) {
+		if (figure == Cell.defFigureValue || this.figure == Cell.defFigureValue) {
 
-            this.figure = figure;
-            return true;
-        }
+			this.figure = figure;
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public String toString() {
+	@Override
+	public String toString() {
 
-        return "" + figure;
-    }
+		return "" + figure;
+	}
 }

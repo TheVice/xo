@@ -2,71 +2,76 @@ package core;
 
 public class Referee {
 
-    public static Referee createInstance() {
+	public static Referee createInstance() {
 
-        Field field = new Field(3, 3, Cell.getDefFigureValue(), Field.StartCellStyle.BOTTOM_LEFT);
-        Player players[] = new Player[2];
-        players[0] = new AiPlayer(field, Player.PlayerFigure.X);
-        players[1] = new AiPlayer(Player.PlayerFigure.O);
+		Field field = new Field(3, 3, Cell.getDefFigureValue(),
+				Field.StartCellStyle.BOTTOM_LEFT);
+		Player players[] = new Player[2];
+		players[0] = new AiPlayer(field, Player.PlayerFigure.X);
+		players[1] = new AiPlayer(Player.PlayerFigure.O);
 
-        return new Referee(field, players);
-    }
+		return new Referee(field, players);
+	}
 
-    private Field playGround;
-    private Player players[];
-//    private Player winner;
-//    private Chronicler chronicler;
+	private Field playGround;
+	private Player players[];
 
-    private Referee(Field playGround, Player players[]) {
+	// private Player winner;
+	// private Chronicler chronicler;
 
-        this.playGround = playGround;
-        this.players = new Player[players.length];
-        System.arraycopy(players, 0, this.players, 0, players.length);
-//        chronicler = new Chronicler(this.playGround.getHeightCount() * this.playGround.getWidthCount());
-    }
+	private Referee(Field playGround, Player players[]) {
 
-    public void gameLoop() {
+		this.playGround = playGround;
+		this.players = new Player[players.length];
+		System.arraycopy(players, 0, this.players, 0, players.length);
+		// chronicler = new Chronicler(this.playGround.getHeightCount() *
+		// this.playGround.getWidthCount());
+	}
 
-        final int playerCount = players.length;
-        int playerNumber = 0;
-        do {
+	public void gameLoop() {
 
-            if (playerNumber == playerCount) {
+		final int playerCount = players.length;
+		int playerNumber = 0;
+		do {
 
-                playerNumber = 0;
-            }
+			if (playerNumber == playerCount) {
 
-            char figure = Cell.getDefFigureValue();
+				playerNumber = 0;
+			}
 
-            if (players[playerNumber].getPlayerType() == Player.PlayerType.AI) {
+			char figure = Cell.getDefFigureValue();
 
-                players[playerNumber].makeMove(0, 0);
-                figure = players[playerNumber].getFigure();
-            } else {
+			if (players[playerNumber].getPlayerType() == Player.PlayerType.AI) {
 
-                //figure = letsPlayerMakeADesign(players[playerNumber]);
-            }
-//            if (exitNow) {
-//
-//                break;
-//            }
+				players[playerNumber].makeMove(0, 0);
+				figure = players[playerNumber].getFigure();
+			} else {
 
-            if (playGround.isFigureFillDiagonal(players[playerNumber].getFigure()) ||
-                    playGround.isFigureFillLine(players[playerNumber].getFigure())) {
+				// figure = letsPlayerMakeADesign(players[playerNumber]);
+			}
+			// if (exitNow) {
+			//
+			// break;
+			// }
 
-//                winner = players[playerNumber];
-                break;
-            }
+			if (playGround.isFigureFillDiagonal(players[playerNumber]
+					.getFigure())
+					|| playGround.isFigureFillLine(players[playerNumber]
+							.getFigure())) {
 
-            if (figure != Cell.getDefFigureValue() && figure == players[playerNumber].getFigure()) {
+				// winner = players[playerNumber];
+				break;
+			}
 
-                playerNumber++;
-            } else if (figure == Cell.getDefFigureValue()) {
+			if (figure != Cell.getDefFigureValue()
+					&& figure == players[playerNumber].getFigure()) {
 
-                playerNumber = 0;
-            }
+				playerNumber++;
+			} else if (figure == Cell.getDefFigureValue()) {
 
-        } while (!playGround.isFull());
-    }
+				playerNumber = 0;
+			}
+
+		} while (!playGround.isFull());
+	}
 }
-

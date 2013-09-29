@@ -4,41 +4,41 @@ import java.util.Random;
 
 public class AiPlayer extends Player {
 
-    private static Random random;
+	private static Random random;
 
-    public AiPlayer(Field playGround, PlayerFigure playerFigure) {
+	public AiPlayer(Field playGround, PlayerFigure playerFigure) {
 
-        super(PlayerType.AI, playGround, playerFigure);
-        if (random == null) {
+		super(PlayerType.AI, playGround, playerFigure);
+		if (random == null) {
 
-            random = new Random();
-        }
-    }
+			random = new Random();
+		}
+	}
 
-    public AiPlayer(PlayerFigure playerFigure) {
+	public AiPlayer(PlayerFigure playerFigure) {
 
-        this(null, playerFigure);
-    }
+		this(null, playerFigure);
+	}
 
-    @Override
-    public boolean makeMove(int x, int y) {
+	@Override
+	public boolean makeMove(int x, int y) {
 
-        if (Player.playGround == null) {
-            return false;
-        }
+		if (Player.playGround == null) {
+			return false;
+		}
 
-        Cell cells[] = Player.playGround.getFreeCellNumbers();
+		Cell cells[] = Player.playGround.getFreeCellNumbers();
 
-        int cellNum = 0;
-        while (cellNum < cells.length) {
+		int cellNum = 0;
+		while (cellNum < cells.length) {
 
-            if (cells[cellNum++] == null) {
+			if (cells[cellNum++] == null) {
 
-                break;
-            }
-        }
-        cellNum = AiPlayer.random.nextInt(cellNum - 1);
+				break;
+			}
+		}
+		cellNum = AiPlayer.random.nextInt(cellNum - 1);
 
-        return super.makeMove(cells[cellNum].getX(), cells[cellNum].getY());
-    }
+		return super.makeMove(cells[cellNum].getX(), cells[cellNum].getY());
+	}
 }
