@@ -4,7 +4,7 @@ xo
 Simple game known as 'tic-tac-toe' written during learning Java.
 For human vs. human mode see tag or branch named like this mode,
 also you can view one of previouse commit where this file do not changed.
-Ai vs. Ai mode, no output (even console).
+Human vs. Human (hot seat), Ai vs. Ai and mix modes.
 No network support yet.
 
 Console making and running
@@ -19,8 +19,10 @@ or (for making jar and run it)
 
 Known issue
 =============
-Scanner not closed.
-If change to close after use - program behavior not user friendly while wait input.
+Players in custom game mode can have the same figure,
+if user type like that: already set figure do not checked.
+Referee class nead refactoring.
+At Input test use depracated class.
 
 =============
 
