@@ -3,7 +3,7 @@ xo
 
 Simple game known as 'tic-tac-toe' written during learning Java.
 For human vs. human mode see tag or branch named like this mode,
-also you can view one of previouse commit where this file do not changed.
+also you can view one of previous commit where this file do not changed.
 Human vs. Human (hot seat), Ai vs. Ai and mix modes.
 No network support yet.
 
@@ -19,10 +19,10 @@ or (for making jar and run it)
 
 Known issue
 =============
-Players in custom game mode can have the same figure,
-if user type like that: already set figure do not checked.
-Referee class nead refactoring.
-At Input test use depracated class.
+Step number silent input, even user input it greater or less
+than possible value, internal it corrected to possible value
+without user information about this.
+At Input test use deprecated class.
 
 =============
 

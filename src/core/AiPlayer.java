@@ -16,38 +16,33 @@ public class AiPlayer extends Player {
 	}
 
 	@Override
-	public Cell makeDesign() {
+	public Cell makeDesign(Field playGround) {
 
-		if (Player.playGround == null) {
+		if (playGround == null) {
 
 			return null;
 		}
 
-		Cell cells[] = Player.playGround.getFreeCells();
+		Cell cells[] = playGround.getFreeCells();
+
+		int cellNum = 0;
 
 		if (cells.length == 0) {
 
 			return null;
-		} else if (cells.length == 1) {
+		} else if (cells.length > 0) {
 
-			return makeMove(cells, 0);
+			cellNum = 1;
+			do {
+
+				if (cells[cellNum++] == null) {
+
+					break;
+				}
+			} while (cellNum < cells.length);
+
+			cellNum = AiPlayer.random.nextInt(cellNum - 1);
 		}
-
-		int cellNum = 0;
-		while (cellNum < cells.length) {
-
-			if (cells[cellNum++] == null) {
-
-				break;
-			}
-		}
-
-		cellNum = AiPlayer.random.nextInt(cellNum - 1);
-
-		return makeMove(cells, cellNum);
-	}
-
-	private Cell makeMove(Cell cells[], int cellNum) {
 
 		return (cells[cellNum].setFigure(getFigure()) ? cells[cellNum] : null);
 	}

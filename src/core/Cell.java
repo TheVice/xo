@@ -2,65 +2,58 @@ package core;
 
 public class Cell {
 
-    private static boolean defaultFigureSet = false;
-    private static char defaultFigure = ' ';
+	private static char defaultFigure = ' ';
 
-    private final int x;
-    private final int y;
-    private char figure;
+	private final int x;
+	private final int y;
+	private char figure;
 
-    public Cell(int x, int y, char defaultFigure) {
+	public static void setDefaultFigure(char defaultFigure) {
 
-        if (!Cell.defaultFigureSet) {
+		Cell.defaultFigure = defaultFigure;
+	}
 
-            Cell.defaultFigure = defaultFigure;
-            Cell.defaultFigureSet = true;
-        }
+	public Cell(int x, int y) {
 
-        this.x = x;
-        this.y = y;
-        this.figure = Cell.defaultFigure;
-    }
+		this.x = x;
+		this.y = y;
+		this.figure = Cell.defaultFigure;
+	}
 
-    public Cell(int x, int y) {
+	public static char getDefaultFigure() {
 
-        this(x, y, Cell.defaultFigure);
-    }
+		return Cell.defaultFigure;
+	}
 
-    public static char getDefaultFigure() {
+	public int getX() {
 
-        return Cell.defaultFigure;
-    }
+		return x;
+	}
 
-    public int getX() {
+	public int getY() {
 
-        return x;
-    }
+		return y;
+	}
 
-    public int getY() {
+	public char getFigure() {
 
-        return y;
-    }
+		return figure;
+	}
 
-    public char getFigure() {
+	public boolean setFigure(char figure) {
 
-        return figure;
-    }
+		if (figure == Cell.defaultFigure || this.figure == Cell.defaultFigure) {
 
-    public boolean setFigure(char figure) {
+			this.figure = figure;
+			return true;
+		}
 
-        if (figure == Cell.defaultFigure || this.figure == Cell.defaultFigure) {
+		return false;
+	}
 
-            this.figure = figure;
-            return true;
-        }
+	@Override
+	public String toString() {
 
-        return false;
-    }
-
-    @Override
-    public String toString() {
-
-        return "" + figure;
-    }
+		return "" + figure;
+	}
 }

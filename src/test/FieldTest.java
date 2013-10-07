@@ -3,6 +3,7 @@ package test;
 import org.junit.Test;
 import org.junit.Assert;
 
+import core.Cell;
 import core.Field;
 
 public class FieldTest extends Assert {
@@ -10,40 +11,31 @@ public class FieldTest extends Assert {
 	@Test
 	public void fieldConstructor() throws Exception {
 
-		assertEquals(Field.StartCellStyle.BOTTOM_LEFT, Field.int2style(0));
-
-		assertEquals(Field.StartCellStyle.TOP_LEFT, Field.int2style(1));
-		assertEquals(Field.StartCellStyle.TOP_RIGHT, Field.int2style(2));
-		assertEquals(Field.StartCellStyle.BOTTOM_RIGHT, Field.int2style(3));
-		assertEquals(Field.StartCellStyle.BOTTOM_LEFT, Field.int2style(4));
-
-		assertEquals(Field.StartCellStyle.BOTTOM_LEFT, Field.int2style(5));
-
 		Field field;
 
 		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-			field = new Field(0, 0, '*', scs);
+			field = new Field(0, 0, scs);
 			assertEquals(Field.getMinWidth(), field.getWidthCount());
 			assertEquals(Field.getMinHeight(), field.getHeightCount());
 
-			field = new Field(0, Field.getMinHeight(), '?', scs);
+			field = new Field(0, Field.getMinHeight(), scs);
 			assertEquals(Field.getMinWidth(), field.getWidthCount());
 			assertEquals(Field.getMinHeight(), field.getHeightCount());
 
-			field = new Field(Field.getMinWidth(), 0, '@', scs);
+			field = new Field(Field.getMinWidth(), 0, scs);
 			assertEquals(Field.getMinWidth(), field.getWidthCount());
 			assertEquals(Field.getMinHeight(), field.getHeightCount());
 
-			field = new Field(128, 128, '!', scs);
+			field = new Field(128, 128, scs);
 			assertEquals(Field.getMaxWidth(), field.getWidthCount());
 			assertEquals(Field.getMaxHeight(), field.getHeightCount());
 
-			field = new Field(128, Field.getMaxHeight(), '#', scs);
+			field = new Field(128, Field.getMaxHeight(), scs);
 			assertEquals(Field.getMaxWidth(), field.getWidthCount());
 			assertEquals(Field.getMaxHeight(), field.getHeightCount());
 
-			field = new Field(Field.getMaxWidth(), 128, '$', scs);
+			field = new Field(Field.getMaxWidth(), 128, scs);
 			assertEquals(Field.getMaxWidth(), field.getWidthCount());
 			assertEquals(Field.getMaxHeight(), field.getHeightCount());
 		}
@@ -52,27 +44,27 @@ public class FieldTest extends Assert {
 	@Test
 	public void fieldSetCell() throws Exception {
 
-		Field field = new Field(3, 4, '%', Field.StartCellStyle.BOTTOM_LEFT);
+		Field field = new Field(3, 4, Field.StartCellStyle.BOTTOM_LEFT);
 		assertEquals(3, field.getWidthCount());
 		assertEquals(4, field.getHeightCount());
 
 		assertEquals(null, field.setCell(0, 0, 'X'));
-		assertEquals(null, field.setCell(0, 0, Field.getDefFigureValue()));
-		assertEquals(null, field.setCell(1, 0, Field.getDefFigureValue()));
-		assertEquals(null, field.setCell(0, 1, Field.getDefFigureValue()));
+		assertEquals(null, field.setCell(0, 0, Cell.getDefaultFigure()));
+		assertEquals(null, field.setCell(1, 0, Cell.getDefaultFigure()));
+		assertEquals(null, field.setCell(0, 1, Cell.getDefaultFigure()));
 
 		assertEquals(null, field.setCell(field.getWidthCount() + 1,
 				field.getHeightCount() + 1, 'O'));
 		assertEquals(null, field.setCell(field.getWidthCount() + 1,
-				field.getHeightCount() + 1, Field.getDefFigureValue()));
+				field.getHeightCount() + 1, Cell.getDefaultFigure()));
 		assertEquals(null, field.setCell(field.getWidthCount(),
-				field.getHeightCount() + 1, Field.getDefFigureValue()));
+				field.getHeightCount() + 1, Cell.getDefaultFigure()));
 		assertEquals(null, field.setCell(field.getWidthCount() + 1,
-				field.getHeightCount(), Field.getDefFigureValue()));
+				field.getHeightCount(), Cell.getDefaultFigure()));
 
 		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-			field = new Field(5, 16, ' ', scs);
+			field = new Field(5, 16, scs);
 
 			assertFalse(field.isFull());
 
@@ -83,10 +75,10 @@ public class FieldTest extends Assert {
 					assertNotEquals(null, field.setCell(i, j, 'X'));
 					assertEquals(null, field.setCell(i, j, 'O'));
 					assertNotEquals(null,
-							field.setCell(i, j, Field.getDefFigureValue()));
+							field.setCell(i, j, Cell.getDefaultFigure()));
 					assertNotEquals(null, field.setCell(i, j, 'O'));
 					assertNotEquals(null,
-							field.setCell(i, j, Field.getDefFigureValue()));
+							field.setCell(i, j, Cell.getDefaultFigure()));
 					assertNotEquals(null, field.setCell(i, j, 'X'));
 
 					if (j != field.getHeightCount()
@@ -104,7 +96,7 @@ public class FieldTest extends Assert {
 
 		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-			field = new Field(12, 4, ' ', scs);
+			field = new Field(12, 4, scs);
 
 			for (int j = field.getHeightCount(); j > 0; j--) {
 
@@ -113,10 +105,10 @@ public class FieldTest extends Assert {
 					assertNotEquals(null, field.setCell(i, j, 'X'));
 					assertEquals(null, field.setCell(i, j, 'O'));
 					assertNotEquals(null,
-							field.setCell(i, j, Field.getDefFigureValue()));
+							field.setCell(i, j, Cell.getDefaultFigure()));
 					assertNotEquals(null, field.setCell(i, j, 'O'));
 					assertNotEquals(null,
-							field.setCell(i, j, Field.getDefFigureValue()));
+							field.setCell(i, j, Cell.getDefaultFigure()));
 					assertNotEquals(null, field.setCell(i, j, 'X'));
 
 					if (j != 1 && i != 1) {
@@ -134,14 +126,17 @@ public class FieldTest extends Assert {
 	@Test
 	public void fieldStartCellStyle() throws Exception {
 
-		String checkString[] = { "[1][2][3]\n[4][5][6]\n",
-				"[3][2][1]\n[6][5][4]\n", "[6][5][4]\n[3][2][1]\n",
-				"[4][5][6]\n[1][2][3]\n" };
+		String lineSeparator = System.getProperty("line.separator");
+		String checkString[] = {
+				"[1][2][3]" + lineSeparator + "[4][5][6]" + lineSeparator,
+				"[3][2][1]" + lineSeparator + "[6][5][4]" + lineSeparator,
+				"[6][5][4]" + lineSeparator + "[3][2][1]" + lineSeparator,
+				"[4][5][6]" + lineSeparator + "[1][2][3]" + lineSeparator };
 
 		int stringNum = 0;
 		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-			Field field = new Field(3, 2, ' ', scs);
+			Field field = new Field(3, 2, scs);
 
 			Integer numToCell = 1;
 			for (int j = 1; j <= field.getHeightCount(); j++) {
@@ -160,8 +155,8 @@ public class FieldTest extends Assert {
 
 		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-			Field field = new Field(3, 4, ' ', scs);
-			assertTrue(field.isFigureFillLine(Field.getDefFigureValue()));
+			Field field = new Field(3, 4, scs);
+			assertTrue(field.isFigureFillLine(Cell.getDefaultFigure()));
 			assertFalse(field.isFigureFillLine('X'));
 			assertFalse(field.isFigureFillLine('O'));
 
@@ -173,7 +168,7 @@ public class FieldTest extends Assert {
 			assertTrue(field.isFigureFillLine('X'));
 			assertFalse(field.isFigureFillLine('O'));
 
-			fillLine(field, 1, Field.getDefFigureValue(), true);
+			fillLine(field, 1, Cell.getDefaultFigure(), true);
 			fillLine(field, field.getHeightCount(), 'O', false);
 			assertTrue(field.isFigureFillLine('O'));
 			assertFalse(field.isFigureFillLine('X'));
@@ -185,8 +180,8 @@ public class FieldTest extends Assert {
 
 		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
-			Field field = new Field(3, 4, ' ', scs);
-			assertFalse(field.isFigureFillDiagonal(Field.getDefFigureValue()));
+			Field field = new Field(3, 4, scs);
+			assertFalse(field.isFigureFillDiagonal(Cell.getDefaultFigure()));
 
 			fillDiagonal(field, 'X', true);
 			assertFalse(field.isFigureFillDiagonal('X'));
@@ -194,8 +189,8 @@ public class FieldTest extends Assert {
 			fillDiagonal(field, 'O', false);
 			assertFalse(field.isFigureFillDiagonal('O'));
 
-			field = new Field(6, 6, ' ', scs);
-			assertTrue(field.isFigureFillDiagonal(Field.getDefFigureValue()));
+			field = new Field(6, 6, scs);
+			assertTrue(field.isFigureFillDiagonal(Cell.getDefaultFigure()));
 
 			fillDiagonal(field, 'X', true);
 			assertTrue(field.isFigureFillDiagonal('X'));
@@ -203,8 +198,8 @@ public class FieldTest extends Assert {
 			fillDiagonal(field, 'O', false);
 			assertTrue(field.isFigureFillDiagonal('O'));
 
-			field.setCell(3, 3, Field.getDefFigureValue());
-			field.setCell(3, 4, Field.getDefFigureValue());
+			field.setCell(3, 3, Cell.getDefaultFigure());
+			field.setCell(3, 4, Cell.getDefaultFigure());
 
 			assertFalse(field.isFigureFillDiagonal('X'));
 			assertFalse(field.isFigureFillDiagonal('O'));
@@ -252,14 +247,14 @@ public class FieldTest extends Assert {
 
 			for (int i = 1; i <= count; i++) {
 
-				field.setCell(i, i, Field.getDefFigureValue());
+				field.setCell(i, i, Cell.getDefaultFigure());
 				field.setCell(i, i, figure);
 			}
 		} else {
 
 			for (int i = count; i > 0; i--) {
 
-				field.setCell(i, count - i + 1, Field.getDefFigureValue());
+				field.setCell(i, count - i + 1, Cell.getDefaultFigure());
 				field.setCell(i, count - i + 1, figure);
 			}
 		}

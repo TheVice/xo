@@ -33,4 +33,14 @@ public class Ui {
 		output.writeLine(string);
 	}
 
+	public void onOutput(Object object) {
+
+		onOutput(object.toString());
+	}
+
+	public void onOutputLine(Object object) {
+
+		onOutputLine(object.toString());
+	}
+
 }

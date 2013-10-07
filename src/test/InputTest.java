@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import io.Input;
+
 import java.io.StringBufferInputStream;
 
 public class InputTest extends Assert {
@@ -11,7 +12,9 @@ public class InputTest extends Assert {
 	@Test
 	public void input() {
 
-		String str = "Line1\r\nLine2\r\nLine3";
+		String lineSeparator = System.getProperty("line.separator");
+		String str = "Line1" + lineSeparator + "Line2" + lineSeparator
+				+ "Line3";
 		StringInput strInput = getStringInputInstance(str);
 
 		assertEquals("Line1", strInput.readLine());

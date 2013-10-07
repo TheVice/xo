@@ -4,304 +4,409 @@ import ui.Ui;
 
 public class Referee {
 
+	private static boolean isCommandEntered;
+
 	private static int getIntFromInput(Ui ui) {
 
-		int i = 0;
-		try {
+		int integerValue = 0;
+		boolean integerEntered = false;
 
-			i = ui.onInputInt();
-		} catch (Exception exc) {
+		do {
+			try {
 
-			ui.onOutputLine("Please enter integer value");
-			i = getIntFromInput(ui);
-		}
+				integerValue = ui.onInputInt();
+				integerEntered = true;
+			} catch (NumberFormatException nexc) {
 
-		return i;
+				ui.onOutputLine("Please enter integer value.");
+			}
+		} while (!integerEntered);
+
+		return integerValue;
 	}
 
 	private static int getCommandFromInput(Ui ui, String[] commands) {
 
-		ui.onOutputLine("Please type one of the command(s) below:");
+		int num = 0;
+		boolean commandEntered = false;
 
-		for (int commandNum = 0; commandNum < commands.length; commandNum++) {
+		do {
+			ui.onOutputLine("Please type one of the commands below:");
 
-			ui.onOutputLine(commands[commandNum]);
-		}
+			for (int commandNum = 0; commandNum < commands.length; commandNum++) {
 
-		String command = ui.onInput();
+				ui.onOutputLine(commands[commandNum]);
+			}
 
-		for (int commandNum = 0; commandNum < commands.length; commandNum++) {
+			String command = ui.onInput();
 
-			if (command.equals(commands[commandNum])) {
+			for (int commandNum = 0; commandNum < commands.length; commandNum++) {
 
-				return commandNum;
+				if (command.equals(commands[commandNum])) {
+
+					num = commandNum;
+					commandEntered = true;
+					break;
+				}
+			}
+
+		} while (!commandEntered);
+
+		return num;
+	}
+
+	private static int getCommandOrIntFromInput(Ui ui, String[] commands) {
+
+		int num = 0;
+		boolean commandEntered = false;
+		isCommandEntered = false;
+
+		do {
+
+			String command = ui.onInput();
+
+			for (int commandNum = 0; commandNum < commands.length; commandNum++) {
+
+				if (command.equals(commands[commandNum])) {
+
+					num = commandNum;
+					commandEntered = true;
+					isCommandEntered = true;
+					break;
+				}
+			}
+			if (!commandEntered) {
+
+				try {
+
+					num = Integer.valueOf(command);
+					commandEntered = true;
+				} catch (NumberFormatException nexc) {
+
+				}
+			}
+
+		} while (!commandEntered);
+
+		return num;
+	}
+
+	private static boolean isFigurePresent(char figures[], char figure) {
+
+		if (figures != null) {
+
+			for (char presentFigure : figures) {
+
+				if (figure == presentFigure) {
+
+					return true;
+				}
 			}
 		}
 
-		return getCommandFromInput(ui, commands);
+		return false;
 	}
 
-	private static char determineDefaultFigure(Ui ui, char figure) {
+	private Ui ui;
+	private Player players[];
+	private Player winner;
+	private char playerFigures[];
+	private Field playGround;
+	private Chronicler chronicler;
+	private boolean exitNow;
 
-		if (figure == '\0') {
+	public Referee(Ui ui) {
 
-			ui.onOutput("Please type the default (neutral) figure: ");
-			figure = ui.onInput().charAt(0);
-		}
+		this.ui = ui;
 
-		ui.onOutputLine("Default figure will be '" + figure
-				+ "' (with out gaps(') of corse)");
+		boolean playAgain = false;
+		do {
 
-		return figure;
-	}
+			this.players = null;
+			this.winner = null;
+			this.playerFigures = null;
+			this.playGround = null;
+			this.chronicler = null;
+			this.exitNow = false;
 
-	private static int determineStartPositionAtField(Ui ui, int width,
-			int height, char figure, int styleNumber) {
+			this.ui.onOutputLine("Welcome in Xs and Os (a.k.a. Tic-tac-toe)!");
+			init();
 
-		String fieldStyles[] = { "Top Left", "Top Right", "Bottom Right",
-				"Bottom Left" };
+			this.ui.onOutput("Would you like play another party (y/n): ");
+			String str = ui.onInput();
+			if (str.charAt(0) == 'y') {
 
-		if (styleNumber <= 0) {
+				playAgain = true;
+			} else {
 
-			ui.onOutputLine("Choose the position from what calculate the cells.");
-
-			int i = 0;
-			for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
-
-				Field field = new Field(width, height, figure, scs);
-
-				ui.onOutputLine((i + 1) + " " + fieldStyles[i++]);
-				showField(ui, field);
+				playAgain = false;
 			}
 
-			styleNumber = getIntFromInput(ui);
-		}
-
-		if (styleNumber > 4) {
-
-			styleNumber = 4;
-		} else if (styleNumber < 1) {
-
-			styleNumber = 1;
-		}
-
-		ui.onOutputLine("Field type: " + fieldStyles[styleNumber - 1]);
-
-		return styleNumber;
+		} while (playAgain);
 	}
 
-	private static void showField(Ui ui, Field field) {
+	private void init() {
 
-		char figure = Cell.getDefaultFigure();
+		ui.onOutputLine("Would you play classic Tic-tac-toe (field 3 x 3, start cell left bottom)?");
+		String commands[] = { "Classic", "Custom" };
+		int commandNum = getCommandFromInput(ui, commands);
+		ui.onOutputLine("Game type - " + commands[commandNum] + ".");
 
-		ui.onOutputLine("Field size: " + field.getWidthCount() + " x "
-				+ field.getHeightCount());
-		field.setCell(1, 1, figure != 'S' ? 'S' : '*');
-		ui.onOutputLine("Start position marked as "
-				+ ((figure != 'S') ? "S" : "*"));
-		ui.onOutputLine("From this point (that is 1 1) to width and height"
-				+ " (that is " + field.getWidthCount() + " "
-				+ field.getHeightCount() + ")");
-		ui.onOutputLine("The complex field is\n---------\n" + field
-				+ "---------");
-		field.setCell(1, 1, figure);
-	}
+		if (commandNum == 0) {
 
-	private static Field prepareField4Game(Ui ui, int width, int height,
-			char figure, int styleNumber) {
+			char playerFigures[] = { 'X', 'O' };
+			setupPlayers(2, playerFigures);
+			playGround = setupField(3, 3, ' ', 3);
+		} else {
 
-		if (width <= 0 || height <= 0) {
-
-			ui.onOutputLine("What the size of field do you want (width x height)?");
-
-			ui.onOutput("Width - ");
-			width = getIntFromInput(ui);
-
-			ui.onOutput("Height - ");
-			height = getIntFromInput(ui);
+			setupPlayers(0, null);
+			playGround = setupField(0, 0, '\0', -1);
 		}
 
-		figure = determineDefaultFigure(ui, figure);
-		styleNumber = determineStartPositionAtField(ui, width, height, figure,
-				styleNumber);
-
-		Field field = new Field(width, height, figure,
-				Field.int2style(styleNumber));
-
-		showField(ui, field);
-
-		return field;
+		chronicler = new Chronicler(this.playGround.getHeightCount()
+				* this.playGround.getWidthCount());
+		gameLoop();
 	}
 
-	private static Player[] setupPlayers(Ui ui, int playerCount,
-			char[] playerFigures) {
+	private void setupPlayers(int playerCount, char[] playerFigures) {
 
-		Player players[] = null;
+		if (playerCount <= 0
+				|| playerCount > Field.getMaxWidth() * Field.getMaxHeight()) {
 
-		if (playerCount <= 0) {
+			boolean playerCountSet = false;
+			do {
 
-			ui.onOutputLine("How many player would you like to play?");
-			playerCount = getIntFromInput(ui);
+				ui.onOutputLine("How many player would you like to play in game?");
+				playerCount = getIntFromInput(ui);
 
-			if (playerCount < 0) {
+				if (playerCount < 1) {
 
-				playerCount = 1;
-			}
+					ui.onOutputLine("Player count can not be less than - 1");
+				} else if (playerCount > Field.getMaxWidth()
+						* Field.getMaxHeight()) {
+
+					ui.onOutputLine("Player count can not be greate than maximum cell count - "
+							+ (Field.getMaxWidth() * Field.getMaxHeight())
+							+ ".");
+				} else {
+
+					playerCountSet = true;
+				}
+
+			} while (!playerCountSet);
 		}
 
 		ui.onOutputLine("Player count - " + playerCount);
 
 		players = new Player[playerCount];
+		boolean playerFigurePreset = (playerFigures != null && playerCount == playerFigures.length);
+
+		if (!playerFigurePreset) {
+
+			this.playerFigures = new char[playerCount];
+		}
 
 		for (int playerNum = 0; playerNum < playerCount; playerNum++) {
 
-			Player player = null;
+			ui.onOutputLine("Determining player num - " + (playerNum + 1));
 
-			String commands[] = { "Human", "AI" };
-			ui.onOutputLine("Select player " + (playerNum + 1) + " type.");
+			if (playerFigurePreset) {
 
-			if (getCommandFromInput(ui, commands) == 0) {
-
-				if (playerFigures == null
-						|| playerFigures.length != playerCount) {
-
-					ui.onOutput("Please type the player figure: ");
-					char figure = ui.onInput().charAt(0);
-					ui.onOutputLine("Player figure will be '" + figure
-							+ "' (with out gaps(') of corse)");
-
-					player = new HumanPlayer(figure);
-				} else {
-
-					player = new HumanPlayer(playerFigures[playerNum]);
-				}
-
+				players[playerNum] = setupPlayer(playerFigures[playerNum]);
 			} else {
 
-				if (playerFigures == null
-						|| playerFigures.length != playerCount) {
-
-					ui.onOutput("Please type the player figure: ");
-					char figure = ui.onInput().charAt(0);
-					ui.onOutputLine("Player figure will be '" + figure
-							+ "' (with out gaps(') of corse)");
-
-					player = new AiPlayer(figure);
-				} else {
-
-					player = new AiPlayer(playerFigures[playerNum]);
-				}
+				players[playerNum] = setupPlayer();
+				this.playerFigures[playerNum] = players[playerNum].getFigure();
 			}
-
-			players[playerNum] = player;
-
 		}
-
-		return players;
 	}
 
-	public static Referee createInstance(Ui ui) {
+	private Player setupPlayer() {
 
-		ui.onOutputLine("Welcome in Xs and Os (a.k.a. Tic-tac-toe)!");
-		ui.onOutputLine("Would you play classic Tic-tac-toe (field 3 x 3, start cell left bottom)?");
+		char figure = '\0';
+		boolean playerFigureSet = false;
 
-		String commands[] = { "Classic", "Custom" };
+		do {
 
-		Field field = null;
-		Player players[] = null;
+			ui.onOutput("Please type the player figure: ");
+			figure = ui.onInput().charAt(0);
 
+			playerFigureSet = !isFigurePresent(playerFigures, figure);
+			if (!playerFigureSet) {
+
+				ui.onOutputLine("Figure '" + figure
+						+ "' already set to other player.");
+			}
+		} while (!playerFigureSet);
+
+		return setupPlayer(figure);
+	}
+
+	private Player setupPlayer(char figure) {
+
+		ui.onOutputLine("Player figure will be '" + figure
+				+ "' (with out gaps(') of corse).");
+
+		ui.onOutputLine("Select player type.");
+
+		String commands[] = { "Human", "AI" };
 		int commandNum = getCommandFromInput(ui, commands);
-		ui.onOutputLine("Game type - " + commands[commandNum]);
+
+		Player player = null;
 
 		if (commandNum == 0) {
 
-			field = prepareField4Game(ui, 3, 3, ' ', 4);
-			char playerFigures[] = { 'X', 'O' };
-			players = setupPlayers(ui, 2, playerFigures);
-
+			player = new HumanPlayer(figure);
 		} else {
 
-			field = prepareField4Game(ui, 0, 0, '\0', 0);
-			players = setupPlayers(ui, 0, null);
+			player = new AiPlayer(figure);
 		}
 
-		Player.setPlayGround(field);
-		return new Referee(ui, field, players);
+		ui.onOutputLine("Player type - '" + commands[commandNum] + "'.");
+
+		return player;
 	}
 
-	private Ui ui;
-	private Field playGround;
-	private Player players[];
-	private Chronicler chronicler;
-	private Player winner;
-	private int x;
-	private int y;
-	private boolean exitNow;
+	private char setupDefaultFieldFigure(char figure) {
 
-	private Referee(Ui ui, Field playGround, Player players[]) {
+		if (figure == '\0') {
 
-		this.ui = ui;
-		this.playGround = playGround;
-		this.players = new Player[players.length];
-		System.arraycopy(players, 0, this.players, 0, players.length);
-		chronicler = new Chronicler(this.playGround.getHeightCount()
-				* this.playGround.getWidthCount());
-	}
+			boolean defaultFieldFigureSet = false;
+			do {
 
-	private char letsHumanPlayerMakeADesign(Player player) {
+				ui.onOutput("Please type the default (neutral) figure: ");
+				figure = ui.onInput().charAt(0);
 
-		Cell cell = null;
+				defaultFieldFigureSet = !isFigurePresent(playerFigures, figure);
+				if (!defaultFieldFigureSet) {
 
-		ui.onOutputLine("To undo type 'step'.\nTo exit from game type 'exit'.");
-		ui.onOutput("Player of " + player
-				+ " please make your move (position x, y):");
-
-		x = -1;
-		y = -1;
-
-		do {
-
-			if (checkForCommandInput(true)) {
-
-				if (exitNow) {
-
-					return player.getFigure();
+					ui.onOutputLine("Figure '" + figure
+							+ "' already set to one of players.");
 				}
-				return makeUndo();
-			}
-		} while (x == -1);
 
-		do {
+			} while (!defaultFieldFigureSet);
 
-			if (checkForCommandInput(false)) {
-
-				if (exitNow) {
-
-					return player.getFigure();
-				}
-				return makeUndo();
-			}
-		} while (y == -1);
-
-		cell = player.makeDesign(x, y);
-		if (cell != null) {
-
-			ui.onOutputLine("x = " + x + " y = " + y);
-			if (playGround.isValidCellNumber(x, y)) {
-
-				ui.onOutputLine("Position is busy by non default figure.");
-			} else {
-
-				ui.onOutputLine("Position is out side of the field.");
-			}
-
-			return letsHumanPlayerMakeADesign(player);
 		}
 
-		ui.onOutputLine("\n---------\n" + playGround + "---------");
-		chronicler.addWalk(cell);
+		ui.onOutputLine("Default figure will be '" + figure
+				+ "' (with out gaps(') of corse).");
 
-		return player.getFigure();
+		return figure;
+	}
+
+	private void showField(Field field) {
+
+		char figure = Cell.getDefaultFigure();
+
+		ui.onOutputLine("Field size: " + field.getWidthCount() + " x "
+				+ field.getHeightCount() + ".");
+
+		field.setCell(1, 1, figure != 'S' ? 'S' : '*');
+
+		ui.onOutputLine("Start position marked as "
+				+ ((figure != 'S') ? "S" : "*") + ".");
+		ui.onOutputLine("From this point (that is {1; 1}) to width and height"
+				+ " (that is {" + field.getWidthCount() + "; "
+				+ field.getHeightCount() + "}).");
+		ui.onOutputLine("---------");
+		ui.onOutput(field);
+		ui.onOutputLine("---------");
+
+		field.setCell(1, 1, figure);
+	}
+
+	private Field setupStartPositionAtField(int width, int height, char figure,
+			int styleNumber) {
+
+		String fieldStyles[] = { "Top Left", "Top Right", "Bottom Right",
+				"Bottom Left" };
+
+		Field fields[] = new Field[fieldStyles.length];
+
+		int fieldNum = 0;
+		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
+
+			fields[fieldNum++] = new Field(width, height, scs);
+		}
+
+		if (styleNumber < 0 || styleNumber >= fieldNum) {
+
+			ui.onOutputLine("Choose the position from what calculate the cells.");
+
+			fieldNum = 0;
+			for (String style : fieldStyles) {
+
+				ui.onOutputLine(style);
+				showField(fields[fieldNum++]);
+			}
+
+			styleNumber = getCommandFromInput(ui, fieldStyles);
+		}
+
+		ui.onOutputLine("Selected field type: " + fieldStyles[styleNumber]);
+		showField(fields[styleNumber]);
+
+		return fields[styleNumber];
+	}
+
+	private Field setupField(int width, int height, char figure, int styleNumber) {
+
+		if (width == 0 || height == 0) {
+
+			ui.onOutputLine("What the size of field do you want (width x height)?");
+
+			boolean intSet = false;
+			do {
+
+				ui.onOutput("Width - ");
+				width = getIntFromInput(ui);
+				ui.onOutputLine("Width - " + width);
+
+				if (width < Field.getMinWidth()) {
+
+					ui.onOutputLine("Width can not be less than - "
+							+ Field.getMinWidth() + ".");
+				} else if (width > Field.getMaxWidth()) {
+
+					ui.onOutputLine("Width can not be greate than - "
+							+ Field.getMaxWidth() + ".");
+				} else {
+
+					intSet = true;
+				}
+
+			} while (!intSet);
+
+			intSet = false;
+			do {
+
+				ui.onOutput("Height - ");
+				height = getIntFromInput(ui);
+				ui.onOutputLine("Height - " + height);
+
+				if (height < Field.getMinHeight()) {
+
+					ui.onOutputLine("Height can not be less than - "
+							+ Field.getMinHeight() + ".");
+				} else if (height > Field.getMaxHeight()) {
+
+					ui.onOutputLine("Height can not be greate than - "
+							+ Field.getMaxHeight() + ".");
+				} else {
+
+					intSet = true;
+				}
+
+			} while (!intSet);
+
+		}
+
+		figure = setupDefaultFieldFigure(figure);
+		Cell.setDefaultFigure(figure);
+		Field field = setupStartPositionAtField(width, height, figure,
+				styleNumber);
+
+		return field;
 	}
 
 	public void gameLoop() {
@@ -320,13 +425,19 @@ public class Referee {
 
 			if (players[playerNumber].getType() == Player.Type.AI) {
 
-				Cell cell = players[playerNumber].makeDesign();
-				chronicler.addWalk(cell);
+				ui.onOutput("Player of " + players[playerNumber]
+						+ " please make your move.");
+				chronicler
+						.addWalk(players[playerNumber].makeDesign(playGround));
 				figure = players[playerNumber].getFigure();
 			} else {
 
 				figure = letsHumanPlayerMakeADesign(players[playerNumber]);
 			}
+
+			ui.onOutputLine(System.getProperty("line.separator") + "---------"
+					+ System.getProperty("line.separator") + playGround
+					+ "---------");
 
 			if (exitNow) {
 
@@ -356,49 +467,71 @@ public class Referee {
 		gameOver();
 	}
 
-	private boolean checkForCommandInput(boolean isForX) {
+	private char letsHumanPlayerMakeADesign(Player player) {
 
-		String command = ui.onInput();
+		Cell cell = null;
 
-		if (!command.equals("step") && !command.equals("exit")) {
+		String commands[] = { "step", "exit" };
+		ui.onOutputLine("To undo type 'step'."
+				+ System.getProperty("line.separator")
+				+ "To exit from game type 'exit'.");
+		ui.onOutput("Player of " + player
+				+ " please make your move (position x, y): ");
 
-			try {
+		int x = getCommandOrIntFromInput(ui, commands);
+		if (Referee.isCommandEntered) {
 
-				int i = Integer.valueOf(command);
-				if (isForX) {
+			if (x == 0) {
 
-					x = i;
-				} else {
+				exitNow = true;
+				return player.getFigure();
+			}
+			return makeUndo();
+		}
 
-					y = i;
-				}
-			} catch (NumberFormatException exc) {
+		int y = getCommandOrIntFromInput(ui, commands);
+		if (Referee.isCommandEntered) {
 
-				ui.onOutputLine("Please enter integer value ");
+			if (y == 0) {
+
+				exitNow = true;
+				return player.getFigure();
+			}
+			return makeUndo();
+		}
+
+		cell = player.makeMove(playGround, x, y);
+		if (cell == null) {
+
+			ui.onOutputLine("x = " + x + " y = " + y);
+			if (playGround.isValidCellNumber(x, y)) {
+
+				ui.onOutputLine("Position is busy by non default figure.");
+			} else {
+
+				ui.onOutputLine("Position is out side of the field.");
 			}
 
-			return false;
+			return letsHumanPlayerMakeADesign(player);
 		}
 
-		if (command.equals("exit")) {
+		chronicler.addWalk(cell);
 
-			exitNow = true;
-		}
-
-		return true;
+		return player.getFigure();
 	}
 
 	private char makeUndo() {
 
 		ui.onOutputLine("There few next steps made at this point.");
-		ui.onOutputLine(chronicler.toString());
-		ui.onOutput("Which one do you what to revert?\n"
+		ui.onOutputLine(chronicler);
+		ui.onOutput("Which one do you what to revert?"
+				+ System.getProperty("line.separator")
 				+ "Type step num (0 (clean field)"
 				+ (chronicler.getStepCount() > 0 ? "- "
 						+ chronicler.getStepCount() : "") + ") ");
 
 		int stepNum = ui.onInputInt();
-
+		//TODO: stepNum may check via say to user possible values
 		return chronicler.revertTo(stepNum, playGround);
 	}
 
@@ -406,25 +539,27 @@ public class Referee {
 
 		if (!exitNow) {
 
-			ui.onOutputLine("The game is over");
+			ui.onOutputLine("The game is over.");
 			if (winner != null) {
 
-				ui.onOutputLine("The winner is player " + winner);
+				ui.onOutputLine("The winner is player " + winner + ".");
 			} else {
 
-				ui.onOutputLine("The friendship is win");
+				ui.onOutputLine("The friendship is win.");
 			}
 		} else {
 
-			ui.onOutputLine("Game interrupted ");
+			ui.onOutputLine("Game interrupted.");
 		}
 
-		ui.onOutputLine("\n---------\n" + playGround + "---------");
+		ui.onOutputLine(System.getProperty("line.separator") + "---------"
+				+ System.getProperty("line.separator") + playGround
+				+ "---------");
 
 		if (chronicler.getStepCount() > 0) {
 
-			ui.onOutputLine("Game chronics");
-			ui.onOutputLine(chronicler.toString());
+			ui.onOutputLine("Game chronics.");
+			ui.onOutputLine(chronicler);
 		}
 	}
 

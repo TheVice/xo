@@ -6,18 +6,8 @@ public class Player {
 		HUMAN, AI
 	}
 
-	protected static Field playGround;
-
 	private final Type type;
 	private char figure = ' ';
-
-	public static void setPlayGround(Field playGround) {
-
-		if (Player.playGround == null) {
-
-			Player.playGround = playGround;
-		}
-	}
 
 	protected Player(char figure, Type type) {
 
@@ -35,14 +25,18 @@ public class Player {
 		return figure;
 	}
 
-	public Cell makeDesign() {
+	public Cell makeDesign(Field playGround) {
 
 		return null;
 	}
 
-	public Cell makeDesign(int x, int y) {
+	public Cell makeMove(Field playGround, int x, int y) {
 
-		return null;
+		if (playGround == null) {
+
+			return null;
+		}
+		return playGround.setCell(x, y, getFigure());
 	}
 
 	@Override

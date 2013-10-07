@@ -7,8 +7,7 @@ public class Main {
 
 	public static void main(String... args) {
 
-		Referee.createInstance(
-				new Ui(new Input(System.in), new Output(System.out)))
-				.gameLoop();
+		new Referee(new Ui(new Input(System.in), new Output(System.out)));
 	}
+
 }
