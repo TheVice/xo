@@ -19,9 +19,6 @@ or (for making jar and run it)
 
 Known issue
 =============
-Step number silent input, even user input it greater or less
-than possible value, internal it corrected to possible value
-without user information about this.
 At Input test use deprecated class.
 
 =============
