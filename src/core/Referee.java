@@ -9,27 +9,26 @@ public class Referee {
 	private static int getIntFromInput(Ui ui) {
 
 		int integerValue = 0;
-		boolean integerEntered = false;
 
 		do {
 			try {
 
 				integerValue = ui.onInputInt();
-				integerEntered = true;
+				break;
 			} catch (NumberFormatException nexc) {
 
 				ui.onOutputLine("Please enter integer value.");
 			}
-		} while (!integerEntered);
+		} while (true);
 
 		return integerValue;
 	}
 
 	private static int getCommandFromInput(Ui ui, String[] commands) {
 
-		int num = 0;
-		boolean commandEntered = false;
+		int commandNumber = 0;
 
+		boolean commandEntered = false;
 		do {
 			ui.onOutputLine("Please type one of the commands below:");
 
@@ -40,11 +39,11 @@ public class Referee {
 
 			String command = ui.onInput();
 
-			for (int commandNum = 0; commandNum < commands.length; commandNum++) {
+			for (int num = 0; num < commands.length; num++) {
 
-				if (command.equals(commands[commandNum])) {
+				if (command.equals(commands[num])) {
 
-					num = commandNum;
+					commandNumber = num;
 					commandEntered = true;
 					break;
 				}
@@ -52,26 +51,26 @@ public class Referee {
 
 		} while (!commandEntered);
 
-		return num;
+		return commandNumber;
 	}
 
 	private static int getCommandOrIntFromInput(Ui ui, String[] commands) {
 
-		int num = 0;
-		boolean commandEntered = false;
 		isCommandEntered = false;
+		int commandNumber = 0;
 
+		boolean commandEntered = false;
 		do {
 
 			String command = ui.onInput();
 
-			for (int commandNum = 0; commandNum < commands.length; commandNum++) {
+			for (int num = 0; num < commands.length; num++) {
 
-				if (command.equals(commands[commandNum])) {
+				if (command.equals(commands[num])) {
 
-					num = commandNum;
-					commandEntered = true;
+					commandNumber = num;
 					isCommandEntered = true;
+					commandEntered = true;
 					break;
 				}
 			}
@@ -79,7 +78,7 @@ public class Referee {
 
 				try {
 
-					num = Integer.valueOf(command);
+					commandNumber = Integer.valueOf(command);
 					commandEntered = true;
 				} catch (NumberFormatException nexc) {
 
@@ -88,7 +87,7 @@ public class Referee {
 
 		} while (!commandEntered);
 
-		return num;
+		return commandNumber;
 	}
 
 	private static boolean isFigurePresent(char figures[], char figure) {
@@ -469,51 +468,59 @@ public class Referee {
 
 	private char letsHumanPlayerMakeADesign(Player player) {
 
+		String commands[] = { "step", "exit" };
 		Cell cell = null;
 
-		String commands[] = { "step", "exit" };
-		ui.onOutputLine("To undo type 'step'."
-				+ System.getProperty("line.separator")
-				+ "To exit from game type 'exit'.");
-		ui.onOutput("Player of " + player
-				+ " please make your move (position x, y): ");
+		do {
 
-		int x = getCommandOrIntFromInput(ui, commands);
-		if (Referee.isCommandEntered) {
+			ui.onOutputLine("To undo type 'step'."
+					+ System.getProperty("line.separator")
+					+ "To exit from game type 'exit'.");
+			ui.onOutput("Player of " + player
+					+ " please make your move (position x, y): ");
 
-			if (x == 0) {
+			int x = getCommandOrIntFromInput(ui, commands);
 
-				exitNow = true;
-				return player.getFigure();
+			if (Referee.isCommandEntered) {
+
+				if (x == 1) {
+
+					exitNow = true;
+					return player.getFigure();
+				}
+				return makeUndo();
 			}
-			return makeUndo();
-		}
 
-		int y = getCommandOrIntFromInput(ui, commands);
-		if (Referee.isCommandEntered) {
+			int y = getCommandOrIntFromInput(ui, commands);
 
-			if (y == 0) {
+			if (Referee.isCommandEntered) {
 
-				exitNow = true;
-				return player.getFigure();
+				if (y == 1) {
+
+					exitNow = true;
+					return player.getFigure();
+				}
+				return makeUndo();
 			}
-			return makeUndo();
-		}
 
-		cell = player.makeMove(playGround, x, y);
-		if (cell == null) {
+			cell = player.makeMove(playGround, x, y);
 
-			ui.onOutputLine("x = " + x + " y = " + y);
-			if (playGround.isValidCellNumber(x, y)) {
+			if (cell == null) {
 
-				ui.onOutputLine("Position is busy by non default figure.");
+				ui.onOutputLine("x = " + x + " y = " + y);
+				if (playGround.isValidCellNumber(x, y)) {
+
+					ui.onOutputLine("Position is busy by non default figure.");
+				} else {
+
+					ui.onOutputLine("Position is out side of the field.");
+				}
 			} else {
 
-				ui.onOutputLine("Position is out side of the field.");
+				break;
 			}
 
-			return letsHumanPlayerMakeADesign(player);
-		}
+		} while (true);
 
 		chronicler.addWalk(cell);
 
@@ -524,14 +531,31 @@ public class Referee {
 
 		ui.onOutputLine("There few next steps made at this point.");
 		ui.onOutputLine(chronicler);
-		ui.onOutput("Which one do you what to revert?"
-				+ System.getProperty("line.separator")
-				+ "Type step num (0 (clean field)"
-				+ (chronicler.getStepCount() > 0 ? "- "
-						+ chronicler.getStepCount() : "") + ") ");
+		ui.onOutputLine("Which one do you what to revert?");
 
-		int stepNum = ui.onInputInt();
-		//TODO: stepNum may check via say to user possible values
+		final int index = chronicler.getStepCount();
+		int stepNum = 0;
+
+		do {
+
+			ui.onOutput("Type step num (0 (clean field)"
+					+ (index > 0 ? " - " + index : "") + ") ");
+
+			stepNum = getIntFromInput(ui);
+
+			if (stepNum < 0) {
+
+				ui.onOutputLine("Number must be possitive or 0.");
+			} else if (stepNum > index) {
+
+				ui.onOutputLine("Number can not be more than - " + index + ".");
+			} else {
+
+				break;
+			}
+
+		} while (true);
+
 		return chronicler.revertTo(stepNum, playGround);
 	}
 

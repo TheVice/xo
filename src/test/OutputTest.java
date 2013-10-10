@@ -32,7 +32,7 @@ public class OutputTest extends Assert {
 		bao.close();
 	}
 
-	public ByteArrayOutput getByteArrayOutputInstance(int n) {
+	public static ByteArrayOutput getByteArrayOutputInstance(int n) {
 
 		ByteArrayOutputStream stringBufferOutputStream = null;
 		try {
@@ -50,7 +50,7 @@ public class OutputTest extends Assert {
 		return new ByteArrayOutput(stringBufferOutputStream);
 	}
 
-	private class ByteArrayOutput extends Output {
+	private static class ByteArrayOutput extends Output {
 
 		private ByteArrayOutputStream byteArrayOutputStream;
 

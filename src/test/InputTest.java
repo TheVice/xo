@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import io.Input;
 
+import java.io.InputStream;
 import java.io.StringBufferInputStream;
 
 public class InputTest extends Assert {
@@ -29,7 +30,7 @@ public class InputTest extends Assert {
 		strInput.close();
 	}
 
-	public StringInput getStringInputInstance(String inputString) {
+	public static StringInput getStringInputInstance(String inputString) {
 
 		StringBufferInputStream stringBufferInputStream = new StringBufferInputStream(
 				inputString);
@@ -37,7 +38,7 @@ public class InputTest extends Assert {
 	}
 
 	@SuppressWarnings("deprecation")
-	private class StringInput extends Input {
+	private static class StringInput extends Input {
 
 		private StringBufferInputStream stringBufferInputStream;
 
