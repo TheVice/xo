@@ -34,20 +34,15 @@ public class OutputTest extends Assert {
 
 	public static ByteArrayOutput getByteArrayOutputInstance(int n) {
 
-		ByteArrayOutputStream stringBufferOutputStream = null;
+		ByteArrayOutput byteArrayOutput = null;
 		try {
 
-			if (n > 0) {
-
-				stringBufferOutputStream = new ByteArrayOutputStream(n);
-			} else {
-
-				stringBufferOutputStream = new ByteArrayOutputStream();
-			}
-		} catch (Exception exc) {
+			ByteArrayOutputStream stringBufferOutputStream = (n > 0) ? new ByteArrayOutputStream(n) : new ByteArrayOutputStream();
+			byteArrayOutput = new ByteArrayOutput(stringBufferOutputStream);
+		} catch (IllegalArgumentException exc) {
 
 		}
-		return new ByteArrayOutput(stringBufferOutputStream);
+		return byteArrayOutput;
 	}
 
 	private static class ByteArrayOutput extends Output {

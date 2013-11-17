@@ -4,8 +4,8 @@ import io.*;
 
 public class Ui {
 
-	Input input;
-	Output output;
+	private Input input;
+	private Output output;
 
 	public Ui(Input input, Output output) {
 
