@@ -56,4 +56,5 @@ public class Cell {
 
 		return "" + figure;
 	}
+
 }

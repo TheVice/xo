@@ -25,11 +25,6 @@ public class Player {
 		return figure;
 	}
 
-	public Cell makeDesign(Field playGround) {
-
-		return null;
-	}
-
 	public Cell makeMove(Field playGround, int x, int y) {
 
 		if (playGround == null) {

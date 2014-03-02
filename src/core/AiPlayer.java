@@ -4,18 +4,13 @@ import java.util.Random;
 
 public class AiPlayer extends Player {
 
-	private static Random random;
+	private static Random random = new Random();
 
 	public AiPlayer(char figure) {
 
 		super(figure, Type.AI);
-		if (random == null) {
-
-			random = new Random();
-		}
 	}
 
-	@Override
 	public Cell makeDesign(Field playGround) {
 
 		if (playGround == null) {
@@ -26,22 +21,20 @@ public class AiPlayer extends Player {
 		Cell cells[] = playGround.getFreeCells();
 
 		int cellNum = 0;
+		while (cellNum < cells.length && cells[cellNum] != null) {
 
-		if (cells.length == 0) {
+			cellNum++;
+		}
+
+		if (cellNum == 0) {
 
 			return null;
-		} else if (cells.length > 0) {
+		} else if (cellNum == 1) {
 
-			cellNum = 1;
-			do {
+			cellNum = 0;
+		} else {
 
-				if (cells[cellNum++] == null) {
-
-					break;
-				}
-			} while (cellNum < cells.length);
-
-			cellNum = AiPlayer.random.nextInt(cellNum - 1);
+			cellNum = AiPlayer.random.nextInt(cellNum);
 		}
 
 		return (cells[cellNum].setFigure(getFigure()) ? cells[cellNum] : null);

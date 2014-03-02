@@ -1,10 +1,10 @@
 package test;
 
-import io.Input;
-import io.Output;
-
 import org.junit.Test;
 import org.junit.Assert;
+
+import io.Input;
+import io.Output;
 
 import ui.Ui;
 import core.Referee;
@@ -30,7 +30,7 @@ public class RefereeTest extends Assert {
 
 		sbCommands.append("n" + lineSeparator);
 
-		Input input = InputTest.getStringInputInstance(sbCommands.toString());
+		Input input = InputTest.getByteInputInstance(sbCommands.toString());
 		Output output = OutputTest.getByteArrayOutputInstance(1024);
 
 		new Referee(new Ui(input, output));

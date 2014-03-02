@@ -201,4 +201,5 @@ public class ChroniclerTest extends Assert {
 			assertEquals(checkStrings[i++], chronicler.toString());
 		}
 	}
+
 }

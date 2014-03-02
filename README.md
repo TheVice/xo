@@ -2,28 +2,23 @@ xo
 =========================
 
 Simple game known as 'tic-tac-toe' written during learning Java.
-For human vs. human mode see tag or branch named like this mode,
-also you can view one of previous commit where this file do not changed.
 Human vs. Human (hot seat), Ai vs. Ai and mix modes.
 No network support yet.
 
 Console making and running
 ==========================
-mkdir out
-javac -sourcepath ./src ./src/Main.java -d ./out
-cd out
+
+mkdir bin
+javac -sourcepath ./src ./src/Main.java -d ./bin
+cd bin
      java Main 
 or (for making jar and run it)
      jar cfev xo.jar Main .
      java -jar xo.jar
 
-Known issue
-=============
-At Input test use deprecated class.
-
 =============
 
-   Copyright 2013 https://github.com/TheVice/
+   Copyright 2013-2014 https://github.com/TheVice/
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

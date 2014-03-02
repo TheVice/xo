@@ -4,7 +4,9 @@ import org.junit.Test;
 import org.junit.Assert;
 
 import io.Output;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class OutputTest extends Assert {
 
@@ -67,7 +69,7 @@ public class OutputTest extends Assert {
 			try {
 
 				byteArrayOutputStream.close();
-			} catch (Exception exc) {
+			} catch (IOException exc) {
 
 			} finally {
 
