@@ -1,4 +1,3 @@
-
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -7,6 +6,9 @@ import core.Field;
 import core.Chronicler;
 
 public class ChroniclerTest extends Assert {
+
+	private static final String lineSeparator = System
+			.getProperty("line.separator");
 
 	@Test
 	public void chroniclerCreate() {
@@ -99,7 +101,7 @@ public class ChroniclerTest extends Assert {
 			assertFalse(chronicler.addWalk(cell));
 
 			chronicler.undoLastWalk(field);
-			assertEquals("Step - 1. Figure X on x = 1 y = 1\n",
+			assertEquals("Step - 1. Figure X on x = 1 y = 1" + lineSeparator,
 					chronicler.toString());
 			assertNotEquals(null,
 					field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
@@ -173,22 +175,23 @@ public class ChroniclerTest extends Assert {
 		cell.setFigure('O');
 		chronicler.addWalk(cell);
 
-		String checkString = "Step - 1. Figure X on x = 1 y = 1\n"
-				+ "Step - 2. Figure O on x = 1 y = 2\n"
-				+ "Step - 3. Figure X on x = 2 y = 1\n"
-				+ "Step - 4. Figure O on x = 2 y = 2\n";
+		String checkString = "Step - 1. Figure X on x = 1 y = 1"
+				+ lineSeparator + "Step - 2. Figure O on x = 1 y = 2"
+				+ lineSeparator + "Step - 3. Figure X on x = 2 y = 1"
+				+ lineSeparator + "Step - 4. Figure O on x = 2 y = 2"
+				+ lineSeparator;
 		assertEquals(checkString, chronicler.toString());
 		assertEquals(4, chronicler.getStepCount());
 
 		String checkStrings[] = new String[8];
 		checkStrings[0] = checkString;
 		checkStrings[1] = checkString;
-		checkStrings[2] = "Step - 1. Figure X on x = 1 y = 1\n"
-				+ "Step - 2. Figure O on x = 1 y = 2\n"
-				+ "Step - 3. Figure X on x = 2 y = 1\n";
-		checkStrings[3] = "Step - 1. Figure X on x = 1 y = 1\n"
-				+ "Step - 2. Figure O on x = 1 y = 2\n";
-		checkStrings[4] = "Step - 1. Figure X on x = 1 y = 1\n";
+		checkStrings[2] = "Step - 1. Figure X on x = 1 y = 1" + lineSeparator
+				+ "Step - 2. Figure O on x = 1 y = 2" + lineSeparator
+				+ "Step - 3. Figure X on x = 2 y = 1" + lineSeparator;
+		checkStrings[3] = "Step - 1. Figure X on x = 1 y = 1" + lineSeparator
+				+ "Step - 2. Figure O on x = 1 y = 2" + lineSeparator;
+		checkStrings[4] = "Step - 1. Figure X on x = 1 y = 1" + lineSeparator;
 		checkStrings[5] = "";
 		checkStrings[6] = "";
 		checkStrings[7] = "";

@@ -1,4 +1,3 @@
-
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -12,7 +11,7 @@ public class InputTest extends Assert {
 	@Test
 	public void input() throws IOException {
 
-		String lineSeparator = System.getProperty("line.separator");
+		final String lineSeparator = System.getProperty("line.separator");
 		String str = "Line1" + lineSeparator + "Line2" + lineSeparator
 				+ "Line3";
 

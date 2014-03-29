@@ -37,7 +37,8 @@ public class AiPlayer extends Player {
 			cellNum = AiPlayer.random.nextInt(cellNum);
 		}
 
-		return (cells[cellNum].setFigure(getFigure()) ? cells[cellNum] : null);
+		cells[cellNum].setFigure(getFigure());
+		return cells[cellNum];
 	}
 
 }

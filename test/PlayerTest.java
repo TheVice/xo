@@ -1,4 +1,3 @@
-
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -118,7 +117,7 @@ public class PlayerTest extends Assert {
 				assertEquals(null, ((AiPlayer) player).makeDesign(field));
 			}
 		}
-		
+
 		fields[0] = new Field(2, 2, Field.StartCellStyle.BOTTOM_LEFT);
 		fields[0].setCell(1, 1, figures[1]);
 		fields[0].setCell(1, 2, figures[1]);
@@ -139,6 +138,52 @@ public class PlayerTest extends Assert {
 				}
 			}
 		}
+	}
+
+	@Test
+	public void testGetPlayersFigures() {
+
+		Player players[] = new Player[4];
+		players[0] = new HumanPlayer('A');
+		players[1] = new HumanPlayer('B');
+		players[2] = new HumanPlayer('C');
+
+		assertArrayEquals(new char[] { 'A', 'B', 'C', '\0' },
+				Player.getPlayersFigures(players));
+	}
+
+	@Test
+	public void testGetNextPlayer() {
+
+		Player players[] = new Player[3];
+		players[0] = new HumanPlayer('A');
+		players[1] = new HumanPlayer('B');
+		players[2] = new HumanPlayer('C');
+
+		assertEquals(0, Player.getNextPlayer('C', players));
+		assertEquals(1, Player.getNextPlayer('A', players));
+		assertEquals(2, Player.getNextPlayer('B', players));
+		assertEquals(0, Player.getNextPlayer('\0', players));
+
+		players = new Player[4];
+		players[0] = new HumanPlayer('A');
+		players[1] = new HumanPlayer('B');
+		players[2] = new HumanPlayer('C');
+
+		assertEquals(3, Player.getNextPlayer('C', players));
+		assertEquals(1, Player.getNextPlayer('A', players));
+		assertEquals(2, Player.getNextPlayer('B', players));
+		assertEquals(0, Player.getNextPlayer('\0', players));
+	}
+
+	@Test
+	public void testIsFigurePresent() {
+
+		char figures[] = new char[] { 'A', 'B', 'C' };
+		assertFalse(Player.isFigurePresent(figures, '\0'));
+		assertTrue(Player.isFigurePresent(figures, 'A'));
+		assertTrue(Player.isFigurePresent(figures, 'B'));
+		assertTrue(Player.isFigurePresent(figures, 'C'));
 	}
 
 }

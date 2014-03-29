@@ -1,4 +1,3 @@
-
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -12,7 +11,7 @@ public class OutputTest extends Assert {
 	@Test
 	public void output() {
 
-		String lineSeparator = System.getProperty("line.separator");
+		final String lineSeparator = System.getProperty("line.separator");
 		ByteArrayOutput bao = getByteArrayOutputInstance(0);
 		bao.writeLine("Hello");
 		assertEquals("Hello" + lineSeparator, bao.toString());
@@ -33,9 +32,11 @@ public class OutputTest extends Assert {
 		bao.close();
 	}
 
-	public static ByteArrayOutput getByteArrayOutputInstance(int n) throws IllegalArgumentException {
+	public static ByteArrayOutput getByteArrayOutputInstance(int n)
+			throws IllegalArgumentException {
 
-		ByteArrayOutputStream stringBufferOutputStream = (n > 0) ? new ByteArrayOutputStream(n) : new ByteArrayOutputStream();
+		ByteArrayOutputStream stringBufferOutputStream = (n > 0) ? new ByteArrayOutputStream(
+				n) : new ByteArrayOutputStream();
 		return new ByteArrayOutput(stringBufferOutputStream);
 	}
 

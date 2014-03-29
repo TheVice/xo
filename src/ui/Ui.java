@@ -1,6 +1,7 @@
 package ui;
 
-import io.*;
+import io.Input;
+import io.Output;
 
 public class Ui {
 
@@ -20,7 +21,7 @@ public class Ui {
 
 	public int onInputInt() throws NumberFormatException {
 
-		return Integer.valueOf(onInput());
+		return Integer.parseInt(onInput());
 	}
 
 	public void onOutput(String string) {

@@ -1,4 +1,3 @@
-
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -125,7 +124,7 @@ public class FieldTest extends Assert {
 	@Test
 	public void fieldStartCellStyle() throws Exception {
 
-		String lineSeparator = System.getProperty("line.separator");
+		final String lineSeparator = System.getProperty("line.separator");
 		String checkString[] = {
 				"[1][2][3]" + lineSeparator + "[4][5][6]" + lineSeparator,
 				"[3][2][1]" + lineSeparator + "[6][5][4]" + lineSeparator,
@@ -155,22 +154,22 @@ public class FieldTest extends Assert {
 		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
 			Field field = new Field(3, 4, scs);
-			assertTrue(field.isFigureFillLine(Cell.getDefaultFigure()));
-			assertFalse(field.isFigureFillLine('X'));
-			assertFalse(field.isFigureFillLine('O'));
+			assertTrue(field.isFigureTakeAWin(Cell.getDefaultFigure()));
+			assertFalse(field.isFigureTakeAWin('X'));
+			assertFalse(field.isFigureTakeAWin('O'));
 
 			fillLine(field, 1, 'X', true);
-			assertTrue(field.isFigureFillLine('X'));
-			assertFalse(field.isFigureFillLine('O'));
+			assertTrue(field.isFigureTakeAWin('X'));
+			assertFalse(field.isFigureTakeAWin('O'));
 			fillLine(field, field.getHeightCount(), 'O', false);
 
-			assertTrue(field.isFigureFillLine('X'));
-			assertFalse(field.isFigureFillLine('O'));
+			assertTrue(field.isFigureTakeAWin('X'));
+			assertFalse(field.isFigureTakeAWin('O'));
 
 			fillLine(field, 1, Cell.getDefaultFigure(), true);
 			fillLine(field, field.getHeightCount(), 'O', false);
-			assertTrue(field.isFigureFillLine('O'));
-			assertFalse(field.isFigureFillLine('X'));
+			assertTrue(field.isFigureTakeAWin('O'));
+			assertFalse(field.isFigureTakeAWin('X'));
 		}
 	}
 
@@ -180,28 +179,27 @@ public class FieldTest extends Assert {
 		for (Field.StartCellStyle scs : Field.StartCellStyle.values()) {
 
 			Field field = new Field(3, 4, scs);
-			assertFalse(field.isFigureFillDiagonal(Cell.getDefaultFigure()));
 
 			fillDiagonal(field, 'X', true);
-			assertFalse(field.isFigureFillDiagonal('X'));
+			assertFalse(field.isFigureTakeAWin('X'));
 
 			fillDiagonal(field, 'O', false);
-			assertFalse(field.isFigureFillDiagonal('O'));
+			assertFalse(field.isFigureTakeAWin('O'));
 
 			field = new Field(6, 6, scs);
-			assertTrue(field.isFigureFillDiagonal(Cell.getDefaultFigure()));
+			assertTrue(field.isFigureTakeAWin(Cell.getDefaultFigure()));
 
 			fillDiagonal(field, 'X', true);
-			assertTrue(field.isFigureFillDiagonal('X'));
+			assertTrue(field.isFigureTakeAWin('X'));
 
 			fillDiagonal(field, 'O', false);
-			assertTrue(field.isFigureFillDiagonal('O'));
+			assertTrue(field.isFigureTakeAWin('O'));
 
 			field.setCell(3, 3, Cell.getDefaultFigure());
 			field.setCell(3, 4, Cell.getDefaultFigure());
 
-			assertFalse(field.isFigureFillDiagonal('X'));
-			assertFalse(field.isFigureFillDiagonal('O'));
+			assertFalse(field.isFigureTakeAWin('X'));
+			assertFalse(field.isFigureTakeAWin('O'));
 		}
 	}
 

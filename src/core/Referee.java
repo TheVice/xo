@@ -4,6 +4,8 @@ import ui.Ui;
 
 public class Referee {
 
+	private static final String lineSeparator = System
+			.getProperty("line.separator");
 	private static boolean isCommandEntered;
 
 	private static int getIntFromInput(Ui ui) {
@@ -78,7 +80,7 @@ public class Referee {
 
 				try {
 
-					commandNumber = Integer.valueOf(command);
+					commandNumber = Integer.parseInt(command);
 					commandEntered = true;
 				} catch (NumberFormatException nexc) {
 
@@ -90,26 +92,9 @@ public class Referee {
 		return commandNumber;
 	}
 
-	private static boolean isFigurePresent(char figures[], char figure) {
-
-		if (figures != null) {
-
-			for (char presentFigure : figures) {
-
-				if (figure == presentFigure) {
-
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
 	private Ui ui;
 	private Player players[];
 	private Player winner;
-	private char playerFigures[];
 	private Field playGround;
 	private Chronicler chronicler;
 	private boolean exitNow;
@@ -123,7 +108,6 @@ public class Referee {
 
 			this.players = null;
 			this.winner = null;
-			this.playerFigures = null;
 			this.playGround = null;
 			this.chronicler = null;
 			this.exitNow = false;
@@ -169,8 +153,7 @@ public class Referee {
 
 	private void setupPlayers(int playerCount, char[] playerFigures) {
 
-		if (playerCount <= 0
-				|| playerCount > Field.getMaxWidth() * Field.getMaxHeight()) {
+		if (playerCount == 0) {
 
 			boolean playerCountSet = false;
 			do {
@@ -180,11 +163,11 @@ public class Referee {
 
 				if (playerCount < 1) {
 
-					ui.onOutputLine("Player count can not be less than - 1");
+					ui.onOutputLine("Player count can not be less than - 1.");
 				} else if (playerCount > Field.getMaxWidth()
 						* Field.getMaxHeight()) {
 
-					ui.onOutputLine("Player count can not be greate than maximum cell count - "
+					ui.onOutputLine("Player count can not be great than maximum cell count - "
 							+ (Field.getMaxWidth() * Field.getMaxHeight())
 							+ ".");
 				} else {
@@ -196,26 +179,18 @@ public class Referee {
 		}
 
 		ui.onOutputLine("Player count - " + playerCount);
-
 		players = new Player[playerCount];
-		boolean playerFigurePreset = (playerFigures != null && playerCount == playerFigures.length);
-
-		if (!playerFigurePreset) {
-
-			this.playerFigures = new char[playerCount];
-		}
 
 		for (int playerNum = 0; playerNum < playerCount; playerNum++) {
 
 			ui.onOutputLine("Determining player num - " + (playerNum + 1));
 
-			if (playerFigurePreset) {
+			if (playerFigures != null) {
 
 				players[playerNum] = setupPlayer(playerFigures[playerNum]);
 			} else {
 
 				players[playerNum] = setupPlayer();
-				this.playerFigures[playerNum] = players[playerNum].getFigure();
 			}
 		}
 	}
@@ -230,11 +205,12 @@ public class Referee {
 			ui.onOutput("Please type the player figure: ");
 			figure = ui.onInput().charAt(0);
 
-			playerFigureSet = !isFigurePresent(playerFigures, figure);
+			playerFigureSet = !Player.isFigurePresent(
+					Player.getPlayersFigures(this.players), figure);
 			if (!playerFigureSet) {
 
 				ui.onOutputLine("Figure '" + figure
-						+ "' already set to other player.");
+						+ "' already set to another player.");
 			}
 		} while (!playerFigureSet);
 
@@ -243,8 +219,7 @@ public class Referee {
 
 	private Player setupPlayer(char figure) {
 
-		ui.onOutputLine("Player figure will be '" + figure
-				+ "' (with out gaps(') of corse).");
+		ui.onOutputLine("Player figure will be '" + figure + "'.");
 
 		ui.onOutputLine("Select player type.");
 
@@ -276,7 +251,8 @@ public class Referee {
 				ui.onOutput("Please type the default (neutral) figure: ");
 				figure = ui.onInput().charAt(0);
 
-				defaultFieldFigureSet = !isFigurePresent(playerFigures, figure);
+				defaultFieldFigureSet = !Player.isFigurePresent(
+						Player.getPlayersFigures(this.players), figure);
 				if (!defaultFieldFigureSet) {
 
 					ui.onOutputLine("Figure '" + figure
@@ -328,7 +304,7 @@ public class Referee {
 			fields[fieldNum++] = new Field(width, height, scs);
 		}
 
-		if (styleNumber < 0 || styleNumber >= fieldNum) {
+		if (styleNumber < 0) {
 
 			ui.onOutputLine("Choose the position from what calculate the cells.");
 
@@ -410,15 +386,9 @@ public class Referee {
 
 	public void gameLoop() {
 
-		final int playerCount = players.length;
 		int playerNumber = 0;
 
 		do {
-
-			if (playerNumber == playerCount) {
-
-				playerNumber = 0;
-			}
 
 			char figure = Cell.getDefaultFigure();
 
@@ -434,32 +404,21 @@ public class Referee {
 				figure = letsHumanPlayerMakeADesign(players[playerNumber]);
 			}
 
-			ui.onOutputLine(System.getProperty("line.separator") + "---------"
-					+ System.getProperty("line.separator") + playGround
-					+ "---------");
+			ui.onOutputLine(Referee.lineSeparator + "---------"
+					+ Referee.lineSeparator + playGround + "---------");
 
 			if (exitNow) {
 
 				break;
 			}
 
-			if (playGround.isFigureFillDiagonal(players[playerNumber]
-					.getFigure())
-					|| playGround.isFigureFillLine(players[playerNumber]
-							.getFigure())) {
+			if (playGround.isFigureTakeAWin(players[playerNumber].getFigure())) {
 
 				winner = players[playerNumber];
 				break;
 			}
 
-			if (figure != Cell.getDefaultFigure()
-					&& figure == players[playerNumber].getFigure()) {
-
-				playerNumber++;
-			} else if (figure == Cell.getDefaultFigure()) {
-
-				playerNumber = 0;
-			}
+			playerNumber = Player.getNextPlayer(figure, players);
 
 		} while (!playGround.isFull());
 
@@ -473,8 +432,7 @@ public class Referee {
 
 		do {
 
-			ui.onOutputLine("To undo type 'step'."
-					+ System.getProperty("line.separator")
+			ui.onOutputLine("To undo type 'step'." + Referee.lineSeparator
 					+ "To exit from game type 'exit'.");
 			ui.onOutput("Player of " + player
 					+ " please make your move (position x, y): ");
@@ -576,9 +534,8 @@ public class Referee {
 			ui.onOutputLine("Game interrupted.");
 		}
 
-		ui.onOutputLine(System.getProperty("line.separator") + "---------"
-				+ System.getProperty("line.separator") + playGround
-				+ "---------");
+		ui.onOutputLine(Referee.lineSeparator + "---------"
+				+ Referee.lineSeparator + playGround + "---------");
 
 		if (chronicler.getStepCount() > 0) {
 

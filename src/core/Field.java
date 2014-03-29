@@ -70,7 +70,63 @@ public class Field {
 		return cell;
 	}
 
-	public boolean isFigureFillDiagonal(char figure) {
+	public boolean isFigureTakeAWin(char figure) {
+
+		return (isFigureFillDiagonal(figure) || isFigureFillLine(figure));
+	}
+
+	public boolean isFull() {
+
+		for (Cell cell : cells) {
+
+			if (cell.getFigure() == Cell.getDefaultFigure()) {
+
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isValidCellNumber(int x, int y) {
+
+		return 0 < x && x <= width && 0 < y && y <= height;
+	}
+
+	public Cell[] getFreeCells() {
+
+		int cellNum = 0;
+		for (Cell cell : cells) {
+
+			if (cell.getFigure() == Cell.getDefaultFigure()) {
+
+				freeCells[cellNum++] = cell;
+			}
+		}
+
+		for (; cellNum < freeCells.length; cellNum++) {
+
+			freeCells[cellNum] = null;
+		}
+
+		return freeCells;
+	}
+
+	@Override
+	public String toString() {
+
+		StringBuilder str = new StringBuilder(256);
+		for (int j = 0; j < height; j++) {
+
+			for (int i = 0; i < width; i++) {
+
+				str.append("[" + getCellAt(i, j) + "]");
+			}
+			str.append(System.getProperty("line.separator"));
+		}
+		return str.toString();
+	}
+
+	private boolean isFigureFillDiagonal(char figure) {
 
 		if (height != width) {
 
@@ -113,7 +169,7 @@ public class Field {
 		return match;
 	}
 
-	public boolean isFigureFillLine(char figure) {
+	private boolean isFigureFillLine(char figure) {
 
 		boolean match = false;
 
@@ -152,57 +208,6 @@ public class Field {
 		}
 
 		return match;
-	}
-
-	public boolean isFull() {
-
-		for (Cell cell : cells) {
-
-			if (cell.getFigure() == Cell.getDefaultFigure()) {
-
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean isValidCellNumber(int x, int y) {
-
-		return 0 < x && x <= width && 0 < y && y <= height;
-	}
-
-	public Cell[] getFreeCells() {
-
-		int cellNum = 0;
-		for (Cell cell : cells) {
-
-			if (cell.getFigure() == Cell.getDefaultFigure()) {
-
-				freeCells[cellNum++] = cell;
-			}
-		}
-
-		for (; cellNum < freeCells.length; cellNum++) {
-
-			freeCells[cellNum] = null;
-		}
-
-		return freeCells;
-	}
-
-	@Override
-	public String toString() {
-
-		StringBuilder str = new StringBuilder();
-		for (int j = 0; j < height; j++) {
-
-			for (int i = 0; i < width; i++) {
-
-				str.append("[" + getCellAt(i, j) + "]");
-			}
-			str.append(System.getProperty("line.separator"));
-		}
-		return str.toString();
 	}
 
 	private void setupCells(StartCellStyle startCellStyle) {

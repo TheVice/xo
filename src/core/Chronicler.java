@@ -87,14 +87,17 @@ public class Chronicler {
 	@Override
 	public String toString() {
 
-		String str = "";
+		StringBuilder sb = new StringBuilder(256);
+
 		int stepNum = 1;
 		for (Cell cell : cells) {
 
-			str += "Step - " + (stepNum++) + ". Figure " + cell.getFigure()
-					+ " on x = " + cell.getX() + " y = " + cell.getY() + "\n";
+			sb.append("Step - " + (stepNum++) + ". Figure " + cell.getFigure()
+					+ " on x = " + cell.getX() + " y = " + cell.getY()
+					+ System.getProperty("line.separator"));
 		}
-		return str;
+
+		return sb.toString();
 	}
 
 	private boolean findCellWithPosition(Cell cellToFind) {
