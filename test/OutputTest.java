@@ -1,4 +1,3 @@
-package test;
 
 import org.junit.Test;
 import org.junit.Assert;
@@ -34,17 +33,10 @@ public class OutputTest extends Assert {
 		bao.close();
 	}
 
-	public static ByteArrayOutput getByteArrayOutputInstance(int n) {
+	public static ByteArrayOutput getByteArrayOutputInstance(int n) throws IllegalArgumentException {
 
-		ByteArrayOutput byteArrayOutput = null;
-		try {
-
-			ByteArrayOutputStream stringBufferOutputStream = (n > 0) ? new ByteArrayOutputStream(n) : new ByteArrayOutputStream();
-			byteArrayOutput = new ByteArrayOutput(stringBufferOutputStream);
-		} catch (IllegalArgumentException exc) {
-
-		}
-		return byteArrayOutput;
+		ByteArrayOutputStream stringBufferOutputStream = (n > 0) ? new ByteArrayOutputStream(n) : new ByteArrayOutputStream();
+		return new ByteArrayOutput(stringBufferOutputStream);
 	}
 
 	private static class ByteArrayOutput extends Output {

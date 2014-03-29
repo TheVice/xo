@@ -1,4 +1,3 @@
-package test;
 
 import org.junit.Test;
 import org.junit.Assert;
@@ -17,7 +16,7 @@ public class InputTest extends Assert {
 		String str = "Line1" + lineSeparator + "Line2" + lineSeparator
 				+ "Line3";
 
-		ByteInput byteInput = getByteInputInstance(str);
+		ByteArrayInput byteInput = getByteInputInstance(str);
 
 		assertEquals("Line1", byteInput.readLine());
 		byteInput.close();
@@ -30,7 +29,7 @@ public class InputTest extends Assert {
 		assertEquals(null, byteInput.readLine());
 	}
 
-	public static ByteInput getByteInputInstance(String inputString) {
+	public static ByteArrayInput getByteInputInstance(String inputString) {
 
 		int i = 0;
 		byte buffer[] = new byte[inputString.length()];
@@ -42,18 +41,18 @@ public class InputTest extends Assert {
 		return getByteInputInstance(buffer);
 	}
 
-	public static ByteInput getByteInputInstance(byte inputBuffer[]) {
+	public static ByteArrayInput getByteInputInstance(byte inputBuffer[]) {
 
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
 				inputBuffer);
-		return new ByteInput(byteArrayInputStream);
+		return new ByteArrayInput(byteArrayInputStream);
 	}
 
-	private static class ByteInput extends Input {
+	private static class ByteArrayInput extends Input {
 
 		private ByteArrayInputStream byteArrayInputStream;
 
-		private ByteInput(ByteArrayInputStream byteArrayInputStream) {
+		private ByteArrayInput(ByteArrayInputStream byteArrayInputStream) {
 
 			super(byteArrayInputStream);
 			this.byteArrayInputStream = byteArrayInputStream;

@@ -1,4 +1,3 @@
-package test;
 
 import org.junit.Test;
 import org.junit.Assert;
@@ -211,27 +210,11 @@ public class FieldTest extends Assert {
 
 		if (vertical) {
 
-			if (lineNum > field.getWidthCount()) {
-
-				lineNum = field.getWidthCount();
-			} else if (lineNum < 1) {
-
-				lineNum = 1;
-			}
-
 			for (int i = 1; i <= field.getHeightCount(); i++) {
 
 				field.setCell(lineNum, i, figure);
 			}
 		} else {
-
-			if (lineNum > field.getHeightCount()) {
-
-				lineNum = field.getHeightCount();
-			} else if (lineNum < 1) {
-
-				lineNum = 1;
-			}
 
 			for (int i = 1; i <= field.getWidthCount(); i++) {
 
