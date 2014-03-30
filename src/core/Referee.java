@@ -342,7 +342,7 @@ public class Referee {
 							+ Field.getMinWidth() + ".");
 				} else if (width > Field.getMaxWidth()) {
 
-					ui.onOutputLine("Width can not be greate than - "
+					ui.onOutputLine("Width can not be great than - "
 							+ Field.getMaxWidth() + ".");
 				} else {
 
@@ -364,7 +364,7 @@ public class Referee {
 							+ Field.getMinHeight() + ".");
 				} else if (height > Field.getMaxHeight()) {
 
-					ui.onOutputLine("Height can not be greate than - "
+					ui.onOutputLine("Height can not be great than - "
 							+ Field.getMaxHeight() + ".");
 				} else {
 
