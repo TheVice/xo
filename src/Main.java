@@ -7,7 +7,7 @@ public class Main {
 
 	public static void main(String... args) {
 
-		new Referee(new Ui(new Input(System.in), new Output(System.out)));
+		Referee.enter(new Ui(new Input(System.in), new Output(System.out)));
 	}
 
 }

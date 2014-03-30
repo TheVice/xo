@@ -4,6 +4,12 @@ import ui.Ui;
 
 public class Referee {
 
+	private static Ui ui;
+	private static Player players[];
+	private static Player winner;
+	private static Field playGround;
+	private static Chronicler chronicler;
+	private static boolean exitNow;
 	private static final String lineSeparator = System
 			.getProperty("line.separator");
 	private static boolean isCommandEntered;
@@ -92,29 +98,23 @@ public class Referee {
 		return commandNumber;
 	}
 
-	private final Ui ui;
-	private Player players[];
-	private Player winner;
-	private Field playGround;
-	private Chronicler chronicler;
-	private boolean exitNow;
+	public static void enter(Ui ui) {
 
-	public Referee(Ui ui) {
-
-		this.ui = ui;
+		Referee.ui = ui;
 
 		do {
 
-			this.players = null;
-			this.winner = null;
-			this.playGround = null;
-			this.chronicler = null;
-			this.exitNow = false;
+			Referee.players = null;
+			Referee.winner = null;
+			Referee.playGround = null;
+			Referee.chronicler = null;
+			Referee.exitNow = false;
 
-			this.ui.onOutputLine("Welcome in Xs and Os (a.k.a. Tic-tac-toe)!");
+			Referee.ui
+					.onOutputLine("Welcome in Xs and Os (a.k.a. Tic-tac-toe)!");
 			init();
 
-			this.ui.onOutput("Would you like play another party (y/n): ");
+			Referee.ui.onOutput("Would you like play another party (y/n): ");
 			String str = ui.onInput();
 			if (str.charAt(0) != 'y') {
 
@@ -124,7 +124,7 @@ public class Referee {
 		} while (true);
 	}
 
-	private void init() {
+	private static void init() {
 
 		ui.onOutputLine("Would you play classic Tic-tac-toe (field 3 x 3, start cell left bottom)?");
 		String commands[] = { "Classic", "Custom" };
@@ -142,12 +142,12 @@ public class Referee {
 			playGround = setupField(0, 0, '\0', -1);
 		}
 
-		chronicler = new Chronicler(this.playGround.getHeightCount()
-				* this.playGround.getWidthCount());
+		chronicler = new Chronicler(playGround.getHeightCount()
+				* playGround.getWidthCount());
 		gameLoop();
 	}
 
-	private void setupPlayers(int playerCount, char[] playerFigures) {
+	private static void setupPlayers(int playerCount, char[] playerFigures) {
 
 		if (playerCount == 0) {
 
@@ -191,7 +191,7 @@ public class Referee {
 		}
 	}
 
-	private Player setupPlayer() {
+	private static Player setupPlayer() {
 
 		char figure = '\0';
 
@@ -201,7 +201,7 @@ public class Referee {
 			figure = ui.onInput().charAt(0);
 
 			boolean playerFigureSet = !Player.isFigurePresent(
-					Player.getPlayersFigures(this.players), figure);
+					Player.getPlayersFigures(players), figure);
 			if (!playerFigureSet) {
 
 				ui.onOutputLine("Figure '" + figure
@@ -215,7 +215,7 @@ public class Referee {
 		return setupPlayer(figure);
 	}
 
-	private Player setupPlayer(char figure) {
+	private static Player setupPlayer(char figure) {
 
 		ui.onOutputLine("Player figure will be '" + figure + "'.");
 
@@ -239,7 +239,7 @@ public class Referee {
 		return player;
 	}
 
-	private char setupDefaultFieldFigure(char figure) {
+	private static char setupDefaultFieldFigure(char figure) {
 
 		if (figure == '\0') {
 
@@ -250,7 +250,7 @@ public class Referee {
 				figure = ui.onInput().charAt(0);
 
 				defaultFieldFigureSet = !Player.isFigurePresent(
-						Player.getPlayersFigures(this.players), figure);
+						Player.getPlayersFigures(players), figure);
 				if (!defaultFieldFigureSet) {
 
 					ui.onOutputLine("Figure '" + figure
@@ -267,7 +267,7 @@ public class Referee {
 		return figure;
 	}
 
-	private void showField(Field field) {
+	private static void showField(Field field) {
 
 		char figure = Cell.getDefaultFigure();
 
@@ -288,8 +288,8 @@ public class Referee {
 		field.setCell(1, 1, figure);
 	}
 
-	private Field setupStartPositionAtField(int width, int height, char figure,
-			int styleNumber) {
+	private static Field setupStartPositionAtField(int width, int height,
+			char figure, int styleNumber) {
 
 		String fieldStyles[] = { "Top Left", "Top Right", "Bottom Right",
 				"Bottom Left" };
@@ -322,7 +322,8 @@ public class Referee {
 		return fields[styleNumber];
 	}
 
-	private Field setupField(int width, int height, char figure, int styleNumber) {
+	private static Field setupField(int width, int height, char figure,
+			int styleNumber) {
 
 		if (width == 0 || height == 0) {
 
@@ -382,7 +383,7 @@ public class Referee {
 		return field;
 	}
 
-	public void gameLoop() {
+	public static void gameLoop() {
 
 		int playerNumber = 0;
 
@@ -402,8 +403,8 @@ public class Referee {
 				figure = letsHumanPlayerMakeADesign(players[playerNumber]);
 			}
 
-			ui.onOutputLine(Referee.lineSeparator + "---------"
-					+ Referee.lineSeparator + playGround + "---------");
+			ui.onOutputLine(lineSeparator + "---------" + lineSeparator
+					+ playGround + "---------");
 
 			if (exitNow) {
 
@@ -423,21 +424,21 @@ public class Referee {
 		gameOver();
 	}
 
-	private char letsHumanPlayerMakeADesign(Player player) {
+	private static char letsHumanPlayerMakeADesign(Player player) {
 
 		String commands[] = { "step", "exit" };
 		Cell cell = null;
 
 		do {
 
-			ui.onOutputLine("To undo type 'step'." + Referee.lineSeparator
+			ui.onOutputLine("To undo type 'step'." + lineSeparator
 					+ "To exit from game type 'exit'.");
 			ui.onOutput("Player of " + player
 					+ " please make your move (position x, y): ");
 
 			int x = getCommandOrIntFromInput(ui, commands);
 
-			if (Referee.isCommandEntered) {
+			if (isCommandEntered) {
 
 				if (x == 1) {
 
@@ -449,7 +450,7 @@ public class Referee {
 
 			int y = getCommandOrIntFromInput(ui, commands);
 
-			if (Referee.isCommandEntered) {
+			if (isCommandEntered) {
 
 				if (y == 1) {
 
@@ -483,7 +484,7 @@ public class Referee {
 		return player.getFigure();
 	}
 
-	private char makeUndo() {
+	private static char makeUndo() {
 
 		ui.onOutputLine("There few next steps made at this point.");
 		ui.onOutputLine(chronicler);
@@ -515,7 +516,7 @@ public class Referee {
 		return chronicler.revertTo(stepNum, playGround);
 	}
 
-	private void gameOver() {
+	private static void gameOver() {
 
 		if (!exitNow) {
 
@@ -532,8 +533,8 @@ public class Referee {
 			ui.onOutputLine("Game interrupted.");
 		}
 
-		ui.onOutputLine(Referee.lineSeparator + "---------"
-				+ Referee.lineSeparator + playGround + "---------");
+		ui.onOutputLine(lineSeparator + "---------" + lineSeparator
+				+ playGround + "---------");
 
 		if (chronicler.getStepCount() > 0) {
 

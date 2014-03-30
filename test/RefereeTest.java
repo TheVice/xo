@@ -181,7 +181,7 @@ public class RefereeTest extends Assert {
 				.getBytes());
 		Output output = OutputTest.getByteArrayOutputInstance(1024);
 
-		new Referee(new Ui(input, output));
+		Referee.enter(new Ui(input, output));
 
 		// System.out.print(output);
 	}
