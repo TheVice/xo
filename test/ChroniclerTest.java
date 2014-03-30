@@ -74,7 +74,7 @@ public class ChroniclerTest extends Assert {
 		cell.setFigure('X');
 		assertTrue(chronicler.addWalk(cell));
 
-		assertNotEquals("", chronicler.toString());
+		assertNotSame("", chronicler.toString());
 		chronicler.undoLastWalk(null);
 		assertEquals("", chronicler.toString());
 
@@ -86,15 +86,15 @@ public class ChroniclerTest extends Assert {
 			cell = new Cell(1, 1);
 			cell.setFigure('X');
 
-			assertNotEquals(null,
-					field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
+			assertNotNull(field.setCell(cell.getX(), cell.getY(),
+					cell.getFigure()));
 			assertTrue(chronicler.addWalk(cell));
 
 			cell = new Cell(1, 2);
 			cell.setFigure('O');
 
-			assertNotEquals(null,
-					field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
+			assertNotNull(field.setCell(cell.getX(), cell.getY(),
+					cell.getFigure()));
 			assertTrue(chronicler.addWalk(cell));
 			assertEquals(null,
 					field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
@@ -103,8 +103,8 @@ public class ChroniclerTest extends Assert {
 			chronicler.undoLastWalk(field);
 			assertEquals("Step - 1. Figure X on x = 1 y = 1" + lineSeparator,
 					chronicler.toString());
-			assertNotEquals(null,
-					field.setCell(cell.getX(), cell.getY(), cell.getFigure()));
+			assertNotNull(field.setCell(cell.getX(), cell.getY(),
+					cell.getFigure()));
 		}
 	}
 

@@ -15,29 +15,17 @@ public class InputTest extends Assert {
 		String str = "Line1" + lineSeparator + "Line2" + lineSeparator
 				+ "Line3";
 
-		ByteArrayInput byteInput = getByteInputInstance(str);
+		ByteArrayInput byteInput = getByteInputInstance(str.getBytes());
 
 		assertEquals("Line1", byteInput.readLine());
 		byteInput.close();
 		assertEquals(null, byteInput.readLine());
 
-		byteInput = getByteInputInstance(str);
+		byteInput = getByteInputInstance(str.getBytes());
 		assertEquals("Line1", byteInput.readLine());
 		assertEquals("Line2", byteInput.readLine());
 		assertEquals("Line3", byteInput.readLine());
 		assertEquals(null, byteInput.readLine());
-	}
-
-	public static ByteArrayInput getByteInputInstance(String inputString) {
-
-		int i = 0;
-		byte buffer[] = new byte[inputString.length()];
-		for (char c : inputString.toCharArray()) {
-
-			buffer[i++] = (byte) c;
-		}
-
-		return getByteInputInstance(buffer);
 	}
 
 	public static ByteArrayInput getByteInputInstance(byte inputBuffer[]) {
@@ -49,7 +37,7 @@ public class InputTest extends Assert {
 
 	private static class ByteArrayInput extends Input {
 
-		private ByteArrayInputStream byteArrayInputStream;
+		private final ByteArrayInputStream byteArrayInputStream;
 
 		private ByteArrayInput(ByteArrayInputStream byteArrayInputStream) {
 

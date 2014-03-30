@@ -177,7 +177,8 @@ public class RefereeTest extends Assert {
 			sbCommands.append("n" + lineSeparator);
 		}
 
-		Input input = InputTest.getByteInputInstance(sbCommands.toString());
+		Input input = InputTest.getByteInputInstance(sbCommands.toString()
+				.getBytes());
 		Output output = OutputTest.getByteArrayOutputInstance(1024);
 
 		new Referee(new Ui(input, output));

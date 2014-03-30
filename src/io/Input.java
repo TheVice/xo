@@ -7,8 +7,8 @@ import java.io.BufferedReader;
 
 public class Input {
 
-	private InputStreamReader inputStreamReader;
-	private BufferedReader bufferedReader;
+	private final InputStreamReader inputStreamReader;
+	private final BufferedReader bufferedReader;
 
 	public Input(InputStream in) {
 

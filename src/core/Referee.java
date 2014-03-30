@@ -34,9 +34,9 @@ public class Referee {
 		do {
 			ui.onOutputLine("Please type one of the commands below:");
 
-			for (int commandNum = 0; commandNum < commands.length; commandNum++) {
+			for (String command : commands) {
 
-				ui.onOutputLine(commands[commandNum]);
+				ui.onOutputLine(command);
 			}
 
 			String command = ui.onInput();
@@ -92,7 +92,7 @@ public class Referee {
 		return commandNumber;
 	}
 
-	private Ui ui;
+	private final Ui ui;
 	private Player players[];
 	private Player winner;
 	private Field playGround;
@@ -103,7 +103,6 @@ public class Referee {
 
 		this.ui = ui;
 
-		boolean playAgain = false;
 		do {
 
 			this.players = null;
@@ -117,15 +116,12 @@ public class Referee {
 
 			this.ui.onOutput("Would you like play another party (y/n): ");
 			String str = ui.onInput();
-			if (str.charAt(0) == 'y') {
+			if (str.charAt(0) != 'y') {
 
-				playAgain = true;
-			} else {
-
-				playAgain = false;
+				break;
 			}
 
-		} while (playAgain);
+		} while (true);
 	}
 
 	private void init() {
@@ -198,21 +194,23 @@ public class Referee {
 	private Player setupPlayer() {
 
 		char figure = '\0';
-		boolean playerFigureSet = false;
 
 		do {
 
 			ui.onOutput("Please type the player figure: ");
 			figure = ui.onInput().charAt(0);
 
-			playerFigureSet = !Player.isFigurePresent(
+			boolean playerFigureSet = !Player.isFigurePresent(
 					Player.getPlayersFigures(this.players), figure);
 			if (!playerFigureSet) {
 
 				ui.onOutputLine("Figure '" + figure
 						+ "' already set to another player.");
+			} else {
+
+				break;
 			}
-		} while (!playerFigureSet);
+		} while (true);
 
 		return setupPlayer(figure);
 	}

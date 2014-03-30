@@ -34,16 +34,16 @@ public class Field {
 
 	private final int width;
 	private final int height;
-	private Cell cells[];
-	private Cell freeCells[];
+	private final Cell cells[];
+	private final Cell freeCells[];
 
 	public Field(int width, int height, StartCellStyle startCellStyle) {
 
 		this.width = validateValue(width, MIN_WIDTH, MAX_WIDTH);
 		this.height = validateValue(height, MIN_HEIGHT, MAX_HEIGHT);
 
-		cells = new Cell[this.width * this.height];
-		freeCells = new Cell[this.width * this.height];
+		this.cells = new Cell[this.width * this.height];
+		this.freeCells = new Cell[this.width * this.height];
 		setupCells(startCellStyle);
 	}
 

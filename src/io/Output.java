@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 
 public class Output {
 
-	private PrintWriter printWriter;
+	private final PrintWriter printWriter;
 
 	public Output(OutputStream out) {
 

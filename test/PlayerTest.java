@@ -5,7 +5,7 @@ import core.*;
 
 public class PlayerTest extends Assert {
 
-	private static char figures[] = { Cell.getDefaultFigure(), 'X', 'O' };
+	private static final char figures[] = { Cell.getDefaultFigure(), 'X', 'O' };
 
 	@Test
 	public void playerCreate() {
@@ -35,7 +35,7 @@ public class PlayerTest extends Assert {
 			Player player = new HumanPlayer(pf);
 			assertEquals(Player.Type.HUMAN, player.getType());
 			assertEquals(pf, player.getFigure());
-			assertNotEquals(null, player.makeMove(field, i, j++));
+			assertNotNull(player.makeMove(field, i, j++));
 		}
 
 		for (char pf : figures) {
@@ -44,7 +44,7 @@ public class PlayerTest extends Assert {
 			assertEquals(Player.Type.HUMAN, player.getType());
 			assertEquals(pf, player.getFigure());
 			assertEquals("" + pf, player.toString());
-			assertNotEquals(null, player.makeMove(field, i++, j));
+			assertNotNull(player.makeMove(field, i++, j));
 		}
 
 	}
@@ -80,10 +80,10 @@ public class PlayerTest extends Assert {
 				assertEquals("" + pf, player.toString());
 				if (field != null) {
 
-					assertNotEquals(null, ((AiPlayer) player).makeDesign(field));
+					assertNotNull(((AiPlayer) player).makeDesign(field));
 				} else {
 
-					assertEquals(null, ((AiPlayer) player).makeDesign(field));
+					assertNull(((AiPlayer) player).makeDesign(field));
 				}
 			}
 
@@ -95,10 +95,10 @@ public class PlayerTest extends Assert {
 				assertEquals("" + pf, player.toString());
 				if (field != null) {
 
-					assertNotEquals(null, ((AiPlayer) player).makeDesign(field));
+					assertNotNull(((AiPlayer) player).makeDesign(field));
 				} else {
 
-					assertEquals(null, ((AiPlayer) player).makeDesign(field));
+					assertNull(((AiPlayer) player).makeDesign(field));
 				}
 			}
 		}
@@ -130,11 +130,11 @@ public class PlayerTest extends Assert {
 				Player player = new AiPlayer(pf);
 				if (field != null) {
 
-					assertNotEquals(null, ((AiPlayer) player).makeDesign(field));
+					assertNotNull(((AiPlayer) player).makeDesign(field));
 					fields[0].setCell(2, 2, figures[0]);
 				} else {
 
-					assertEquals(null, ((AiPlayer) player).makeDesign(field));
+					assertNull(null, ((AiPlayer) player).makeDesign(field));
 				}
 			}
 		}
@@ -179,11 +179,11 @@ public class PlayerTest extends Assert {
 	@Test
 	public void testIsFigurePresent() {
 
-		char figures[] = new char[] { 'A', 'B', 'C' };
-		assertFalse(Player.isFigurePresent(figures, '\0'));
-		assertTrue(Player.isFigurePresent(figures, 'A'));
-		assertTrue(Player.isFigurePresent(figures, 'B'));
-		assertTrue(Player.isFigurePresent(figures, 'C'));
+		char playerFigures[] = new char[] { 'A', 'B', 'C' };
+		assertFalse(Player.isFigurePresent(playerFigures, '\0'));
+		assertTrue(Player.isFigurePresent(playerFigures, 'A'));
+		assertTrue(Player.isFigurePresent(playerFigures, 'B'));
+		assertTrue(Player.isFigurePresent(playerFigures, 'C'));
 	}
 
 }

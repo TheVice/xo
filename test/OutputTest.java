@@ -42,7 +42,7 @@ public class OutputTest extends Assert {
 
 	private static class ByteArrayOutput extends Output {
 
-		private ByteArrayOutputStream byteArrayOutputStream;
+		private final ByteArrayOutputStream byteArrayOutputStream;
 
 		private ByteArrayOutput(ByteArrayOutputStream stringBufferOutputStream) {
 

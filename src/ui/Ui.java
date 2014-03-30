@@ -5,8 +5,8 @@ import io.Output;
 
 public class Ui {
 
-	private Input input;
-	private Output output;
+	private final Input input;
+	private final Output output;
 
 	public Ui(Input input, Output output) {
 
