@@ -19,11 +19,6 @@ public class Ui {
 		return input.readLine();
 	}
 
-	public int onInputInt() throws NumberFormatException {
-
-		return Integer.parseInt(onInput());
-	}
-
 	public void onOutput(String string) {
 
 		output.write(string);

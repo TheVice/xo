@@ -21,7 +21,7 @@ public class Referee {
 		do {
 			try {
 
-				integerValue = ui.onInputInt();
+				integerValue = Integer.parseInt(ui.onInput());
 				break;
 			} catch (NumberFormatException nexc) {
 
