@@ -396,7 +396,7 @@ public class Referee {
 				ui.onOutput("Player of " + players[playerNumber]
 						+ " please make your move.");
 				chronicler.addWalk(((AiPlayer) players[playerNumber])
-						.makeDesign(playGround));
+						.makeDesign(playGround.getFreeCells()));
 				figure = players[playerNumber].getFigure();
 			} else {
 

@@ -11,14 +11,7 @@ public class AiPlayer extends Player {
 		super(figure, Type.AI);
 	}
 
-	public Cell makeDesign(Field playGround) {
-
-		if (playGround == null) {
-
-			return null;
-		}
-
-		Cell cells[] = playGround.getFreeCells();
+	public Cell makeDesign(Cell cells[]) {
 
 		int cellNum = 0;
 		while (cellNum < cells.length && cells[cellNum] != null) {

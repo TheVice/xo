@@ -16,13 +16,11 @@ public class PlayerTest extends Assert {
 			assertEquals(Player.Type.HUMAN, player.getType());
 			assertEquals(pf, player.getFigure());
 			assertEquals("" + pf, player.toString());
-			assertEquals(null, player.makeMove(null, 1, 1));
 
 			player = new HumanPlayer(pf);
 			assertEquals(Player.Type.HUMAN, player.getType());
 			assertEquals(pf, player.getFigure());
 			assertEquals("" + pf, player.toString());
-			assertEquals(null, player.makeMove(null, 1, 1));
 		}
 
 		Field field = new Field(4, 5, Field.StartCellStyle.BOTTOM_LEFT);
@@ -58,84 +56,67 @@ public class PlayerTest extends Assert {
 			assertEquals(Player.Type.AI, player.getType());
 			assertEquals(pf, player.getFigure());
 			assertEquals("" + pf, player.toString());
-			assertEquals(null, player.makeMove(null, 1, 1));
 
 			player = new AiPlayer(pf);
 			assertEquals(Player.Type.AI, player.getType());
 			assertEquals(pf, player.getFigure());
 			assertEquals("" + pf, player.toString());
-			assertEquals(null, player.makeMove(null, 1, 1));
 		}
 
-		Field fields[] = new Field[2];
-		fields[0] = new Field(4, 5, Field.StartCellStyle.BOTTOM_LEFT);
+		Field field = new Field(4, 5, Field.StartCellStyle.BOTTOM_LEFT);
 
-		for (Field field : fields) {
+		for (char pf : figures) {
 
-			for (char pf : figures) {
+			Player player = new AiPlayer(pf);
+			assertEquals(Player.Type.AI, player.getType());
+			assertEquals(pf, player.getFigure());
+			assertEquals("" + pf, player.toString());
+			if (field != null) {
 
-				Player player = new AiPlayer(pf);
-				assertEquals(Player.Type.AI, player.getType());
-				assertEquals(pf, player.getFigure());
-				assertEquals("" + pf, player.toString());
-				if (field != null) {
-
-					assertNotNull(((AiPlayer) player).makeDesign(field));
-				} else {
-
-					assertNull(((AiPlayer) player).makeDesign(field));
-				}
-			}
-
-			for (char pf : figures) {
-
-				Player player = new AiPlayer(pf);
-				assertEquals(Player.Type.AI, player.getType());
-				assertEquals(pf, player.getFigure());
-				assertEquals("" + pf, player.toString());
-				if (field != null) {
-
-					assertNotNull(((AiPlayer) player).makeDesign(field));
-				} else {
-
-					assertNull(((AiPlayer) player).makeDesign(field));
-				}
+				assertNotNull(((AiPlayer) player).makeDesign(field
+						.getFreeCells()));
 			}
 		}
 
-		fields[0] = new Field(2, 2, Field.StartCellStyle.BOTTOM_LEFT);
-		fields[0].setCell(1, 1, figures[1]);
-		fields[0].setCell(1, 2, figures[1]);
-		fields[0].setCell(2, 1, figures[1]);
-		fields[0].setCell(2, 2, figures[1]);
+		for (char pf : figures) {
 
-		for (Field field : fields) {
+			Player player = new AiPlayer(pf);
+			assertEquals(Player.Type.AI, player.getType());
+			assertEquals(pf, player.getFigure());
+			assertEquals("" + pf, player.toString());
+			if (field != null) {
 
-			for (char pf : figures) {
-
-				Player player = new AiPlayer(pf);
-				assertEquals(null, ((AiPlayer) player).makeDesign(field));
+				assertNotNull(((AiPlayer) player).makeDesign(field
+						.getFreeCells()));
 			}
 		}
 
-		fields[0] = new Field(2, 2, Field.StartCellStyle.BOTTOM_LEFT);
-		fields[0].setCell(1, 1, figures[1]);
-		fields[0].setCell(1, 2, figures[1]);
-		fields[0].setCell(2, 1, figures[1]);
+		field = new Field(2, 2, Field.StartCellStyle.BOTTOM_LEFT);
+		field.setCell(1, 1, figures[1]);
+		field.setCell(1, 2, figures[1]);
+		field.setCell(2, 1, figures[1]);
+		field.setCell(2, 2, figures[1]);
 
-		for (Field field : fields) {
+		for (char pf : figures) {
 
-			for (char pf : figures) {
+			Player player = new AiPlayer(pf);
+			assertEquals(null,
+					((AiPlayer) player).makeDesign(field.getFreeCells()));
+		}
 
-				Player player = new AiPlayer(pf);
-				if (field != null) {
+		field = new Field(2, 2, Field.StartCellStyle.BOTTOM_LEFT);
+		field.setCell(1, 1, figures[1]);
+		field.setCell(1, 2, figures[1]);
+		field.setCell(2, 1, figures[1]);
 
-					assertNotNull(((AiPlayer) player).makeDesign(field));
-					fields[0].setCell(2, 2, figures[0]);
-				} else {
+		for (char pf : figures) {
 
-					assertNull(null, ((AiPlayer) player).makeDesign(field));
-				}
+			Player player = new AiPlayer(pf);
+			if (field != null) {
+
+				assertNotNull(((AiPlayer) player).makeDesign(field
+						.getFreeCells()));
+				field.setCell(2, 2, figures[0]);
 			}
 		}
 	}

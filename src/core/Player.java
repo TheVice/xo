@@ -53,7 +53,7 @@ public class Player {
 	}
 
 	private final Type type;
-	private char figure = ' ';
+	private char figure;
 
 	protected Player(char figure, Type type) {
 
@@ -73,17 +73,13 @@ public class Player {
 
 	public Cell makeMove(Field playGround, int x, int y) {
 
-		if (playGround == null) {
-
-			return null;
-		}
 		return playGround.setCell(x, y, getFigure());
 	}
 
 	@Override
 	public String toString() {
 
-		return "" + figure;
+		return "" + getFigure();
 	}
 
 }
