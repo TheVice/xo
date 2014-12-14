@@ -5,10 +5,6 @@ import ui.Ui;
 public class Referee {
 
 	private static Ui ui;
-	private static Player players[];
-	private static Player winner;
-	private static Field playGround;
-	private static Chronicler chronicler;
 	private static boolean exitNow;
 	private static final String lineSeparator = System
 			.getProperty("line.separator");
@@ -103,11 +99,6 @@ public class Referee {
 		Referee.ui = ui;
 
 		do {
-
-			Referee.players = null;
-			Referee.winner = null;
-			Referee.playGround = null;
-			Referee.chronicler = null;
 			Referee.exitNow = false;
 
 			Referee.ui
@@ -131,23 +122,27 @@ public class Referee {
 		int commandNum = getCommandFromInput(ui, commands);
 		ui.onOutputLine("Game type - " + commands[commandNum] + ".");
 
+		Player players[] = null;
+		Field playGround = null;
+
 		if (commandNum == 0) {
 
 			char playerFigures[] = { 'X', 'O' };
-			setupPlayers(2, playerFigures);
-			playGround = setupField(3, 3, ' ', 3);
+			players = setupPlayers(2, playerFigures);
+			playGround = setupField(players, 3, 3, ' ', 3);
 		} else {
 
-			setupPlayers(0, null);
-			playGround = setupField(0, 0, '\0', -1);
+			players = setupPlayers(0, null);
+			playGround = setupField(players, 0, 0, '\0', -1);
 		}
 
-		chronicler = new Chronicler(playGround.getHeightCount()
+		Chronicler chronicler = new Chronicler(playGround.getHeightCount()
 				* playGround.getWidthCount());
-		gameLoop();
+		Player winner = gameLoop(chronicler, playGround, players);
+		gameOver(winner, chronicler, playGround);
 	}
 
-	private static void setupPlayers(int playerCount, char[] playerFigures) {
+	private static Player[] setupPlayers(int playerCount, char[] playerFigures) {
 
 		if (playerCount == 0) {
 
@@ -175,7 +170,7 @@ public class Referee {
 		}
 
 		ui.onOutputLine("Player count - " + playerCount);
-		players = new Player[playerCount];
+		Player players[] = new Player[playerCount];
 
 		for (int playerNum = 0; playerNum < playerCount; playerNum++) {
 
@@ -186,12 +181,14 @@ public class Referee {
 				players[playerNum] = setupPlayer(playerFigures[playerNum]);
 			} else {
 
-				players[playerNum] = setupPlayer();
+				players[playerNum] = setupPlayer(players);
 			}
 		}
+
+		return players;
 	}
 
-	private static Player setupPlayer() {
+	private static Player setupPlayer(Player players[]) {
 
 		char figure = '\0';
 
@@ -239,7 +236,7 @@ public class Referee {
 		return player;
 	}
 
-	private static char setupDefaultFieldFigure(char figure) {
+	private static char setupDefaultFieldFigure(Player players[], char figure) {
 
 		if (figure == '\0') {
 
@@ -322,8 +319,8 @@ public class Referee {
 		return fields[styleNumber];
 	}
 
-	private static Field setupField(int width, int height, char figure,
-			int styleNumber) {
+	private static Field setupField(Player players[], int width, int height,
+			char figure, int styleNumber) {
 
 		if (width == 0 || height == 0) {
 
@@ -375,7 +372,7 @@ public class Referee {
 
 		}
 
-		figure = setupDefaultFieldFigure(figure);
+		figure = setupDefaultFieldFigure(players, figure);
 		Cell.setDefaultFigure(figure);
 		Field field = setupStartPositionAtField(width, height, figure,
 				styleNumber);
@@ -383,9 +380,11 @@ public class Referee {
 		return field;
 	}
 
-	public static void gameLoop() {
+	public static Player gameLoop(Chronicler chronicler, Field playGround,
+			Player players[]) {
 
 		int playerNumber = 0;
+		Player winner = null;
 
 		do {
 
@@ -400,7 +399,8 @@ public class Referee {
 				figure = players[playerNumber].getFigure();
 			} else {
 
-				figure = letsHumanPlayerMakeADesign(players[playerNumber]);
+				figure = letsHumanPlayerMakeADesign(chronicler, playGround,
+						players[playerNumber]);
 			}
 
 			ui.onOutputLine(lineSeparator + "---------" + lineSeparator
@@ -421,10 +421,11 @@ public class Referee {
 
 		} while (!playGround.isFull());
 
-		gameOver();
+		return winner;
 	}
 
-	private static char letsHumanPlayerMakeADesign(Player player) {
+	private static char letsHumanPlayerMakeADesign(Chronicler chronicler,
+			Field playGround, Player player) {
 
 		String commands[] = { "step", "exit" };
 		Cell cell = null;
@@ -445,7 +446,7 @@ public class Referee {
 					exitNow = true;
 					return player.getFigure();
 				}
-				return makeUndo();
+				return makeUndo(chronicler, playGround);
 			}
 
 			int y = getCommandOrIntFromInput(ui, commands);
@@ -457,7 +458,7 @@ public class Referee {
 					exitNow = true;
 					return player.getFigure();
 				}
-				return makeUndo();
+				return makeUndo(chronicler, playGround);
 			}
 
 			cell = player.makeMove(playGround, x, y);
@@ -484,7 +485,7 @@ public class Referee {
 		return player.getFigure();
 	}
 
-	private static char makeUndo() {
+	private static char makeUndo(Chronicler chronicler, Field playGround) {
 
 		ui.onOutputLine("There few next steps made at this point.");
 		ui.onOutputLine(chronicler);
@@ -516,7 +517,8 @@ public class Referee {
 		return chronicler.revertTo(stepNum, playGround);
 	}
 
-	private static void gameOver() {
+	private static void gameOver(Player winner, Chronicler chronicler,
+			Field playGround) {
 
 		if (!exitNow) {
 
