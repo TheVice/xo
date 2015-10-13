@@ -5,10 +5,10 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>xo</name>
             <source-roots>
-                <root id="src.dir"/>
+                <root id="src.java.dir" name="Source Package"/>
             </source-roots>
             <test-roots>
-                <root id="test.src.dir"/>
+                <root id="test.java.dir" name="Test Package"/>
             </test-roots>
         </data>
     </configuration>

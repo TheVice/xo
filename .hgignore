@@ -1,6 +1,6 @@
-.jar
-.class
 .iml
 .idea
-build/
 .gradle/
+build/
+classes/
+nbproject/private/
